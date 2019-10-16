@@ -1,0 +1,14 @@
+Package: techguides
+Title: Technical Guidelines
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "Mirai",
+           family = "Solutions",
+           role = c("aut", "cre"),
+           email = "info@mirai-solutions.com")
+Description: Collection of technical guidelines.
+License: GPL-3
+Depends: 
+    R (>= 3.5.0)
+Encoding: UTF-8
+LazyData: true
