@@ -1,2 +1,3 @@
 ^techguides\.Rproj$
 ^\.Rproj\.user$
+^\.travis\.yml$

@@ -1,0 +1,115 @@
+---
+title: "Roxygen documentation guidelines"
+author: "Riccardo Porreca"
+date: "`r Sys.time()`"
+output: html_document
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# Roxygen documentation guidelines
+
+The scope of this document is to provide *motivated guidelines and best
+practices* for documenting R objects (especially functions) with **roxygen2**.
+This is based on
+* roxygen2 vignettes: `browseVignettes("roxygen2")`
+* The [tidyverse style guide](http://style.tidyverse.org/documentation.html)
+* Package development experience
+Examples are provided to show the concrete application of the described
+principles. #> @Riccardo to understand how to link package here
+
+## Content organization
+Content structure and order of the roxygen2 documentation should be organized for
+readability, alignment with the rendered content, maintainability.
+* Always use **sentence case** with (for all but the title) a final **period
+(.)**.
+* Content **order** should reflect how sections appear in the resulting help
+page: title, description, arguments, details, value, custom sections,
+references, see also, examples.
+- Note that `@family` belongs to the 'See Also' section, so place it
+accordingly. 
+- Place `@inherit*` and `@template` tags in the relevant place for the
+content you are including.
+* Use an **empty line** to separate sections, thus avoiding `@title` and
+(single-paragraph) `@description`.
+* Put single-paragraph cointent right after the tag (`@descrption Bla bla.`),
+otherwise start on a new line.
+* Place **NAMESPACE**-related tags `@importFrom`, `@import`, `@export`
+statements at the bottom and in this order.
+- Use one `@importFrom` per symbol (not per package) and try to avoid
+`@import`.
+- For **un-exported** objects documented for internal purposes, specify
+`@keywords internal` instead of `@export`.
+* Use
+[**markdown**](https://cran.r-project.org/package=roxygen2/vignettes/markdown.html):
+  If not done at package level, `@md` should be the last element (so it can easily
+                                                                  be removed when moving to package-level).
+* **Break lines** at 80 characters of content: No matter how wide your screen
+is, human brain is still not meant for processing long text, which would be
+poorly readable (code is a different story).
+* Use RStudio menu Edit > Reflow comment (`Shift+Ctrl+/`) after selecting a
+single block (selecting several parts might screw things up), which will
+also indent the lines after the first when needed.
+
+## Roxygen templates and example scripts
+Roxygen **templates** allow modularizing documentation content. Shared content
+sits in R files under the **man-roxygen** directory, and is included using the
+`@template` tag.
+Similarly, examples written as normal R code can be included in the 'Examples'
+section using `@example` (without `s`), which for long examples is way more
+convenient and less tedious than writing them as roxygen comments in the
+`@examples` section.
+* The **man-roxygen** directory must be added to .Rbuildignore, e.g. via `devtools::use_build_ignore("man-roxygen")`
+* **Template files** should be called _`<TAG>-<NAME>.R`_ depending on which
+`@<TAG>` they contain (typically one per template), and be included according to
+the corresponding tag order. This improves the readability and maintenance of
+template-based documentation
+* e.g., _`param-first_arg.R`_ contains `#' @param first_arg Bla bla bla.`
+* Markdown must be specified via **`@md`** in each template if not defined at
+package level.
+* **Examples R scripts** should be called _`ex-<FUNCTION_NAME>.R`_ and placed in
+man-roxygen (for convenience). They are then included via `@example
+man-roxygen/ex-<FUNCTION_NAME>.R`.
+## Using `@rdname` and `@describeIn`
+Tags `@rdname` and `@describeIn` are a convenient way to document multiple
+functions in the same file. See the roxygen2 vignette [Generating Rd
+                                                       files](https://cran.r-project.org/package=roxygen2/vignettes/rd.html)
+(`vignette("rd", package = "roxygen2")`) for more detail. 
+**`@rdname`** provides the greatest flexibility for combining documentation
+(description, arguments, details, etc.) of several objects into a single
+documentation entry.
+**`@describeIn <name> <description>`** is meant for a set of functions with
+(almost) same arguments and that can be described in a general way in the
+'Description' section, whereas individual `<description>`s are collected in a
+final section 'Functions'. 
+Tag `@rdname` should the first tag, whereas `@describeIn` should be the last tag
+before the `@examples` and namespace tags.
+
+## Examples
+
+<!-- ### General content organization  -->
+<!-- See the corresponding `?roxygenExPkg::fun_doc`. -->
+<!-- ```{r example-read, include = FALSE} -->
+<!-- knitr::read_chunk("../R/fun_doc.R", labels = "example") -->
+<!-- ``` -->
+<!-- ```{r example} -->
+<!-- ``` -->
+<!-- ### Templates and example scripts -->
+<!-- See the corresponding `?roxygenExPkg::fun_doc_tpl`. -->
+<!-- ```{r example_tpl-read, include = FALSE} -->
+<!-- knitr::read_chunk("../R/fun_doc_tpl.R", labels = "example_tpl") -->
+<!-- ``` -->
+<!-- ```{r example_tpl} -->
+<!-- ``` -->
+<!-- ### `@describeIn` -->
+<!-- See the corresponding `?roxygenExPkg::times`. -->
+<!-- ```{r ex-describeIn-read, include = FALSE} -->
+<!-- knitr::read_chunk("../R/times_describeIn.R", labels = "ex-describeIn") -->
+<!-- ``` -->
+<!-- ```{r ex-describeIn} -->
+<!-- ``` -->

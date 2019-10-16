@@ -1,0 +1,15 @@
+# R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
+
+language: R
+cache: packages
+before_cache: Rscript -e 'remotes::install_cran("bookdown")'
+
+script: Rscript -e "bookdown::render_book('index.Rmd', 'bookdown::gitbook')"
+
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: $GITHUB_PAT  # Set in the settings page of your repository, as a secure variable
+  local_dir: _book
+  on:
+    branch: master
