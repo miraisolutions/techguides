@@ -13,14 +13,26 @@ knitr::opts_chunk$set(
 
 # Guidelines
 
+```{r install_examplePkgs, include=FALSE}
+pkgs <- list.files(system.file("examplePkgs", package = "techguides"))
+for (pkg in pkgs) {
+  devtools::install(
+    system.file("examplePkgs", pkg, package = "techguides")
+  )
+}
+```
+
 ```{r, echo=FALSE, results='asis'}
-guides <- list.files(system.file("roxygen_guidelines", package = "techguides"))
+guides <- list.files(system.file("guidelines", package = "techguides"))
 for (guide in guides) {
-  cat(
+  guide_files <- list.files(system.file("guidelines", guide, package = "techguides"))
+  for (guide_file in guide_files) {
+     cat(
     knitr::knit_child(
-      system.file("roxygen_guidelines", guide, package = "techguides"),
+      system.file("guidelines", guide, guide_file, package = "techguides"),
       quiet = TRUE
     ) 
-  )
+  ) 
+  }
 }
 ```
