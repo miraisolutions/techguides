@@ -1,0 +1,26 @@
+---
+title: "Guidelines"
+author: "Mirai Solutions"
+date: "`r Sys.time()`"
+output: html_document
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE
+)
+```
+
+# Guidelines
+
+```{r, echo=FALSE, results='asis'}
+guides <- list.files(system.file("roxygen_guidelines", package = "techguides"))
+for (guide in guides) {
+  cat(
+    knitr::knit_child(
+      system.file("roxygen_guidelines", guide, package = "techguides"),
+      quiet = TRUE
+    ) 
+  )
+}
+```

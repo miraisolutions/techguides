@@ -12,7 +12,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# Roxygen documentation guidelines
+## Roxygen documentation guidelines
 
 The scope of this document is to provide *motivated guidelines and best
 practices* for documenting R objects (especially functions) with **roxygen2**.
@@ -27,7 +27,7 @@ principles.
 
 **Riccardo** to understand how to link package here
 
-## Content organization
+### Content organization
 
 Content structure and order of the roxygen2 documentation should be organized for
 readability, alignment with the rendered content, maintainability.
@@ -69,7 +69,7 @@ poorly readable (code is a different story).
 single block (selecting several parts might screw things up), which will
 also indent the lines after the first when needed.
 
-## Roxygen templates and example scripts
+### Roxygen templates and example scripts
 
 Roxygen **templates** allow modularizing documentation content. Shared content
 sits in R files under the **man-roxygen** directory, and is included using the
@@ -96,7 +96,7 @@ package level.
 man-roxygen (for convenience). They are then included via `@example
 man-roxygen/ex-<FUNCTION_NAME>.R`.
 
-## Using `@rdname` and `@describeIn`
+### Using `@rdname` and `@describeIn`
 
 Tags `@rdname` and `@describeIn` are a convenient way to document multiple
 functions in the same file. See the roxygen2 vignette [Generating Rd
@@ -115,7 +115,7 @@ final section 'Functions'.
 Tag `@rdname` should the first tag, whereas `@describeIn` should be the last tag
 before the `@examples` and namespace tags.
 
-## Examples
+### Examples
 
 <!-- ### General content organization  -->
 <!-- See the corresponding `?roxygenExPkg::fun_doc`. -->
