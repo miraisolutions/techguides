@@ -5,7 +5,9 @@ cache: packages
 
 before_cache: Rscript -e 'remotes::install_cran(c("bookdown", "devtools"))'
 
-script: Rscript -e "bookdown::render_book('index.Rmd', 'bookdown::gitbook')"
+before_deploy:
+- R CMD INSTALL $PKG_TARBALL
+- Rscript -e "bookdown::render_book('index.Rmd', 'bookdown::gitbook')"
 
 deploy:
   provider: pages
