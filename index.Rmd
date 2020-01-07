@@ -8,10 +8,6 @@ output:
     split_by: section
 ---
 
-```{r include=FALSE}
-knitr::opts_chunk$set(fig.path = "figures/")
-```
-
 # Introduction
 
 The scope of this document is to provide *motivated guidelines and best

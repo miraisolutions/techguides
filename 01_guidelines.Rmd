@@ -9,30 +9,29 @@ output: html_document
 knitr::opts_chunk$set(
   collapse = TRUE
 )
+system.file <- function(..., package) file.path("inst", ...)
 ```
 
 # Guidelines
 
 ```{r install_examplePkgs, include=FALSE}
-pkgs <- list.files(system.file("examplePkgs", package = "techguides"))
+pkgs <- list.files(system.file("examplePkgs", package = "techguides"), full.names = TRUE)
 for (pkg in pkgs) {
-  devtools::install(
-    system.file("examplePkgs", pkg, package = "techguides")
-  )
+  devtools::install(pkg)
 }
 ```
 
 ```{r, echo=FALSE, results='asis'}
-guides <- list.files(system.file("guidelines", package = "techguides"))
+guides <- list.files(system.file("guidelines", package = "techguides"), full.names = TRUE)
 for (guide in guides) {
-  guide_files <- list.files(system.file("guidelines", guide, package = "techguides"))
+  guide_files <- list.files(guide, full.names = TRUE)
   for (guide_file in guide_files) {
-     cat(
-    knitr::knit_child(
-      system.file("guidelines", guide, guide_file, package = "techguides"),
-      quiet = TRUE
+    cat(
+      knitr::knit_child(
+        guide_file,
+        quiet = TRUE
+      ) 
     ) 
-  ) 
   }
 }
 ```

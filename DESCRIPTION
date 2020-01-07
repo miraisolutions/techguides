@@ -1,4 +1,5 @@
 Package: techguides
+Type: Book
 Title: Technical Guidelines
 Version: 0.0.0.9000
 Authors@R: 
@@ -7,9 +8,6 @@ Authors@R:
            role = c("aut", "cre"),
            email = "info@mirai-solutions.com")
 Description: Collection of technical guidelines.
-License: GPL-3
 Imports: 
     bookdown,
     devtools
-Remotes: 
-    rstudio/bookdown
