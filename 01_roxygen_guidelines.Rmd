@@ -12,6 +12,10 @@ knitr::opts_chunk$set(
 )
 ```
 
+```{r install_roxygenExPkg, include=FALSE}
+devtools::install(file.path("./roxygen_guidelines/roxygenExPkg"))
+```
+
 ## Roxygen documentation guidelines
 
 The scope of this document is to provide *motivated guidelines and best
@@ -118,21 +122,21 @@ before the `@examples` and namespace tags.
 #### General content organization
 See the corresponding `?roxygenExPkg::fun_doc`.
 ```{r example-read, include = FALSE}
-knitr::read_chunk(file.path("../../examplePkgs", "roxygenExPkg", "R", "fun_doc.R"), labels = "example")
+knitr::read_chunk(file.path("./roxygen_guidelines", "roxygenExPkg", "R", "fun_doc.R"), labels = "example")
 ```
 ```{r example}
 ```
 #### Templates and example scripts
 See the corresponding `?roxygenExPkg::fun_doc_tpl`.
 ```{r example_tpl-read, include = FALSE}
-knitr::read_chunk(file.path("../../examplePkgs", "roxygenExPkg", "R", "fun_doc_tpl.R"), labels = "example_tpl")
+knitr::read_chunk(file.path("./roxygen_guidelines", "roxygenExPkg", "R", "fun_doc_tpl.R"), labels = "example_tpl")
 ```
 ```{r example_tpl}
 ```
 #### `@describeIn`
 See the corresponding `?roxygenExPkg::times`.
 ```{r ex-describeIn-read, include = FALSE}
-knitr::read_chunk(file.path("../../examplePkgs", "roxygenExPkg", "R", "times_describeIn.R"), labels = "ex-describeIn")
+knitr::read_chunk(file.path("./roxygen_guidelines", "roxygenExPkg", "R", "times_describeIn.R"), labels = "ex-describeIn")
 ```
 ```{r ex-describeIn}
 ```
