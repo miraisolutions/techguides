@@ -9,7 +9,6 @@ output: html_document
 knitr::opts_chunk$set(
   collapse = TRUE
 )
-system.file <- function(..., package) file.path("inst", ...)
 ```
 
 # Guidelines
