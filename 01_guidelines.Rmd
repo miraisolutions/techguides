@@ -15,14 +15,14 @@ system.file <- function(..., package) file.path("inst", ...)
 # Guidelines
 
 ```{r install_examplePkgs, include=FALSE}
-pkgs <- list.files(system.file("examplePkgs", package = "techguides"), full.names = TRUE)
+pkgs <- list.files(file.path("./inst/examplePkgs"), full.names = TRUE)
 for (pkg in pkgs) {
   devtools::install(pkg)
 }
 ```
 
 ```{r, echo=FALSE, results='asis'}
-guides <- list.files(system.file("guidelines", package = "techguides"), full.names = TRUE)
+guides <- list.files(file.path("./inst/guidelines"), full.names = TRUE)
 for (guide in guides) {
   guide_files <- list.files(guide, full.names = TRUE)
   for (guide_file in guide_files) {

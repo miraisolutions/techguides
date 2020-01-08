@@ -10,7 +10,6 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
-system.file <- function(..., package) file.path("../../../inst", ...)
 ```
 
 ## Roxygen documentation guidelines
@@ -119,21 +118,21 @@ before the `@examples` and namespace tags.
 #### General content organization
 See the corresponding `?roxygenExPkg::fun_doc`.
 ```{r example-read, include = FALSE}
-knitr::read_chunk(system.file("examplePkgs", "roxygenExPkg", "R", "fun_doc.R", package = "techguides"), labels = "example")
+knitr::read_chunk(file.path("../../../inst/examplePkgs", "roxygenExPkg", "R", "fun_doc.R"), labels = "example")
 ```
 ```{r example}
 ```
 #### Templates and example scripts
 See the corresponding `?roxygenExPkg::fun_doc_tpl`.
 ```{r example_tpl-read, include = FALSE}
-knitr::read_chunk(system.file("examplePkgs", "roxygenExPkg", "R", "fun_doc_tpl.R", package = "techguides"), labels = "example_tpl")
+knitr::read_chunk(file.path("../../../inst/examplePkgs", "roxygenExPkg", "R", "fun_doc_tpl.R"), labels = "example_tpl")
 ```
 ```{r example_tpl}
 ```
 #### `@describeIn`
 See the corresponding `?roxygenExPkg::times`.
 ```{r ex-describeIn-read, include = FALSE}
-knitr::read_chunk(system.file("examplePkgs", "roxygenExPkg", "R", "times_describeIn.R", package = "techguides"), labels = "ex-describeIn")
+knitr::read_chunk(file.path("../../../inst/examplePkgs", "roxygenExPkg", "R", "times_describeIn.R"), labels = "ex-describeIn")
 ```
 ```{r ex-describeIn}
 ```
