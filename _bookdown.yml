@@ -1,0 +1,3 @@
+# https://bookdown.org/yihui/bookdown/usage.html#usage
+
+rmd_files: ["index.Rmd", "./roxygen_guidelines/roxygen_guidelines.Rmd"]

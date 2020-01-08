@@ -8,7 +8,7 @@ output:
     split_by: section
 ---
 
-# Introduction
+# Introduction {-}
 
 The scope of this document is to provide *motivated guidelines and best
 practices*.
