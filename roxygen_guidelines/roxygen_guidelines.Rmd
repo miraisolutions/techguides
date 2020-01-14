@@ -119,6 +119,16 @@ before the `@examples` and namespace tags.
 
 ## Examples
 
+The following examples make use of the demo package `roxygenExPkg`. The package can be installed as:
+
+```{r github-install, eval = FALSE}
+devtools::install_github(
+  "miraisolutions/techguides/roxygen_guidelines/roxygenExPkg"
+)
+```
+
+Tthe command `help(package = "roxygenExPkg")` will give you access to the package help.
+
 ### General content organization
 See the corresponding `?roxygenExPkg::fun_doc`.
 ```{r example-read, include = FALSE}
