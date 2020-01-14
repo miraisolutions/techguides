@@ -43,7 +43,7 @@ stored above. The package `devtools` will look for this environment variable.
 
 ```{r github-install, eval = FALSE}
 devtools::install_github(
-  "miraisolutions/techguides/inst/examplePkgs/roxygenExPkg"
+  "miraisolutions/techguides/roxygen_guidelines/roxygenExPkg"
 )
 ```
 
