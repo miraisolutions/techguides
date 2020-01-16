@@ -11,12 +11,3 @@ At Mirai Solutions we envision `techguides` as a work in progress environment wh
 The current `techguides` can be viewed at [https://mirai-solutions.ch/techguides/](https://mirai-solutions.ch/techguides/){: target="_blank" }, a `bookdown` website served through `github pages`. They feature:
 
 - best practices for `roxygen` tags, including examples.
-
-## Installation
-
-You can install the latest version of techguides as:
-
-``` r
-remotes::install_github("miraisolutions/techguides")
-```
-
