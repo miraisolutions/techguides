@@ -205,7 +205,7 @@ Guide](https://bookdown.org/yihui/rmarkdown/pdf-document.html#figure-options-1))
 #### Align TinyTeX to current remote repo
 
 **NOTE** - This should never be needed with recent `rocker/verse` images, where
-a version-stable TeXLive repository is used for the TinyTeX install (see
+a version-stable Tex Live repository is used for the TinyTeX install (see
 [rocker-org/rocker-versioned#169](https://github.com/rocker-org/rocker-versioned/issues/169)).
 
 If you are using LaTeX and start seeing errors like
@@ -214,7 +214,7 @@ Remote repository is newer than local (2018 < 2019)
 ```
 it means that you have to re-install TinyTeX. This happens e.g. with
 `rocker/verse:3.5.1`, since it was build at the end of 2018 but the current
-TeXLive repo is 2019. You can fix this via a **user-specific** re-installation of
+Tex Live repo is 2019. You can fix this via a **user-specific** re-installation of
 TinyTeX for R. **NOTE** however that this will uninstall the system-level
 TinyTeX pre-installed in `rocker/verse`.
 
