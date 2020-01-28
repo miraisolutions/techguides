@@ -1,11 +1,25 @@
-# Version-stable development with Rocker
+# Version-stable R development with Docker
 
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, eval = FALSE)
 ```
 
-## Version stable deployments
+In the context of productive solutions, it is essential to have full control
+over the code-base and environment to ensure reproducibility and stability of
+the setup. In the case of R-based projects, this implies fixing and aligning the
+version of R as well as package and system dependencies. In order to achieve
+well-managed release pipelines, a key aspect is to guarantee full equivalence of
+the development setup to (alternative) target productive stages.
+
+This guide illustrates an approach to manage a version-stable R development
+environment, based on containerized solutions leveraging the
+[Rocker project](https://www.rocker-project.org/), and allowing  the coexistence
+of multiple dockerized development flavors, to match various target production
+environments or projects.
+
+
+## Version-stable deployments
 
 When deploying R applications (e.g. a Shiny app) using Docker containers, it is
 important to control versioning of R and packages for the sake of reproducibilty
