@@ -1,4 +1,8 @@
 # https://bookdown.org/yihui/bookdown/usage.html#usage
 
 new_session: true
-rmd_files: ["index.Rmd", "./roxygen_guidelines.Rmd"]
+rmd_files: [
+  "index.Rmd",
+  "roxygen_guidelines.Rmd",
+  "version-stable-development.Rmd"
+  ]
