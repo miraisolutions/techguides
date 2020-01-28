@@ -4,5 +4,5 @@ new_session: true
 rmd_files: [
   "index.Rmd",
   "roxygen_guidelines.Rmd",
-  "version-stable-development.Rmd"
+  "version-stable-r-development.Rmd"
   ]
