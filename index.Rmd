@@ -10,5 +10,5 @@ output:
 
 # Introduction {-}
 
-The scope of this document is to provide *motivated guidelines and best
-practices*.
+[Mirai Solutions](https://mirai-solutions.ch) is happy to share techinical
+guidelines, how-tos and best practices in different areas.
