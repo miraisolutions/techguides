@@ -1,9 +1,4 @@
----
-title: "Roxygen documentation guidelines"
-author: "Riccardo Porreca"
-date: "`r Sys.time()`"
-output: html_document
----
+# Roxygen documentation guidelines
 
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(
@@ -15,8 +10,6 @@ knitr::opts_chunk$set(
 ```{r install_roxygenExPkg, include=FALSE}
 devtools::install(file.path("./roxygen_guidelines/roxygenExPkg"))
 ```
-
-# Roxygen documentation guidelines
 
 The scope of this document is to provide *motivated guidelines and best
 practices* for documenting R objects (especially functions) with **roxygen2**.
