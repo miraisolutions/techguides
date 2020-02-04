@@ -25,7 +25,7 @@ practices and guidelines, using templates.
 More details or context about the function and its behaviour. List
 possible side-effects, corner-cases and limitations here. Also use this
 section for describing the meaning and usage of arguments when this is too
-complex or verbose for the \code{@param} tags.
+complex or verbose for the \verb{@param} tags.
 }
 \section{Custom section}{
 
@@ -47,6 +47,7 @@ Hadley Wickham, The tidyverse style guide.
 \code{\link[=fun_doc_tpl]{fun_doc_tpl()}}, \code{\link[roxygen2:roxygenize]{roxygen2::roxygenize()}}. Even if you just put
 comma-separated links to functions, don't forget the final period (.).
 
-Other function documentation examples: \code{\link{fun_doc}}
+Other function documentation examples: 
+\code{\link{fun_doc}()}
 }
 \concept{function documentation examples}
