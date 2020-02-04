@@ -3,13 +3,12 @@
 language: R
 cache: packages
 
-
-# Install Ruby and html-proofer
+# Install the Ruby gem html-proofer
 before_install:
   - gem install html-proofer
 env:
   global:
-    - NOKOGIRI_USE_SYSTEM_LIBRARIES=true  # Speed up the html-proofer
+    - NOKOGIRI_USE_SYSTEM_LIBRARIES=true  # Speed up html-proofer install
 
 script:
 - Rscript -e "bookdown::render_book('index.Rmd', 'bookdown::gitbook')"
