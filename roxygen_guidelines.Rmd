@@ -7,10 +7,6 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r install_roxygenExPkg, include=FALSE}
-devtools::install(file.path("./roxygen_guidelines/roxygenExPkg"))
-```
-
 The scope of this document is to provide *motivated guidelines and best
 practices* for documenting R objects (especially functions) with **roxygen2**.
 
@@ -222,13 +218,22 @@ remotes::install_github(
 
 The command `help(package = "roxygenExPkg")` will give you access to the package help.
 
+```{r pkg-example-helper, include = FALSE}
+read_example_chunk <- function(..., labels) {
+  knitr::read_chunk(
+    file.path("./roxygen_guidelines", "roxygenExPkg", ...), 
+    labels = labels
+  )
+}
+```
+
 
 ### General content organization
 
 See the corresponding `?roxygenExPkg::fun_doc`.
 
 ```{r example-read, include = FALSE}
-knitr::read_chunk(file.path("./roxygen_guidelines", "roxygenExPkg", "R", "fun_doc.R"), labels = "example")
+read_example_chunk("R", "fun_doc.R", labels = "example")
 ```
 ```{r example}
 ```
@@ -239,9 +244,9 @@ knitr::read_chunk(file.path("./roxygen_guidelines", "roxygenExPkg", "R", "fun_do
 See the corresponding `?roxygenExPkg::fun_doc_tpl`.
 
 ```{r example_tpl-read, include = FALSE}
-knitr::read_chunk(file.path("./roxygen_guidelines", "roxygenExPkg", "R", "fun_doc_tpl.R"), labels = "example_tpl")
+read_example_chunk("R", "fun_doc_tpl.R", labels = "example_tpl")
 ```
-```{r example_tpl}
+```{r example_tpl, eval = FALSE}
 ```
 
 
@@ -249,9 +254,9 @@ knitr::read_chunk(file.path("./roxygen_guidelines", "roxygenExPkg", "R", "fun_do
 
 See the corresponding `?roxygenExPkg::divide`.
 ```{r ex-rdname-read, include = FALSE}
-knitr::read_chunk(file.path("./roxygen_guidelines", "roxygenExPkg", "R", "divide_rdname.R"), labels = "ex-rdname")
+read_example_chunk("R", "divide_rdname.R", labels = "ex-rdname")
 ```
-```{r ex-rdname}
+```{r ex-rdname, eval = FALSE}
 ```
 
 
@@ -259,7 +264,7 @@ knitr::read_chunk(file.path("./roxygen_guidelines", "roxygenExPkg", "R", "divide
 
 See the corresponding `?roxygenExPkg::times`.
 ```{r ex-describeIn-read, include = FALSE}
-knitr::read_chunk(file.path("./roxygen_guidelines", "roxygenExPkg", "R", "times_describeIn.R"), labels = "ex-describeIn")
+read_example_chunk("R", "times_describeIn.R", labels = "ex-describeIn")
 ```
-```{r ex-describeIn}
+```{r ex-describeIn, eval = FALSE}
 ```
