@@ -7,8 +7,9 @@ knitr::opts_chunk$set(
 )
 ```
 
-The scope of this document is to provide *motivated guidelines and best
-practices* for documenting R objects (especially functions) with **roxygen2**.
+The scope of this document is to provide *opinionated yet motivated
+guidelines and best practices* for documenting R objects (especially functions)
+with **roxygen2**.
 
 This is based on:
 
