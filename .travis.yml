@@ -7,7 +7,7 @@ cache: packages
 # Install Ruby and html-proofer
 before_install:
   - rvm get stable --auto-dotfiles
-  - rvm install 2.3.3
+  - rvm install ruby
   - gem install html-proofer
 env:
   global:
