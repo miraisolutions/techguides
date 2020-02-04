@@ -3,8 +3,19 @@
 language: R
 cache: packages
 
+
+# Install Ruby and html-proofer
+before_install:
+  - rvm get stable --auto-dotfiles
+  - rvm install 2.3.3
+  - gem install html-proofer
+env:
+  global:
+    - NOKOGIRI_USE_SYSTEM_LIBRARIES=true  # Speed up the html-proofer
+
 script:
 - Rscript -e "bookdown::render_book('index.Rmd', 'bookdown::gitbook')"
+- htmlproofer _book
 
 deploy:
   provider: pages
