@@ -6,7 +6,6 @@ cache: packages
 
 # Install Ruby and html-proofer
 before_install:
-  - rvm install ruby
   - gem install html-proofer
 env:
   global:
