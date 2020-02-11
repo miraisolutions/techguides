@@ -166,7 +166,7 @@ run_rstudio_ver() {
 
 which you can re-use as compact command for any R version as follows
 ```{bash run_rstudio_ver-use}
-run_rstudio_ver 3.6.1 GitHubProjects
+run_rstudio_ver 3.6.1 RStudioProjects
 ```
 
 Note that `--restart=always` specifies that the container should stay up and restart
