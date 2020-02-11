@@ -9,5 +9,4 @@ Authors@R:
            email = "info@mirai-solutions.com")
 Description: Collection of technical guidelines.
 Imports: 
-    bookdown,
-    devtools
+    bookdown
