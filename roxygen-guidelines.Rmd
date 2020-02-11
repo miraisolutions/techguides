@@ -213,7 +213,7 @@ The following examples make use of the demo package `roxygenExPkg`. The package 
 
 ```{r github-install, eval = FALSE}
 remotes::install_github(
-  "miraisolutions/techguides/roxygen_guidelines/roxygenExPkg"
+  "miraisolutions/techguides/roxygen-guidelines/roxygenExPkg"
 )
 ```
 
@@ -222,7 +222,7 @@ The command `help(package = "roxygenExPkg")` will give you access to the package
 ```{r pkg-example-helper, include = FALSE}
 read_example_chunk <- function(..., labels) {
   knitr::read_chunk(
-    file.path("./roxygen_guidelines", "roxygenExPkg", ...), 
+    file.path("./roxygen-guidelines", "roxygenExPkg", ...), 
     labels = labels
   )
 }

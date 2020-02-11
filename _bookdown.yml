@@ -3,6 +3,6 @@
 new_session: true
 rmd_files: [
   "index.Rmd",
-  "roxygen_guidelines.Rmd",
+  "roxygen-guidelines.Rmd",
   "version-stable-r-development.Rmd"
   ]
