@@ -5,4 +5,5 @@ rmd_files: [
   "index.Rmd",
   "roxygen-guidelines.Rmd",
   "version-stable-r-development.Rmd"
+  "deployment.Rmd"
   ]
