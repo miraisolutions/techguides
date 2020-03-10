@@ -10,5 +10,5 @@ output:
 
 # Introduction {-}
 
-[Mirai Solutions](https://mirai-solutions.ch) is happy to share techinical
+[Mirai Solutions](https://mirai-solutions.ch) is happy to share technical
 guidelines, how-tos and best practices in different areas.
