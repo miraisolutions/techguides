@@ -83,7 +83,7 @@ following setup:
 - No authentication required (local setup).
 - Enable root by setting the environment variable `ROOT` to `TRUE`, so that e.g.
 `sudo apt-get` can be used in RStudio.
-- Use a version-specific port, e.g. `3510` for R 3.6.1, `3600` for R 3.6.0 and
+- Use a version-specific port, e.g. `3500` for R 3.5.0, `3610` for R 3.6.1 and
 so on, so that we can use `localhost` for concurrent R version instances.
 - The development code of all relevant projects should live outside the
 container and be shared with it (and possibly many of them), e.g. under
@@ -126,7 +126,7 @@ docker exec rstudio_$R_VER bash -c \
 docker exec rstudio_$R_VER bash -c \
   'apt-get update && apt-get install -y --no-install-recommends meld dbus-x11'
 ```
-The running RStudio can then be accessed by visiting `http://localhost:3510/`.
+The running RStudio can then be accessed by visiting `http://localhost:3610/`.
 
 You may find convenient to define an alias as follows
 
