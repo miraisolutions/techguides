@@ -4,20 +4,15 @@
 knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, eval = FALSE)
 ```
 
-It is good practice not to rely on people running manually sanity checks and tests on the code. Automatic checks can ensure higher code quality and roboustness and can easily be integrated in the development process.
+It is good practice not to rely on people running manually sanity checks and tests on the code. Automatic checks can ensure higher code quality and robustness and can easily be integrated in the development process.
 
-Similarly, the deployment can be streamlined and better controlled via autmatic processes.
+Similarly, the deployment can be streamlined and better controlled via automatic processes.
+
+This guide is an illustration of how to set up Continuous Integration (CI) and Continuous Deployment (CD) workflows on popular open source services as Travis CI and GitHub Actions. 
 
 ## Travis
 
 Travis CI is an open-source continuous integration service that can be used to build and test software projects hosted on GitHub. To set up Travis CI you need to login at https://travis-ci.com/ (using your GitHub account).
-
-Setup Travis CI 
-
-Setup Travis via 
-This will open your browser to allow you enabling access to the repo
-Commit & push the generated .travis.yaml file.
-This will trigger the first run on Travis, which might take > 5 minutes (future runs will be much faster). The run should be successful.
 
 ### Automatic Checks
 
@@ -84,6 +79,152 @@ where `GITHUB_PAT` is a secure variable defined on Travis and referring to a [Pe
 
 ## GitHub Actions
 
+[GitHub Actions](https://help.github.com/en/actions) is a service for completely customizable, GitHub integrated workflow, including CI and CD executions.
+Workflows use `YAML` syntax and should be stored in the `.github/workflows` directory in the root of your repository.
+They are constituted of jobs and each job is a set of steps to perform individual tasks, e.g. commands or actions.
+You can [configure a workflow](https://help.github.com/en/actions/configuring-and-managing-workflows/configuring-a-workflow) to start when a GitHub event occurs, on a schedule, or from an external event.
+
+A workflow should have an identifying name and an `on` section indicating upon which event the workflow should be triggered. It should include at least one job and each job will have a set of steps fully specifying what to execute and where. Such steps can be a (predefined) action or a script. 
+
+In this example the job and the workflow are both called `Checkout` and run upon push commands and pull requests on the `master` branch, which is the default. It uses the predefined and built in action `checkout@v2` to check out the R package.
+
+```{yaml, eval = F}
+# Check on push and pull requests to master
+on: [push, pull_request]
+
+# Name of the workflow
+name: Checkout
+
+jobs:
+  Checkout:
+    runs-on: ubuntu-latest
+    steps:
+
+      - uses: actions/checkout@v2
+
+      - uses: r-lib/actions/setup-r@master
+```
+
 ### Automatic Checks
 
+To run `R CMD checks` it is necessary to specify explicitly:
+
+- to check out the project
+- to install all dependencies
+- to run `rcmdcheck::rcmdcheck`
+
+```{yaml, eval = F}
+# Check on push and pull requests to master
+on: [push, pull_request]
+
+# Name of the workflow
+name: CI
+
+jobs:
+  CI:
+    runs-on: ubuntu-latest
+    steps:
+
+      - uses: actions/checkout@v2
+
+      - uses: r-lib/actions/setup-r@master
+
+# Query and cache R package dependencies
+      - name: Query dependencies
+        run: |
+          install.packages("remotes")
+          saveRDS(remotes::dev_package_deps(dependencies = TRUE), "depends.Rds", version = 2)
+        shell: Rscript {0}
+      - name: Cache R packages
+        uses: actions/cache@v1
+        with:
+          path: ${{ env.R_LIBS_USER }}
+          key: ${{ runner.os }}-r-${{ hashFiles('depends.Rds') }}
+          restore-keys: ${{ runner.os }}-r-
+
+      - name: Install system dependencies
+        env:
+          RHUB_PLATFORM: linux-x86_64-ubuntu-gcc
+        run: |
+          Rscript -e "remotes::install_github('r-hub/sysreqs')"
+          sysreqs=$(Rscript -e "cat(sysreqs::sysreq_commands('DESCRIPTION'))")
+          sudo -s eval "$sysreqs"
+      - name: Install dependencies
+        run: |
+          remotes::install_deps(dependencies = TRUE)
+          remotes::install_cran(c("rcmdcheck"))
+        shell: Rscript {0}
+
+      - name: Check package
+        run: rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "warning", check_dir = "check")
+        shell: Rscript {0}
+```
+
 ### Automatic Deployment
+
+Adding the deployment is another step in a `cI-CD` job. In the following example it is shown how to trigger a deployment to `shinyapps.io` upon any push or pull request to `master`.
+
+```{yaml, eval = F}
+# Check on push and pull requests to master
+on: [push, pull_request]
+
+# Name of the workflow
+name: CI-CD
+
+jobs:
+  CI-CD:
+    runs-on: ubuntu-latest
+    steps:
+
+      - uses: actions/checkout@v2
+
+      - uses: r-lib/actions/setup-r@master
+
+# Query and cache R package dependencies
+      - name: Query dependencies
+        run: |
+          install.packages("remotes")
+          saveRDS(remotes::dev_package_deps(dependencies = TRUE), "depends.Rds", version = 2)
+        shell: Rscript {0}
+      - name: Cache R packages
+        uses: actions/cache@v1
+        with:
+          path: ${{ env.R_LIBS_USER }}
+          key: ${{ runner.os }}-r-${{ hashFiles('depends.Rds') }}
+          restore-keys: ${{ runner.os }}-r-
+
+      - name: Install system dependencies
+        env:
+          RHUB_PLATFORM: linux-x86_64-ubuntu-gcc
+        run: |
+          Rscript -e "remotes::install_github('r-hub/sysreqs')"
+          sysreqs=$(Rscript -e "cat(sysreqs::sysreq_commands('DESCRIPTION'))")
+          sudo -s eval "$sysreqs"
+          # rsconnect dependencies
+          sudo apt-get update && sudo apt-get install -y --no-install-recommends \
+            libxml2-dev libcurl4-openssl-dev
+# Install rsconnect necessary for deployment
+      - name: Install dependencies
+        run: |
+          remotes::install_deps(dependencies = TRUE)
+          remotes::install_cran(c("rcmdcheck", "rsconnect"))
+        shell: Rscript {0}
+
+      - name: Check package
+        run: rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "warning", check_dir = "check")
+        shell: Rscript {0}
+
+      - name: Deploy to shinyapps.io
+        if: github.ref == 'refs/heads/master'
+        env:
+          SHINYAPPS_ACCOUNT: ${{ secrets.SHINYAPPS_ACCOUNT }}
+          SHINYAPPS_TOKEN: ${{ secrets.SHINYAPPS_TOKEN }}
+          SHINYAPPS_SECRET: ${{ secrets.SHINYAPPS_SECRET }}
+        run: |
+          account_info <- lapply(paste0("SHINYAPPS_", c("ACCOUNT", "TOKEN", "SECRET")), Sys.getenv)
+          do.call(rsconnect::setAccountInfo, account_info)
+          rsconnect::deployApp(appName = "App")
+        shell: Rscript {0}
+```
+
+The variables `SHINYAPPS_ACCOUNT`, `SHINYAPPS_TOKEN` and `SHINYAPPS_SECRET` are secure variable defined on `shinyapps.io` and stored on GitHub Actions as [secrets](https://help.github.com/en/actions/configuring-and-managing-workflows/using-variables-and-secrets-in-a-workflow).
