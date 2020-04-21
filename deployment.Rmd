@@ -1,8 +1,89 @@
-# Deployment
-
+# Continuous Integration and Continuous Deployment
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, eval = FALSE)
 ```
 
-In t
+It is good practice not to rely on people running manually sanity checks and tests on the code. Automatic checks can ensure higher code quality and roboustness and can easily be integrated in the development process.
+
+Similarly, the deployment can be streamlined and better controlled via autmatic processes.
+
+## Travis
+
+Travis CI is an open-source continuous integration service that can be used to build and test software projects hosted on GitHub. To set up Travis CI you need to login at https://travis-ci.com/ (using your GitHub account).
+
+Setup Travis CI 
+
+Setup Travis via 
+This will open your browser to allow you enabling access to the repo
+Commit & push the generated .travis.yaml file.
+This will trigger the first run on Travis, which might take > 5 minutes (future runs will be much faster). The run should be successful.
+
+### Automatic Checks
+
+Travis CI can be set to automate testing (and package-level checks in general) for continuous integration, triggered upon any push event on the GitHub repo. 
+
+To setup Travis in a project use:
+
+```{r, eval = F}
+usethis::use_travis(ext = "com")
+```
+
+This will generate a generic `.travis.yaml` file
+
+```{yaml, eval = F}
+# R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
+
+language: R
+cache: packages
+```
+
+This will run basic package installation.
+
+It is possible to add further instructions via the `YAML` file, e.g. what to do before installing the package or which tests to run before deployment. Here an example that runs `R CMD Checks` before deployment.
+
+```{yaml, eval = F}
+# R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
+
+language: R
+cache: packages
+
+before_deploy:
+- R CMD INSTALL $PKG_TARBALL
+```
+
+where `$PKG_TARBALL` is defined at build time in Travis CI.
+
+Further `R` instructions can be added with the syntax `- Rscript -e "some R code"`.
+
+### Automatic Deployment
+
+Travis CI can be setup to automatically perform a deployment (e.g. publish a shiny app on shinyapps.io or render a website on gitHub Pages) upon any push to the `master` branch.
+
+This can be achieved by extending the `.travis.yaml` file with an appropriate `deploy:` section. The following example refers to the deployment of a website saved under `_site` on GitHub Pages upon push to the `master` branch.
+
+```{yaml, eval = F}
+# R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
+
+language: R
+cache: packages
+
+before_deploy:
+- R CMD INSTALL $PKG_TARBALL
+
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: $GITHUB_PAT # Set in the settings page of your repository, as a secure variable
+  local_dir: _site
+  on:
+    branch: master
+```
+
+where `GITHUB_PAT` is a secure variable defined on Travis and referring to a [Personal Access Token (PAT) on GitHub](https://help.github.com/en/articles/creating-a-personal-access-token-for-the-command-line).
+
+## GitHub Actions
+
+### Automatic Checks
+
+### Automatic Deployment
