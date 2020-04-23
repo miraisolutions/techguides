@@ -2,22 +2,25 @@
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, eval = FALSE)
+knitr::knit_engines$set("yaml")
 ```
 
-It is good practice to structure a Shiny app in a package, as then one can take full advantage of all the automation features already established for an R package (e.g. automatic testing, `R CMD checks`).
+It is good practice to integrate a Shiny app in a package, as then one can take full advantage of all the integrated features already established for an R package (e.g. automatic testing, `R CMD checks`, etc.).
+
+A simple development workflow to package a Shiny app is provided by the [`golem` package](https://cran.r-project.org/web/packages/golem/index.html).
 
 A packaged Shiny app can also take advantage of:
 
 - Continuous Integration (CI) pipelines to automate checks and ensure higher code quality and robustness;
 - Continuous Deployment (CD) pipelines to automate the process of deployment to a productive environment.
 
-This guide is an illustration of how to set up Continuous Integration (CI) and Continuous Deployment (CD) workflows on popular open source services as Travis CI and GitHub Actions for a packaged Shiny app. [ShinyCICD](https://github.com/miraisolutions/ShinyCICD) is a minimal example of a packaged Shiny app. A simple development workflow to package a Shiny app is provided by the [`golem` package](https://cran.r-project.org/web/packages/golem/index.html).
+This guide is an illustration of how to set up CI/CD workflows on popular open source services as Travis CI and GitHub Actions for a packaged Shiny app. [ShinyCICD](https://github.com/miraisolutions/ShinyCICD) is a minimal example of a packaged Shiny app that will be used as an example throughout the guide. By [forking](https://help.github.com/en/github/getting-started-with-github/fork-a-repo) the package and replacing the tockens with your own, you will be able to reproduce what desscribed in the following chapters.
 
 ## Generic CI/CD pipeline
 
 Generally speaking, a CI/CD pipleline for an R package is comprised of the following steps:
 
-- define system
+- define system environment
 - install R
 - chaching system environment
 - check out the package
@@ -28,17 +31,19 @@ Generally speaking, a CI/CD pipleline for an R package is comprised of the follo
 - caching build
 - deploy
 
-## Travis
+Most of these steps are implemented by default in Travis CI for an R package. In GitHub Actions, on the other hand, it is currently necessary to manually specify each of them.
+
+## Travis CI
 
 Travis CI is an open-source continuous integration service that can be used to build and test software projects hosted on GitHub. To set up Travis CI you need to login at [https://travis-ci.com/](https://travis-ci.com/) (using your GitHub account).
 
-To setup Travis in a project use:
+To setup Travis CI in a project use:
 
 ```{r, eval = F}
 usethis::use_travis(ext = "com")
 ```
 
-This will generate a generic `.travis.yaml` file
+This will generate a generic `.travis.yml` file
 
 ```{yaml, eval = F}
 # R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
@@ -49,11 +54,35 @@ cache: packages
 
 As default, Travis CI runs basic package installation (including dependencies) and performs `R CMD Checks`, triggered upon any push event on the GitHub repo in the `master` branch.
 
-ADD SCREENSHOT
+```{r, eval = T, echo = F}
+# All defaults
+knitr::include_graphics("./deployment/img/ShinyCICD_travis1.png")
+```
 
-Travis CI can be setup to automatically perform a deployment (e.g. publish a shiny app on shinyapps.io or render a website on gitHub Pages) upon any push to the `master` branch.
+### Automatic deployment
 
-This can be achieved by extending the `.travis.yaml` file with an appropriate `deploy:` section. 
+Travis CI can be setup to automatically perform a deployment (e.g. publish a shiny app on [shinyapps.io](https://www.shinyapps.io/)) upon any push to the `master` branch.
+
+This can be achieved by extending the `.travis.yml` file with an appropriate `deploy:` section. 
+
+```{yaml, eval = F}
+deploy:
+  provider: script
+  script:
+  - >-
+    Rscript
+    -e 'account_info <- lapply(paste0("SHINYAPPS_", c("ACCOUNT", "TOKEN", "SECRET")), Sys.getenv)'
+    -e 'do.call(rsconnect::setAccountInfo, account_info)'
+    -e 'rsconnect::deployApp(appName = "ShinyCICD")'
+  on:
+    branch: master
+```
+
+where `SHINYAPPS_ACCOUNT`, `SHINYAPPS_TOKEN`, `SHINYAPPS_SECRET` are [secure variables defined on Travis CI](https://docs.travis-ci.com/user/environment-variables/) and referring to [tokens](https://docs.rstudio.com/shinyapps.io/getting-started.html#deploying-applications) on shinyapps.io.
+
+### Putting it all together
+
+The final `yml` file would look like:
 
 ```{yaml, eval = F}
 # R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
@@ -62,21 +91,31 @@ language: R
 cache: packages
 
 deploy:
- WHAT GOES HERE EXACTLY ???
+  provider: script
+  script:
+  - >-
+    Rscript
+    -e 'account_info <- lapply(paste0("SHINYAPPS_", c("ACCOUNT", "TOKEN", "SECRET")), Sys.getenv)'
+    -e 'do.call(rsconnect::setAccountInfo, account_info)'
+    -e 'rsconnect::deployApp(appName = "ShinyCICD")'
   on:
     branch: master
 ```
 
-where `GITHUB_PAT` is a secure variable defined on Travis and referring to a [Personal Access Token (PAT) on GitHub](https://help.github.com/en/articles/creating-a-personal-access-token-for-the-command-line).
+As visible from the run logs, all the CI/CD pipeline steps are performed, despite only the deployment step being explicitly defined.
+
+```{r, eval = T, echo = F}
+# All defaults
+knitr::include_graphics("./deployment/img/ShinyCICD_travis2.png")
+```
 
 ## GitHub Actions
 
 [GitHub Actions](https://help.github.com/en/actions) is a service for completely customizable, GitHub integrated workflow, including CI and CD executions.
-Workflows use `YAML` syntax and should be stored in the `.github/workflows` directory in the root of your repository.
-They are constituted of jobs and each job is a set of steps to perform individual tasks, e.g. commands or actions.
-You can [configure a workflow](https://help.github.com/en/actions/configuring-and-managing-workflows/configuring-a-workflow) to start when a GitHub event occurs, on a schedule, or from an external event.
+[Workflows](https://help.github.com/en/actions/configuring-and-managing-workflows/configuring-a-workflow) use `YAML` syntax and should be stored in the `.github/workflows` directory in the root of the repository.
+Workflows are constituted of jobs and each job is a set of steps to perform individual tasks, e.g. commands or actions.
 
-A workflow should have an identifying name and an `on` section indicating upon which event the workflow should be triggered. It should include at least one job and each job will have a set of steps fully specifying what to execute and where. Such steps can be a (predefined) action or a script, however for the time being GitHub Actions does not support a hierarchical, aggregated structure of actions. Being fully customizable, it is necessary to fully specify each step in the CI/CD pipeline explicitely.
+A workflow should have an identifying `name` and an `on` section indicating upon which event the workflow should be triggered. It should include at least one job and each job will have a set of steps fully specifying what to execute. Such steps can be a (predefined) action or a script, however, for the time being, GitHub Actions does not support a hierarchical, aggregated structure of actions. Being fully customizable, it is necessary to fully specify each step in the CI/CD pipeline explicitely.
 
 ### Action to checkout an R package
 
@@ -142,15 +181,14 @@ This step should occur after checking out and installing the R package. It expli
         shell: Rscript {0}
 ```
 
-### Automatic Deployment
+### Automatic deployment
 
-Adding the deployment is another step in a `CI-CD` job. In the following example it is shown how to trigger a deployment to `shinyapps.io` upon any push or pull request to `master`. notice that it requires the package `rsconnect` to be available.
+Adding the deployment is another step in a `CI-CD` job. In the following example it is shown how to trigger a deployment to [shinyapps.io](https://www.shinyapps.io/)). Notice that it requires the package `rsconnect` to be available.
 
 ```{yaml, eval = F}
 # Install rsconnect necessary for deployment
       - name: Install dependencies
         run: |
-          remotes::install_deps(dependencies = TRUE)
           remotes::install_cran(c("rsconnect"))
         shell: Rscript {0}
         
@@ -167,7 +205,7 @@ Adding the deployment is another step in a `CI-CD` job. In the following example
         shell: Rscript {0}
 ```
 
-The variables `SHINYAPPS_ACCOUNT`, `SHINYAPPS_TOKEN` and `SHINYAPPS_SECRET` are secure variable defined on `shinyapps.io` and stored on GitHub Actions as [secrets](https://help.github.com/en/actions/configuring-and-managing-workflows/using-variables-and-secrets-in-a-workflow).
+The variables `SHINYAPPS_ACCOUNT`, `SHINYAPPS_TOKEN` and `SHINYAPPS_SECRET` are tokens defined on [shinyapps.io](https://www.shinyapps.io/)) and stored on GitHub Actions as [secrets](https://help.github.com/en/actions/configuring-and-managing-workflows/using-variables-and-secrets-in-a-workflow).
 
 ### Putting it all together
 
@@ -234,4 +272,11 @@ jobs:
           do.call(rsconnect::setAccountInfo, account_info)
           rsconnect::deployApp(appName = "ShinyCICD")
         shell: Rscript {0}
+```
+
+As visible from the run logs, all the CI/CD pipeline steps are performed subsequently, and are identifiable by the `name` field.
+
+```{r, eval = T, echo = F}
+# All defaults
+knitr::include_graphics("./deployment/img/ShinyCICD_githubactions1.png")
 ```
