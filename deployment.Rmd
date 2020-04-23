@@ -54,10 +54,7 @@ cache: packages
 
 As default, Travis CI runs basic package installation (including dependencies) and performs `R CMD Checks`, triggered upon any push event on the GitHub repo in the `master` branch.
 
-```{r, eval = T, echo = F}
-# All defaults
-knitr::include_graphics("./deployment/img/ShinyCICD_travis1.png")
-```
+![ShinyCICD_travis1](./deployment/img/ShinyCICD_travis1.png)
 
 ### Automatic deployment
 
@@ -104,10 +101,8 @@ deploy:
 
 As visible from the run logs, all the CI/CD pipeline steps are performed, despite only the deployment step being explicitly defined.
 
-```{r, eval = T, echo = F}
-# All defaults
-knitr::include_graphics("./deployment/img/ShinyCICD_travis2.png")
-```
+![ShinyCICD_travis2](./deployment/img/ShinyCICD_travis2.png)
+
 
 ## GitHub Actions
 
@@ -276,7 +271,4 @@ jobs:
 
 As visible from the run logs, all the CI/CD pipeline steps are performed subsequently, and are identifiable by the `name` field.
 
-```{r, eval = T, echo = F}
-# All defaults
-knitr::include_graphics("./deployment/img/ShinyCICD_githubactions1.png")
-```
+![ShinyCICD_githubactions1](./deployment/img/ShinyCICD_githubactions1.png)
