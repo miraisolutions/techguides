@@ -128,7 +128,7 @@ docker exec rstudio_$R_VER bash -c \
 ```
 The running RStudio can then be accessed by visiting `http://localhost:3610/`.
 
-You may find convenient to define an alias as follows
+You may find convenient to define a shell function as follows
 
 ```{bash run_rstudio_ver-def}
 run_rstudio_ver() {
