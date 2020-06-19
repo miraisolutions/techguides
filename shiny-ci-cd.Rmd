@@ -51,9 +51,9 @@ As default, Travis CI takes care of package dependency installation and performs
 
 ![](shiny-ci-cd/img/ShinyCICD_travis1.png)
 
-### Using renv for you project
+### Using renv for your project
 
-If you project relies on package [renv](https://rstudio.github.io/renv) for tracking dependencies via an `renv.lock` file, you should override the default `install`ation package dependencies and make sure `cache`ing is adjusted accordingly, as follows
+If your project relies on package [renv](https://rstudio.github.io/renv) for tracking dependencies via an `renv.lock` file, you should override the default `install`ation package dependencies and make sure `cache`ing is adjusted accordingly, as follows
 ```yaml
 cache:
   directories:
