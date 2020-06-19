@@ -97,7 +97,7 @@ knitr::read_chunk("shiny-ci-cd/deploy/deploy-shinyapps.R", labels = "deploy-shin
 ```
 ```{r deploy-shinyapps}
 ```
-and then simply execute it as `deploy` `script` above:
+and then simply execute it as `deploy` `script`:
 ```yml
 deploy:
   provider: script
@@ -136,20 +136,33 @@ As visible from the run logs, all the CI/CD pipeline steps are performed, despit
 [Workflows](https://help.github.com/en/actions/configuring-and-managing-workflows/configuring-a-workflow) use `YAML` syntax and should be stored in the `.github/workflows` directory in the root of the repository.
 Workflows are constituted of jobs and each job is a set of steps to perform individual tasks, e.g. commands or actions.
 
+### Workflow steps
+
 A workflow should have an identifying `name` and an `on` section indicating upon which events the workflow should be triggered. It should include at least one job and each job will have a set of steps fully specifying what to execute. Such steps can be a (predefined) action or a script, however, for the time being, GitHub Actions does not support a hierarchical, aggregated structure of actions. Being fully customizable, it is necessary to fully specify each step in the CI/CD pipeline explicitly.
+
+#### Setup
 
 - Checkout the source package from the repo, using `actions/checkout` provided by GitHub.
 - Setup R using action [`r-lib/actions/setup-r`](https://github.com/r-lib/actions#readme)
 - Query and cache R package dependencies using `remotes::dev_package_deps()` and the `actions/cache` predefined action.
 - Install system dependencies using package `sysreqs::sysreq_commands()` (for the `ubuntu` runner used to run the action)
 - Install R package dependencies using `remotes::Install_deps()`
+
+#### Package check
+
 - Check the package via using `rcmdcheck::rcmdcheck()`
+
+#### Deployment
+
 - Deploy to shinyapps.io, similar to the Travis CI case
   - In this case, environment variables `SHINYAPPS_ACCOUNT`, `SHINYAPPS_TOKEN` and `SHINYAPPS_SECRET`, defining credentials for [shinyapps.io](https://www.shinyapps.io/)), are specified / accessible as GitHub [secrets](https://help.github.com/en/actions/configuring-and-managing-workflows/using-variables-and-secrets-in-a-workflow).
 
-The corresponding `steps` are defined the workflow's `.yml` file as follows
+### Workflow file
 
-```{r read-ci-cd.yml, eval = TRUE, echo = FALSE}
+The `steps` above are defined in the `.yml` workflow file as follows
+
+```{r read-ci-cd.yml, eval = TRUE, include = FALSE}
+file.copy("shiny-ci-cd", "_book", recursive = TRUE)
 knitr::read_chunk("shiny-ci-cd/actions/ci-cd.yml", labels = "ci-cd.yml")
 ```
 ```{yml ci-cd.yml}
@@ -159,8 +172,15 @@ As visible from the run logs, all the CI/CD pipeline steps are performed subsequ
 
 ![](shiny-ci-cd/img/ShinyCICD_githubactions1.png)
 
+### `usethis::use_github_action()`
+
 In order to use the GitHub action workflow above, or its renv-based variant, you can simply:
 ```{r}
-usethis::use_github_action("https://tinyurl.com/mirai-techguide/shiny-ci-cd/actions/ci-cd.yml") # or ci-cd-renv.yml
-usethis::use_github_actions_badge("CI-CD")
+usethis::use_github_action(
+  "https://mirai-solutions.ch/techguides/shiny-ci-cd/actions/ci-cd.yml"
+# "https://mirai-solutions.ch/techguides/shiny-ci-cd/actions/ci-cd-renv.yml"
+# "https://mirai-solutions.ch/techguides/shiny-ci-cd/actions/ci.yml"
+# "https://mirai-solutions.ch/techguides/shiny-ci-cd/actions/ci-renv.yml"
+)
+usethis::use_github_actions_badge("CI-CD") # or "CI"
 ```
