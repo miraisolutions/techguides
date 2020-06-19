@@ -32,6 +32,8 @@ Most of these steps are implemented by default in Travis CI for an R package. In
 
 Travis CI is an open-source continuous integration service that can be used to build and test software projects hosted on GitHub. To set up Travis CI you need to login at [https://travis-ci.com/](https://travis-ci.com/) (using your GitHub account) and provide authorization via GitHub (see [Travis CI Tutorial](https://docs.travis-ci.com/user/tutorial)).
 
+### Standard CI setup
+
 To setup Travis CI in a project use:
 
 ```{r, eval = F}
@@ -71,11 +73,12 @@ as described in the [Using renv with Continuous Integration](https://rstudio.git
 
 Travis CI can be setup to perform a deployment (e.g. publish a shiny app on [shinyapps.io](https://www.shinyapps.io/)) upon any push to the `master` branch, provided the CI checks pass.
 
-This is achieved by specifying in `.travis.yml` an additional `deploy:` section as
+This is achieved for a shinyapps.io deployment by specifying in `.travis.yml` an additional `deploy:` section as
 
 ```yaml
 deploy:
   provider: script
+  skip_cleanup: true # strictly necessary only for the renv case
   script:
   - >-
     Rscript
@@ -88,24 +91,17 @@ deploy:
 
 where `SHINYAPPS_ACCOUNT`, `SHINYAPPS_TOKEN`, `SHINYAPPS_SECRET` are [secure variables defined on Travis CI](https://docs.travis-ci.com/user/environment-variables/) holding your account name and corresponding  [tokens](https://docs.rstudio.com/shinyapps.io/getting-started.html#deploying-applications) for shinyapps.io.
 
-It might be very convenient to write an R script `deploy/deploy_shinyapps.R` (build-ignored via `usethis::use_build_ignore("deploy")`) defining the deployment commands:
-```{r}
-rsconnect::setAccountInfo(
-  Sys.getenv("SHINYAPPS_ACCOUNT"),
-  Sys.getenv("SHINYAPPS_TOKEN"),
-  Sys.getenv("SHINYAPPS_SECRET")
-)
-rsconnect::deployApp(
-  appName = "ShinyCICD",
-  # exclude hidden files and renv directory
-  appFiles = setdiff(list.files(), "renv")
-)
+It is in fact more convenient to write an R script, saved e.g. as `deploy/deploy-shinyapps.R` (build-ignored via `usethis::use_build_ignore("deploy")`) defining the deployment commands:
+```{r read-deploy-script, eval = TRUE, echo = FALSE}
+knitr::read_chunk("shiny-ci-cd/deploy/deploy-shinyapps.R", labels = "deploy-shinyapps")
+```
+```{r deploy-shinyapps}
 ```
 and then simply execute it as `deploy` `script` above:
-```
+```yml
 deploy:
   provider: script
-  skip_cleanup: true # necessary to keep the renv project library
+  skip_cleanup: true # strictly necessary only for the renv case
   script: Rscript deploy/deploy_shinyapps.R
   on:
     branch: master
@@ -114,7 +110,7 @@ deploy:
 
 ### Putting it all together
 
-The final `yml` file would look like:
+The final `.travis.yml` file (for the non-renv case) would look like
 
 ```yaml
 # R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
@@ -124,7 +120,6 @@ cache: packages
 
 deploy:
   provider: script
-  skip_cleanup: true # necessary to keep the renv project library
   script: Rscript deploy/deploy_shinyapps.R
   on:
     branch: master
@@ -168,3 +163,4 @@ In order to use the GitHub action workflow above, or its renv-based variant, you
 ```{r}
 usethis::use_github_action("https://tinyurl.com/mirai-techguide/shiny-ci-cd/actions/ci-cd.yml") # or ci-cd-renv.yml
 usethis::use_github_actions_badge("CI-CD")
+```
