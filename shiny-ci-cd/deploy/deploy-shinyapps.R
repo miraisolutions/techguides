@@ -1,3 +1,5 @@
+# deploy/deploy-shinyapps.R
+# usethis::use_build_ignore("deploy")
 rsconnect::setAccountInfo(
   Sys.getenv("SHINYAPPS_ACCOUNT"),
   Sys.getenv("SHINYAPPS_TOKEN"),
@@ -5,6 +7,6 @@ rsconnect::setAccountInfo(
 )
 rsconnect::deployApp(
   appName = "ShinyCICD",
-  # exclude hidden files and renv directory
+  # exclude hidden files and renv directory (if present)
   appFiles = setdiff(list.files(), "renv")
 )

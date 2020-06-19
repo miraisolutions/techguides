@@ -156,6 +156,10 @@ A workflow should have an identifying `name` and an `on` section indicating upon
 
 - Deploy to shinyapps.io, similar to the Travis CI case
   - In this case, environment variables `SHINYAPPS_ACCOUNT`, `SHINYAPPS_TOKEN` and `SHINYAPPS_SECRET`, defining credentials for [shinyapps.io](https://www.shinyapps.io/)), are specified / accessible as GitHub [secrets](https://help.github.com/en/actions/configuring-and-managing-workflows/using-variables-and-secrets-in-a-workflow).
+  - An R script e.g. `deploy/deploy-shinyapps.R` (build-ignored via `usethis::use_build_ignore("deploy")`) defines the deployment commands based on the environment variables:
+  ```{r deploy-shinyapps}
+  ```
+
 
 ### Workflow file
 
@@ -177,10 +181,11 @@ As visible from the run logs, all the CI/CD pipeline steps are performed subsequ
 In order to use the GitHub action workflow above, or its renv-based variant, you can simply:
 ```{r}
 usethis::use_github_action(
-  "https://mirai-solutions.ch/techguides/shiny-ci-cd/actions/ci-cd.yml"
-# "https://mirai-solutions.ch/techguides/shiny-ci-cd/actions/ci-cd-renv.yml"
-# "https://mirai-solutions.ch/techguides/shiny-ci-cd/actions/ci.yml"
-# "https://mirai-solutions.ch/techguides/shiny-ci-cd/actions/ci-renv.yml"
+  url = 
+    "https://mirai-solutions.ch/techguides/shiny-ci-cd/actions/ci-cd.yml"
+  # "https://mirai-solutions.ch/techguides/shiny-ci-cd/actions/ci-cd-renv.yml"
+  # "https://mirai-solutions.ch/techguides/shiny-ci-cd/actions/ci.yml"
+  # "https://mirai-solutions.ch/techguides/shiny-ci-cd/actions/ci-renv.yml"
 )
 usethis::use_github_actions_badge("CI-CD") # or "CI"
 ```
