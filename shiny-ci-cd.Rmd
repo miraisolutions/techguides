@@ -102,7 +102,7 @@ and then simply execute it as `deploy` `script`:
 deploy:
   provider: script
   skip_cleanup: true # strictly necessary only for the renv case
-  script: Rscript deploy/deploy_shinyapps.R
+  script: Rscript deploy/deploy-shinyapps.R
   on:
     branch: master
 ```
@@ -120,7 +120,7 @@ cache: packages
 
 deploy:
   provider: script
-  script: Rscript deploy/deploy_shinyapps.R
+  script: Rscript deploy/deploy-shinyapps.R
   on:
     branch: master
 ```
