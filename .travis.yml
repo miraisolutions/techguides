@@ -12,7 +12,7 @@ env:
 
 script:
 - Rscript -e "bookdown::render_book('index.Rmd', 'bookdown::gitbook')"
-- htmlproofer _book
+- htmlproofer --empty-alt-ignore _book
 
 deploy:
   provider: pages
