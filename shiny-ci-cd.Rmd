@@ -141,166 +141,30 @@ As visible from the run logs, all the CI/CD pipeline steps are performed, despit
 [Workflows](https://help.github.com/en/actions/configuring-and-managing-workflows/configuring-a-workflow) use `YAML` syntax and should be stored in the `.github/workflows` directory in the root of the repository.
 Workflows are constituted of jobs and each job is a set of steps to perform individual tasks, e.g. commands or actions.
 
-A workflow should have an identifying `name` and an `on` section indicating upon which event the workflow should be triggered. It should include at least one job and each job will have a set of steps fully specifying what to execute. Such steps can be a (predefined) action or a script, however, for the time being, GitHub Actions does not support a hierarchical, aggregated structure of actions. Being fully customizable, it is necessary to fully specify each step in the CI/CD pipeline explicitly.
+A workflow should have an identifying `name` and an `on` section indicating upon which events the workflow should be triggered. It should include at least one job and each job will have a set of steps fully specifying what to execute. Such steps can be a (predefined) action or a script, however, for the time being, GitHub Actions does not support a hierarchical, aggregated structure of actions. Being fully customizable, it is necessary to fully specify each step in the CI/CD pipeline explicitly.
 
-### Action to checkout an R package
+- Checkout the source package from the repo, using `actions/checkout` provided by GitHub.
+- Setup R using action [`r-lib/actions/setup-r`](https://github.com/r-lib/actions#readme)
+- Query and cache R package dependencies using `remotes::dev_package_deps()` and the `actions/cache` predefined action.
+- Install system dependencies using package `sysreqs::sysreq_commands()` (for the `ubuntu` runner used to run the action)
+- Install R package dependencies using `remotes::Install_deps()`
+- Check the package via using `rcmdcheck::rcmdcheck()`
+- Deploy to shinyapps.io, similar to the Travis CI case
+  - In this case, environment variables `SHINYAPPS_ACCOUNT`, `SHINYAPPS_TOKEN` and `SHINYAPPS_SECRET`, defining credentials for [shinyapps.io](https://www.shinyapps.io/)), are specified / accessible as GitHub [secrets](https://help.github.com/en/actions/configuring-and-managing-workflows/using-variables-and-secrets-in-a-workflow).
 
-In this example the job and the workflow are both called `CI-CD` and triggered by push commands and pull requests. It uses the predefined and built in action `checkout@v2` to check out the repository.
+The corresponding `steps` are defined the workflow's `.yml` file as follows
 
-TODO: finalize the YAML
-```yaml
-# Check on push and pull requests to master
-on: [push, pull_request]
-
-# Name of the workflow
-name: CI-CD
-
-jobs:
-  CI-CD:
-    runs-on: ubuntu-latest
-    steps:
-
-      - uses: actions/checkout@v2
-
-      - uses: r-lib/actions/setup-r@master
+```{r read-ci-cd.yml, eval = TRUE, echo = FALSE}
+knitr::read_chunk("shiny-ci-cd/actions/ci-cd.yml", labels = "ci-cd.yml")
 ```
-
-### Steps to install the R package
-
-To install an R package we should first take care of its dependencies. This means determining them and anabling caching to speed up future builds.
-
-```yaml
-# Query and cache R package dependencies
-      - name: Query dependencies
-        run: |
-          install.packages("remotes")
-          saveRDS(remotes::dev_package_deps(dependencies = TRUE), "depends.Rds", version = 2)
-        shell: Rscript {0}
-      - name: Cache R packages
-        uses: actions/cache@v1
-        with:
-          path: ${{ env.R_LIBS_USER }}
-          key: ${{ runner.os }}-r-${{ hashFiles('depends.Rds') }}
-          restore-keys: ${{ runner.os }}-r-
-```
-
-Then the package can be installed
-
-```yaml
-      - name: Install dependencies
-        run: |
-          remotes::install_deps(dependencies = TRUE)
-        shell: Rscript {0}
-```
-
-### Step to perform automatic checks
-
-This step should occur after checking out and installing the R package. It explicitely requests to run `rcmdcheck::rcmdcheck`, therefore we should make sure that the package is available.
-
-```yaml
-      - name: Install rcmdcheck
-        run: |
-          remotes::install_cran(c("rcmdcheck"))
-        shell: Rscript {0}
-
-      - name: Check package
-        run: rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "warning", check_dir = "check")
-        shell: Rscript {0}
-```
-
-### Automatic deployment
-
-Adding the deployment is another step in a `CI-CD` job. In the following example it is shown how to trigger a deployment to [shinyapps.io](https://www.shinyapps.io/)). Notice that it requires the package `rsconnect` to be available, and the easiest is to make it available as `Suggests` dependency in the package `DESCRIPTION` file.
-
-```yaml
-# Install rsconnect necessary for deployment
-      - name: Install dependencies
-        run: |
-          remotes::install_cran(c("rsconnect"))
-        shell: Rscript {0}
-        
-      - name: Deploy to shinyapps.io
-        if: github.ref == 'refs/heads/master'
-        env:
-          SHINYAPPS_ACCOUNT: ${{ secrets.SHINYAPPS_ACCOUNT }}
-          SHINYAPPS_TOKEN: ${{ secrets.SHINYAPPS_TOKEN }}
-          SHINYAPPS_SECRET: ${{ secrets.SHINYAPPS_SECRET }}
-        run: |
-          account_info <- lapply(paste0("SHINYAPPS_", c("ACCOUNT", "TOKEN", "SECRET")), Sys.getenv)
-          do.call(rsconnect::setAccountInfo, account_info)
-          rsconnect::deployApp(appName = "ShinyCICD")
-        shell: Rscript {0}
-```
-
-Environment variables `SHINYAPPS_ACCOUNT`, `SHINYAPPS_TOKEN` and `SHINYAPPS_SECRET` store credentials for [shinyapps.io](https://www.shinyapps.io/)) and accessible to GitHub Actions as GitHub [secrets](https://help.github.com/en/actions/configuring-and-managing-workflows/using-variables-and-secrets-in-a-workflow).
-
-### Putting it all together
-
-The final `yml` file would look like:
-
-```yaml
-# Check on push and pull requests to master
-on: [push, pull_request]
-
-# Name of the workflow
-name: CI-CD
-
-jobs:
-  CI-CD:
-    runs-on: ubuntu-latest
-    steps:
-
-      - uses: actions/checkout@v2
-
-      - uses: r-lib/actions/setup-r@master
-
-# Query and cache R package dependencies
-      - name: Query dependencies
-        run: |
-          install.packages("remotes")
-          saveRDS(remotes::dev_package_deps(dependencies = TRUE), "depends.Rds", version = 2)
-        shell: Rscript {0}
-      - name: Cache R packages
-        uses: actions/cache@v1
-        with:
-          path: ${{ env.R_LIBS_USER }}
-          key: ${{ runner.os }}-r-${{ hashFiles('depends.Rds') }}
-          restore-keys: ${{ runner.os }}-r-
-
-      - name: Install system dependencies
-        env:
-          RHUB_PLATFORM: linux-x86_64-ubuntu-gcc
-        run: |
-          Rscript -e "remotes::install_github('r-hub/sysreqs')"
-          sysreqs=$(Rscript -e "cat(sysreqs::sysreq_commands('DESCRIPTION'))")
-          sudo -s eval "$sysreqs"
-          # rsconnect dependencies
-          sudo apt-get update && sudo apt-get install -y --no-install-recommends \
-            libxml2-dev libcurl4-openssl-dev
-# Install rsconnect necessary for deployment
-      - name: Install dependencies
-        run: |
-          remotes::install_deps(dependencies = TRUE)
-          remotes::install_cran(c("rcmdcheck", "rsconnect"))
-        shell: Rscript {0}
-
-      - name: Check package
-        run: rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "warning", check_dir = "check")
-        shell: Rscript {0}
-
-      - name: Deploy to shinyapps.io
-        if: github.ref == 'refs/heads/master'
-        env:
-          SHINYAPPS_ACCOUNT: ${{ secrets.SHINYAPPS_ACCOUNT }}
-          SHINYAPPS_TOKEN: ${{ secrets.SHINYAPPS_TOKEN }}
-          SHINYAPPS_SECRET: ${{ secrets.SHINYAPPS_SECRET }}
-        run: |
-          account_info <- lapply(paste0("SHINYAPPS_", c("ACCOUNT", "TOKEN", "SECRET")), Sys.getenv)
-          do.call(rsconnect::setAccountInfo, account_info)
-          rsconnect::deployApp(appName = "ShinyCICD")
-        shell: Rscript {0}
+```{yml ci-cd.yml}
 ```
 
 As visible from the run logs, all the CI/CD pipeline steps are performed subsequently, and are identifiable by the `name` field.
 
 ![](shiny-ci-cd/img/ShinyCICD_githubactions1.png)
+
+In order to use the GitHub action workflow above, or its renv-based variant, you can simply:
+```{r}
+usethis::use_github_action("https://tinyurl.com/mirai-techguide/shiny-ci-cd/actions/ci-cd.yml") # or ci-cd-renv.yml
+usethis::use_github_actions_badge("CI-CD")
