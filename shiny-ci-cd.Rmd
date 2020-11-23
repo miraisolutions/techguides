@@ -6,7 +6,7 @@ knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, eval = FALSE)
 
 It is good practice to integrate and develop an R Shiny app as an R package, to take full advantage of all the integrated features established for R packages (e.g., documentation, package namespaces, automated testing, `R CMD check`, etc.). A typical development workflow to package a Shiny app is provided by the [`golem` package](https://cran.r-project.org/web/packages/golem/index.html). Furthermore, version control systems such as Git are a great asset for keeping track an manage changes, especially in a collaborative setup.
 
-The development od packaged Shiny app under version control can easily enable and take advantage of:
+The development of packaged Shiny app under version control can easily enable and take advantage of:
 
 - Continuous Integration (CI) pipelines to automate checks and ensure higher code quality and robustness;
 - Continuous Deployment (CD) pipelines to automate the process of deployment to a _productive_ environment.
