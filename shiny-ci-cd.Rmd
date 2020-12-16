@@ -1,4 +1,4 @@
-# CI/CD pypelines for automatic deployment of a R Shiny web app
+# CI/CD pipelines for automatic deployment of a R Shiny web app
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, eval = FALSE)
