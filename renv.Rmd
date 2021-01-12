@@ -93,5 +93,5 @@ It is possible to restore the versions as listed in the `renv.lock` file.
 
 If you would like to remove the `renv` setup from a project:
 
-- run `renv::deactivate()` to fall back ona `renv`-free setup;
+- run `renv::deactivate()` to fall back on a `renv`-free setup;
 - delete `renv.lock` and the `renv` folder for clarity.
