@@ -7,7 +7,7 @@ For production readiness - and project safety - it is important to control the d
 
 In a `renv`-project (and a new R session starts), `renv` detects the project dependencies and whether they are out of sync, ensuring the same virtual environment applies all the time the project is opened.
 
-This approach ensures that the set of dependencies is collaboratively shared and maintained. Moreover, it can be used to align the development environment to the production stage.
+This approach ensures that the set of dependencies is collaboratively shared and maintained. Moreover, it can be used to align the development environment to the production stage. Managing the dependencies the way up to production improves reproducibility, a key requirement in enterprise.
 
 Finally, as the control is at project level, it is possible to have different virtual environments (for example different packages version) for different projects, while keeping the maintenance of the versioned package library efficient through caching.
 
