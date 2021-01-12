@@ -2,6 +2,8 @@
 
 language: R
 cache: packages
+# Same pandoc version as RStudio (as of Nov 2020)
+pandoc_version: 2.7.3
 
 # Install the Ruby gem html-proofer
 before_install:
