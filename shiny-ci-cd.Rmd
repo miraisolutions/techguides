@@ -154,7 +154,7 @@ A workflow should have an identifying `name` and an `on` section indicating upon
 
 #### Deployment
 
-- Deploy to shinyapps.io, similar to the Travis CI case
+- Deploy to shinyapps.io, similar to the Travis CI approach:
   - In this case, environment variables `SHINYAPPS_ACCOUNT`, `SHINYAPPS_TOKEN` and `SHINYAPPS_SECRET`, defining credentials for [shinyapps.io](https://www.shinyapps.io/)), are specified / accessible as GitHub [secrets](https://docs.github.com/en/free-pro-team@latest/actions/reference#authentication-and-secrets).
   - An R script e.g. `deploy/deploy-shinyapps.R` (build-ignored via `usethis::use_build_ignore("deploy")`) defines the deployment commands based on the environment variables:
   ```{r deploy-shinyapps}
