@@ -434,6 +434,7 @@ if (existsName(wbcopy, c("Review"))) {
              cellstyle = csDate)
   # Enlarge column date
   setColumnWidth(wbcopy, sheet = "Review", column = review_pos[2,2], width = 4000 )
+ 
   # Save workbook - this actually writes the file
   saveWorkbook(wbcopy)
 }
