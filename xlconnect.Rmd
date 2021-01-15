@@ -196,7 +196,7 @@ writeWorksheetToFile("xlconnect-demo/XLCDemo-TplCopy.xlsx",
 
 # Get some data from the previous file
 # Read data from a specific named region of a workbook
-if(exists("xlconnect-demo/XLConnectDemo.xlsx")) {
+if (exists("xlconnect-demo/XLConnectDemo.xlsx")) {
   dataToReuse <- readNamedRegionFromFile("xlconnect-demo/XLConnectDemo.xlsx", 
                                          name = "SwissFrancName", 
                                          header = TRUE)
@@ -217,7 +217,7 @@ csTableHeader <- getCellStyle(wbcopy, "TableHeader")
 csinp <- getCellStyle(wbcopy, "Inp")
 cscalc <- getCellStyle(wbcopy, "Calc")
 
-# Apply formatting - This has to be in the same file
+# Apply formatting - this has to be in the same file
 setCellStyle(wbcopy, 
              formula = "Input!$B$2:$B$2", 
              cellstyle = cstitle1)
@@ -230,7 +230,7 @@ setCellStyle(wbcopy,
 setCellStyle(wbcopy, 
              formula = "Input!$B$5:$B$425", 
              cellstyle = cscalc)
-if(!existsCellStyle(wbcopy, "csDate")){
+if (!existsCellStyle(wbcopy, "csDate")) {
   csDate <- createCellStyle(wbcopy, name = "DateFormat")
   setDataFormat(csDate, format = "yyyy-mm-dd")
 }
@@ -513,6 +513,7 @@ wbinput <- loadWorkbook("xlconnect-demo/XLCDemo-Input.xlsx")
 if (existsSheet(wbinput, "clonedSheet")) {
   # Merge cells - to unmerge, use the similar function 'unmergeCells()'
   mergeCells(wbinput, sheet = "clonedsheet", reference = "B2:C2")
+  # Save workbook - this actually writes the file
   saveWorkbook(wbinput)
 }
 ```
