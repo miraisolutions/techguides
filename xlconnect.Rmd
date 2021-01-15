@@ -506,6 +506,7 @@ wbinput <- loadWorkbook("xlconnect-demo/XLCDemo-Input.xlsx")
 if (existsSheet(wbinput, "clonedSheet")) {
   # Merge cells - to unmerge, use the similar function 'unmergeCells()'
   mergeCells(wbinput, sheet = "clonedsheet", reference = "B2:C2")
+  # Save workbook - this actually writes the file
   saveWorkbook(wbinput)
 }
 ```
