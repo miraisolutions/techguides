@@ -64,7 +64,7 @@ writeWorksheetToFile("xlconnect-demo/XLConnectDemo.xlsx",
                      startRow = 2, startCol = 2)
 ```
 
-The data frame can also be written in a named region using the single call `writeNamedRegionToFile()` function.
+The data frame can also be written in a named region using the single call `writeNamedRegionToFile()` function. This will create the sheet (if necessary) and named region name based on the formula argument and call writeNamedRegion instead of writeWorksheet.
 ```{r , echo = TRUE, eval = FALSE}
 # Write and save a data frame into a specific named region of a workbook
 writeNamedRegionToFile("xlconnect-demo/XLConnectDemo.xlsx", 
