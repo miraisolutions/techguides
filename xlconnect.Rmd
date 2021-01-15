@@ -446,6 +446,7 @@ Delete sheets
 file.copy("xlconnect-demo/XLCDemo-TplCopy.xlsx", 
           "xlconnect-demo/XLCDemo-Input.xlsx", 
           overwrite = FALSE)
+
 # Load new copy
 wbinput <- loadWorkbook("xlconnect-demo/XLCDemo-Input.xlsx")
 
