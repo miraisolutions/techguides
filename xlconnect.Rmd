@@ -417,6 +417,7 @@ if (existsName(wbcopy, c("Review"))) {
   review_pos <- getReferenceCoordinatesForName(wbcopy, "Review")
   colStart_pos <- LETTERS[review_pos[1,2]]
   colEnd_pos <- LETTERS[review_pos[2,2]]
+  
   # Apply cell formatting
   setCellStyle(wbcopy, 
              formula = paste0("Review!", colStart_pos, "$", review_pos[1,1] + 1, ":$", colEnd_pos, review_pos[2,1]),
