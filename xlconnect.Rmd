@@ -480,7 +480,7 @@ Clear a sheet can be useful if data sets in a worksheet need to be replaced in a
 ```{r , echo = TRUE, eval = FALSE}
 # Load new copy
 wbinput <- loadWorkbook("xlconnect-demo/XLCDemo-Input.xlsx") 
-if(existsSheet(wbinput, "clonedSheet")){
+if (existsSheet(wbinput, "clonedSheet")) {
   # clear sheet
   clearSheet(wbinput, sheet = "clonedSheet")
   saveWorkbook(wbinput)
