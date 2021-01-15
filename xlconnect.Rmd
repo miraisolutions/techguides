@@ -390,6 +390,7 @@ if (!isSheetVisible(wbcopy, c("Review"))) {
   # Unhide sheet
   unhideSheet(wbcopy, "Review")
 }
+
 # Save workbook - this actually writes the file
 saveWorkbook(wbcopy)
 ```
