@@ -317,7 +317,7 @@ Let's perform some usual tasks on a template and use few more interesting XLConn
 
 - clone a sheet
 
-- add hyperlink
+- add a hyperlink
 
 ### Recalculate workbook
 Reading....
