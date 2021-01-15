@@ -15,7 +15,7 @@ XLConnect's main features:
 
 - add graphs
 
-- specify/ use cell styles, column width & row height
+- specify / apply cell styles, column width & row height
 
 - define behavior when error cells are encountered, formula recalculation when workbooks are opened
 
