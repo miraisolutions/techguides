@@ -492,7 +492,7 @@ if (existsSheet(wbinput, "clonedSheet")) {
 }
 ```
 
-### Merge/ Unmerge cells
+### Merge / Unmerge cells
 Merge cells
 ```{r , echo = TRUE, eval = FALSE}
 # Load new copy
