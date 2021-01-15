@@ -1,4 +1,4 @@
-# Control Microsoft Excel interface with `XLConnect`
+#  `XLConnect`: easy and controlled interface to Microsoft Excel
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, eval = FALSE)
