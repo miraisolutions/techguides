@@ -481,7 +481,7 @@ Clear a sheet can be useful if data sets in a worksheet need to be replaced in a
 # Load new copy
 wbinput <- loadWorkbook("xlconnect-demo/XLCDemo-Input.xlsx") 
 if (existsSheet(wbinput, "clonedSheet")) {
-  # clear sheet
+  # Clear sheet
   clearSheet(wbinput, sheet = "clonedSheet")
   saveWorkbook(wbinput)
 }
