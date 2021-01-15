@@ -478,7 +478,7 @@ Write a hyperlink
 ```{r , echo = TRUE, eval = FALSE}
 # Load new copy
 wbinput <- loadWorkbook("xlconnect-demo/XLCDemo-Input.xlsx") 
-if(existsSheet(wbinput, "clonedSheet")){
+if (existsSheet(wbinput, "clonedSheet")) {
   # Add hyperlink
   writeWorksheet(wbinput, data.frame(Company = "Mirai Solution"), sheet = "clonedSheet", startRow = 1, startCol = 2)
   mirai_web <- "https://mirai-solutions.ch/"
