@@ -307,7 +307,7 @@ Let's perform some usual tasks on a template and use few more interesting XLConn
 
 - append a named region
 
-- find out the coordinates of a named region in a sheet
+- get the coordinates of a named region in a sheet
 
 - additional formatting like setting the column width
 
