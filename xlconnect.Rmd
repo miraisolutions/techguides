@@ -428,6 +428,8 @@ unhideSheet(wbinput, "Input")
 # Remove all sheets of the copy but "input"
 wbinput_allsheets <- getSheets(wbinput)
 removeSheet(wbinput, wbinput_allsheets[!(wbinput_allsheets %in% c("Input"))])
+
+# Save workbook - this actually writes the file
 saveWorkbook(wbinput)
 ```
 
