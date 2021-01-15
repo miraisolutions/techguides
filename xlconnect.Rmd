@@ -466,6 +466,7 @@ Delete Named Regions
 ```{r , echo = TRUE, eval = FALSE}
 # Load new copy
 wbinput <- loadWorkbook("xlconnect-demo/XLCDemo-Input.xlsx")
+
 # Remove all named regions of the copy but "SwissFrancName"
 wbinput_allnr <- getDefinedNames(wbinput)
 removeName(wbinput, wbinput_allnr[!(wbinput_allnr %in% c("SwissFrancName"))])
