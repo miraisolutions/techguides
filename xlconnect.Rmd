@@ -303,7 +303,7 @@ Let's perform some usual tasks on a template and use few more interesting XLConn
 
 - check if a named region exists
 
-- hide or unhide  sheets
+- hide or unhide sheets
 
 - append a named region
 
