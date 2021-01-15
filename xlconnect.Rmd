@@ -273,6 +273,7 @@ p <- ggplot(gcurr, aes(Date, Value, colour = Currency)) +
   labs(title = paste0("CHF vs ", paste(currencies, collapse = ", ")), x = "") + 
   theme(axis.title.y = element_text(size = 10, angle = 90, vjust = 0.3))
 print(p)
+
 # Save plot to as a png
 dev.copy(png, "xlconnect-demo/swissfrancplot.png")
 dev.off()
