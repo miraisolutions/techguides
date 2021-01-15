@@ -272,6 +272,7 @@ addImage(wb,
          name = "graph", 
          originalSize = TRUE)
 
+# Save workbook - this actually writes the file
 saveWorkbook(wb)
 ```
 
