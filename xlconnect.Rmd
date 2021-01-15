@@ -122,7 +122,7 @@ allnr <- getDefinedNames(wb)
 Now let's try out some formatting functionality.
 
 ```{r , echo = TRUE, eval = FALSE}
-
+# If previous chunks have not been run, the file may not exist
 if(!exists("xlconnect-demo/XLConnectDemo.xlsx")) {
     # Write and save a data frame into a specific named region of a workbook
   writeNamedRegionToFile("xlconnect-demo/XLConnectDemo.xlsx", 
@@ -247,6 +247,13 @@ saveWorkbook(wbcopy)
 
 First, create an image out of a graph
 ```{r , echo = TRUE, eval = FALSE}
+# If previous chunks have not been run, the file may not exist
+if(!exists("xlconnect-demo/XLConnectDemo.xlsx")) {
+    # Write and save a data frame into a specific named region of a workbook
+  writeNamedRegionToFile("xlconnect-demo/XLConnectDemo.xlsx", 
+                       data = swissfranc, name = "SwissFrancName", 
+                       formula = "NamedRegionEx!$B$2")
+} 
 # Load the demo file
 wb <- loadWorkbook("xlconnect-demo/XLConnectDemo.xlsx", create = TRUE)
 
@@ -267,7 +274,7 @@ p <- ggplot(gcurr, aes(Date, Value, colour = Currency)) +
   theme(axis.title.y = element_text(size = 10, angle = 90, vjust = 0.3))
 print(p)
 # Save plot to as a png
-dev.copy(png, "swissfrancplot.png")
+dev.copy(png, "xlconnect-demo/swissfrancplot.png")
 dev.off()
 ```
 
