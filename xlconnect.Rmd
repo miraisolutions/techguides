@@ -482,6 +482,7 @@ if(existsSheet(wbinput, "clonedSheet")){
                row = 2, col = 2, 
                type = XLC$HYPERLINK.URL, 
                address = mirai_web)
+  # Save workbook - this actually writes the file
   saveWorkbook(wbinput)
 }
 ```
