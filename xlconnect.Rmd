@@ -297,7 +297,7 @@ saveWorkbook(wb)
 
 ## Other functionalities 
 
-Let's perform some usual tasks on a template and use few more interesting XLConnect functionality like:
+Let's perform some usual tasks on a template and use few more interesting XLConnect functionalities like:
 
 - ensure values get updated when opening a workbook
 
