@@ -17,7 +17,9 @@ XLConnect's main features:
 
 - specify / apply cell styles, column width & row height
 
-- define behavior when error cells are encountered, formula recalculation when workbooks are opened
+- define behavior when error cells are encountered
+
+- force formula recalculation when workbooks are opened
 
 - others: merge/unmerge cells, set auto-filters etc.
 
