@@ -153,7 +153,6 @@ setCellStyle(wb, sheet = "NamedRegionEx",
 setAutoFilter(wb, sheet = "NamedRegionEx", 
               reference = aref("B2", dim(swissfranc)))
 
-
 # Create a custom format for the date column
 csDate <- createCellStyle(wb, name = "StyleDate")
 setDataFormat(csDate, format = "yyyy-mm-dd")
