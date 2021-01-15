@@ -33,7 +33,7 @@ XLConnect is cross-platform and runs in all operating systems that support Java.
 # Install XLConnect
 install.packages("XLConnect")
 
-# Load XLConnect and get ready to use XLConnect package
+# Load the XLConnect package and get ready to use it
 require(XLConnect)
 ```
 
