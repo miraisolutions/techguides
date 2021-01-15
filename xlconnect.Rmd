@@ -21,7 +21,9 @@ XLConnect's main features:
 
 - force formula recalculation when workbooks are opened
 
-- others: merge/unmerge cells, set auto-filters etc.
+- others: merge / unmerge cells, set auto-filters
+
+- etc.
 
 ## Installation
 
