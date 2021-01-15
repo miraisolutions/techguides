@@ -408,6 +408,7 @@ if (existsName(wbcopy, c("Review"))) {
   if (!all(colnames(newreview_df) == colnames(readNamedRegion(wbcopy, "Review")))) {
     stop("table to populate does not match expected header, column names and order must match")
   }
+  
   # Append existing named region
   appendNamedRegion(wbcopy, newreview_df, name = "Review")
   csinp <- getCellStyle(wbcopy, "Inp")
