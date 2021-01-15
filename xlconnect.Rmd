@@ -264,6 +264,7 @@ gcurr <- reshape(swissfranc,
                  v.names = "Value", 
                  times = currencies, 
                  timevar = "Currency")
+
 # Use ggplot2 to create a graph
 require(ggplot2)
 p <- ggplot(gcurr, aes(Date, Value, colour = Currency)) +
