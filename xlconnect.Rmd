@@ -485,6 +485,7 @@ wbinput <- loadWorkbook("xlconnect-demo/XLCDemo-Input.xlsx")
 if (existsSheet(wbinput, "Input")) {
   # Clone sheet
   cloneSheet(wbinput, sheet = "Input", name = "clonedSheet")
+  # Save workbook - this actually writes the file
   saveWorkbook(wbinput)
 }
 ```
