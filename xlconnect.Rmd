@@ -283,6 +283,7 @@ Then, add the image to the output file
 ```{r , echo = TRUE, eval = FALSE}
 # Define the location in the output file
 createName(wb, name = "graph", formula = "NamedRegionEx!$H$2")
+
 # Add image to the file
 addImage(wb, 
          filename = "xlconnect-demo/swissfrancplot.png", 
