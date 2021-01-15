@@ -217,7 +217,7 @@ csTableHeader <- getCellStyle(wbcopy, "TableHeader")
 csinp <- getCellStyle(wbcopy, "Inp")
 cscalc <- getCellStyle(wbcopy, "Calc")
 
-# Apply formatting - This has to be in the same file
+# Apply formatting - this has to be in the same file
 setCellStyle(wbcopy, 
              formula = "Input!$B$2:$B$2", 
              cellstyle = cstitle1)
