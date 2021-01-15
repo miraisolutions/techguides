@@ -422,7 +422,6 @@ if (existsName(wbcopy, c("Review"))) {
   setCellStyle(wbcopy, 
              formula = paste0("Review!", colStart_pos, "$", review_pos[1,1] + 1, ":$", colEnd_pos, review_pos[2,1]),
              cellstyle = csinp)
-  
   if (!existsCellStyle(wbcopy, "Format-Date")) {
     # Create a custom format for the date column
     csDate <- createCellStyle(wbcopy, name = "Format-Date")
