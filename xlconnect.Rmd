@@ -11,7 +11,7 @@ XLConnect's main features:
 
 - read & write Excel worksheets & named ranges
 
-- create, remove, rename, clone & hide/ unhide worksheets
+- create, remove, rename, clone & hide / unhide worksheets
 
 - add graphs
 
