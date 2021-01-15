@@ -173,6 +173,8 @@ file.copy("xlconnect-demo/XLConnectDemo-Tpl.xlsx",
           "xlconnect-demo/XLCDemo-TplCopy.xlsx", 
           overwrite = FALSE)
 wbcopy <- loadWorkbook("xlconnect-demo/XLCDemo-TplCopy.xlsx")
+
+# Save workbook - this actually writes the file
 saveWorkbook(wbcopy)
 ```
 
