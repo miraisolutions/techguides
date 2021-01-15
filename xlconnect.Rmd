@@ -361,6 +361,7 @@ writeNamedRegion(wbcopy, opexp_df, "OpExpenses_out", header = FALSE)
 
 # Get numbers of sheets
 nb_sheets <- length(getSheets(wbcopy))
+
 # Force Excel to re-calculate when opening the workbook
 setForceFormulaRecalculation(wbcopy, sheet = seq(1, nb_sheets), TRUE)
 # Save workbook - this actually writes the file
