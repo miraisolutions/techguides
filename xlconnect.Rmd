@@ -295,7 +295,7 @@ saveWorkbook(wb)
 ```
 
 
-## Other functionaly 
+## Other functionalities 
 
 Let's perform some usual tasks on a template and use few more interesting XLConnect functionality like:
 
