@@ -480,6 +480,7 @@ Clone Sheet
 ```{r , echo = TRUE, eval = FALSE}
 # Load new copy
 wbinput <- loadWorkbook("xlconnect-demo/XLCDemo-Input.xlsx") 
+
 # Ensure sheet exists
 if (existsSheet(wbinput, "Input")) {
   # Clone sheet
