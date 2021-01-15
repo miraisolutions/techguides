@@ -107,7 +107,7 @@ dataFromExcel <- readNamedRegionFromFile("xlconnect-demo/XLConnectDemo.xlsx",
                                          header = TRUE)
 ```
 
-It can be useful to retrieve all the sheets of a workbook or all existing named ranges.
+It can be useful to retrieve all the sheets of a workbook or all existing named regions.
 ```{r , echo = TRUE, eval = FALSE}
 # Get all sheet names of a workbook
 allSheets <- getSheets(wb)
