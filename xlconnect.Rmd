@@ -342,6 +342,7 @@ persexp_df <- readNamedRegion(wbcopy,
 opexp_df <- readNamedRegion(wbcopy,
                           name = "OpExpenses_inp",
                           header = TRUE)
+
 # Update numbers: double sales
 inc_df$ACTUAL[inc_df$INCOME == "Net sales"] <- inc_df$ACTUAL[inc_df$INCOME == "Net sales"] * 2
 # Update numbers: add employee benefits
