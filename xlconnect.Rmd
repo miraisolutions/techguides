@@ -439,7 +439,7 @@ file.copy("xlconnect-demo/XLCDemo-TplCopy.xlsx",
 # Load new copy
 wbinput <- loadWorkbook("xlconnect-demo/XLCDemo-Input.xlsx")
 
-# Unhide sheet - if goal is to remove all sheets but "input" then has to be visible
+# Unhide sheet - if goal is to remove all sheets but "input" then it has to be visible
 unhideSheet(wbinput, "Input")
 
 # Remove all sheets of the copy but "input"
