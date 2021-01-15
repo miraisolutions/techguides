@@ -230,7 +230,7 @@ setCellStyle(wbcopy,
 setCellStyle(wbcopy, 
              formula = "Input!$B$5:$B$425", 
              cellstyle = cscalc)
-if(!existsCellStyle(wbcopy, "csDate")){
+if (!existsCellStyle(wbcopy, "csDate")) {
   csDate <- createCellStyle(wbcopy, name = "DateFormat")
   setDataFormat(csDate, format = "yyyy-mm-dd")
 }
