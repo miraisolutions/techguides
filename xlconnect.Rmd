@@ -328,6 +328,7 @@ if (!exists("xlconnect-demo/XLCDemo-TplCopy.xlsx")) {
           "xlconnect-demo/XLCDemo-TplCopy.xlsx", 
           overwrite = FALSE)
 } 
+
 # Load copy of the template
 wbcopy <- loadWorkbook("xlconnect-demo/XLCDemo-TplCopy.xlsx")
 
