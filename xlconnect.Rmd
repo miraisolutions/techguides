@@ -315,7 +315,7 @@ Let's perform some usual tasks on a template and use few more interesting XLConn
 
 - remove sheets and named region
 
-- clone sheet
+- clone a sheet
 
 - add hyperlink
 
