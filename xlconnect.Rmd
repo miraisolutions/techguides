@@ -320,7 +320,7 @@ Let's perform some usual tasks on a template and use few more interesting XLConn
 ### Recalculate workbook
 Reading....
 ```{r , echo = TRUE, eval = FALSE}
-if (!exists("xlconnect-demo/XLCDemo-TplCopy.xlsx")){
+if (!exists("xlconnect-demo/XLCDemo-TplCopy.xlsx")) {
   # Create a copy of the template
   file.copy("xlconnect-demo/XLConnectDemo-Tpl.xlsx", 
           "xlconnect-demo/XLCDemo-TplCopy.xlsx", 
