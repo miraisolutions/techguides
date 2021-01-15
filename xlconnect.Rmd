@@ -122,6 +122,13 @@ allnr <- getDefinedNames(wb)
 Now let's try out some formatting functionality.
 
 ```{r , echo = TRUE, eval = FALSE}
+
+if(!exists("xlconnect-demo/XLConnectDemo.xlsx")) {
+    # Write and save a data frame into a specific named region of a workbook
+  writeNamedRegionToFile("xlconnect-demo/XLConnectDemo.xlsx", 
+                       data = swissfranc, name = "SwissFrancName", 
+                       formula = "NamedRegionEx!$B$2")
+} 
 # Load file
 wb <- loadWorkbook("xlconnect-demo/XLConnectDemo.xlsx", create = TRUE)
 # Apply data format only - depending on the data type
