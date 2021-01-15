@@ -196,7 +196,7 @@ writeWorksheetToFile("xlconnect-demo/XLCDemo-TplCopy.xlsx",
 
 # Get some data from the previous file
 # Read data from a specific named region of a workbook
-if(exists("xlconnect-demo/XLConnectDemo.xlsx")) {
+if (exists("xlconnect-demo/XLConnectDemo.xlsx")) {
   dataToReuse <- readNamedRegionFromFile("xlconnect-demo/XLConnectDemo.xlsx", 
                                          name = "SwissFrancName", 
                                          header = TRUE)
