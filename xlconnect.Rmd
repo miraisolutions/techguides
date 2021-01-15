@@ -165,7 +165,6 @@ setCellStyle(wb, sheet = "NamedRegionEx",
 setColumnWidth(wb, sheet = "NamedRegionEx", 
                column = 2, width = 2800)
 
-
 # Save workbook - this actually writes the file
 saveWorkbook(wb)
 ```
