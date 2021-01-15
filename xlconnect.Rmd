@@ -9,7 +9,7 @@ Using the package [`XLConnect`](https://github.com/miraisolutions/xlconnect) wil
 
 XLConnect's main features:
 
-- read & write Excel worksheets & named ranges
+- read & write Excel worksheets & named regions
 
 - create, remove, rename, clone & hide / unhide worksheets
 
