@@ -131,6 +131,7 @@ if(!exists("xlconnect-demo/XLConnectDemo.xlsx")) {
 } 
 # Load file
 wb <- loadWorkbook("xlconnect-demo/XLConnectDemo.xlsx", create = TRUE)
+
 # Apply data format only - depending on the data type
 setStyleAction(wb, XLC$STYLE_ACTION.DATA_FORMAT_ONLY)
 
