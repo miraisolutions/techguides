@@ -21,17 +21,16 @@ It should contain only what is required for the entry point to be able to load t
 
 ```{r, eval = F}
 pkgload::load_all(export_all = FALSE, helpers = FALSE, attach_testthat = FALSE)
-# PKG is the name of the packaged shiny application. run_PKG_app is a function wrap around shiny::shinyApp().
+# PKG is the name of the packaged shiny application
+# run_PKG_app is a function that wraps around shiny::shinyApp()
 PKG::run_PKG_app()
 ```
 
 ```{r, eval = F}
-run_PKG_app <- function(){
-  shinyApp(
-      ui = ui,
-      server = server
+run_PKG_app <- function() {
+  shinyApp(ui = ui, server = server)
 }
-# where ui and server are two functions
+# where ui and server are both functions
 ```
 
 ### server and ui
