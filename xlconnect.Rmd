@@ -290,7 +290,7 @@ Let's perform some usual tasks on a template and use few more interesting XLConn
 
 - additional formatting, e.g. setting the column width
 
-- remove sheets and named region
+- remove sheets and named regions
 
 - clone a sheet
 
