@@ -256,7 +256,7 @@ dev.copy(png, "xlconnect-demo/swissfrancplot.png")
 dev.off()
 ```
 
-Then, add the image to the output file
+Then, add the image to the output file.
 ```{r , echo = TRUE, eval = FALSE}
 # Define the location in the output file
 createName(wb, name = "graph", formula = "NamedRegionEx!$H$2")
