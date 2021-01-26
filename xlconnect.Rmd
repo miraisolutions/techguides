@@ -418,7 +418,7 @@ if (existsName(wbcopy, c("Review"))) {
 ```
 
 ### Remove sheets
-Delete sheets
+Delete sheets.
 ```{r , echo = TRUE, eval = FALSE}
 # Create a new copy
 file.copy("xlconnect-demo/XLCDemo-TplCopy.xlsx", 
