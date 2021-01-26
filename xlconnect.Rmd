@@ -500,6 +500,7 @@ if (existsSheet(wbinput, "clonedSheet")) {
 ```
 
 ### Merge / Unmerge cells
+Merge or unmerge cells.
 ```{r , echo = TRUE, eval = FALSE}
 # Load new copy
 wbinput <- loadWorkbook("xlconnect-demo/XLCDemo-Input.xlsx") 
