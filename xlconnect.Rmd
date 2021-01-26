@@ -360,7 +360,8 @@ hideSheet(wbcopy, sheetsToHide, veryHidden = TRUE)
 saveWorkbook(wbcopy)
 ```
 
-### Sheet visibility check and unhide sheets 
+### Sheet visibility check and unhide sheets
+Check if a given sheet is visible and unhide it if it is.
 ```{r , echo = TRUE, eval = FALSE}
 # Check if a sheet is visible and unhide it
 if (!isSheetVisible(wbcopy, c("Review"))) {
