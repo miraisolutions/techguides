@@ -513,7 +513,7 @@ if (existsSheet(wbinput, "clonedSheet")) {
 ```
 
 ### Clean up
-Clean up and remove the demo files
+Clean up and remove the demo files.
 ```{r , echo = TRUE, eval = FALSE}
 # Remove file
 file.remove("xlconnect-demo/XLConnectDemo.xlsx")
