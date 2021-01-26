@@ -453,7 +453,7 @@ saveWorkbook(wbinput)
 ```
 
 ### Clone sheets
-Clone Sheet
+Clone a sheet.
 ```{r , echo = TRUE, eval = FALSE}
 # Load new copy
 wbinput <- loadWorkbook("xlconnect-demo/XLCDemo-Input.xlsx") 
