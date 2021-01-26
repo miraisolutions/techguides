@@ -481,7 +481,7 @@ if (existsSheet(wbinput, "clonedSheet")) {
 ```
 
 ### Add hyperlinks
-Write a hyperlink
+Write a hyperlink.
 ```{r , echo = TRUE, eval = FALSE}
 # Load new copy
 wbinput <- loadWorkbook("xlconnect-demo/XLCDemo-Input.xlsx") 
