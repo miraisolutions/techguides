@@ -439,7 +439,7 @@ saveWorkbook(wbinput)
 ```
 
 ### Remove named regions
-Delete Named Regions
+Delete Named Regions.
 ```{r , echo = TRUE, eval = FALSE}
 # Load new copy
 wbinput <- loadWorkbook("xlconnect-demo/XLCDemo-Input.xlsx")
