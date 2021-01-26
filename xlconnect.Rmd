@@ -75,9 +75,6 @@ writeNamedRegionToFile("xlconnect-demo/XLConnectDemo.xlsx",
 ### Reading from  Excel files
 
 ```{r , echo = TRUE, eval = FALSE}
-# Load Excel workbook - either .xls or .xlsx. Create if not existing.
-wb <- loadWorkbook("xlconnect-demo/XLConnectDemo.xlsx", create = TRUE)
-
 # Read data from a specific sheet of a workbook
 dataFromExcel <- readWorksheet(wb, sheet = "CHF")
 
