@@ -328,7 +328,7 @@ persexp_df$ACTUAL[persexp_df$PERSONNEL.EXPENSES == "Employee benefits"] <- 3000
 opexp_df$ACTUAL[opexp_df$OPERATING.EXPENSES == "Maintenance and repairs"] <- 2500
 ```
 
-Writing...
+Write the data into the workbook, set the "force formula recalculation" flag on it and save the file.
 ```{r , echo = TRUE, eval = FALSE}
 # Update output accordingly
 writeNamedRegion(wbcopy, Sys.Date(), "Date", header = FALSE)
