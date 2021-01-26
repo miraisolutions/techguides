@@ -347,7 +347,7 @@ saveWorkbook(wbcopy)
 ```
 
 ### Hide sheets
-Hide irrelevant sheets
+Hide irrelevant sheets.
 ```{r , echo = TRUE, eval = FALSE}
 # Hide sheets
 sheetsToHide <- c("Style", "Input")
