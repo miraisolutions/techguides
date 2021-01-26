@@ -231,7 +231,7 @@ saveWorkbook(wbcopy)
 
 ## Add a graph
 
-First, create an image out of a graph
+First, create an image out of a graph.
 ```{r , echo = TRUE, eval = FALSE}
 # Prepare object
 currencies <- names(swissfranc)[-1]
