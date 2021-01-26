@@ -233,16 +233,6 @@ saveWorkbook(wbcopy)
 
 First, create an image out of a graph
 ```{r , echo = TRUE, eval = FALSE}
-# If previous chunks have not been run, the file may not exist
-if(!exists("xlconnect-demo/XLConnectDemo.xlsx")) {
-    # Write and save a data frame into a specific named region of a workbook
-  writeNamedRegionToFile("xlconnect-demo/XLConnectDemo.xlsx", 
-                       data = swissfranc, name = "SwissFrancName", 
-                       formula = "NamedRegionEx!$B$2")
-} 
-# Load the demo file
-wb <- loadWorkbook("xlconnect-demo/XLConnectDemo.xlsx", create = TRUE)
-
 # Prepare object
 currencies <- names(swissfranc)[-1]
 gcurr <- reshape(swissfranc, 
