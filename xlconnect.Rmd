@@ -374,7 +374,7 @@ saveWorkbook(wbcopy)
 ```
 
 ### Append named region
-Check if a named region exists & append named region
+Check if a named region exists and append it if it does.
 ```{r , echo = TRUE, eval = FALSE}
 # Check if a named region exists
 if (existsName(wbcopy, c("Review"))) {
