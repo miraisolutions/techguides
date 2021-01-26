@@ -297,7 +297,7 @@ Let's perform some usual tasks on a template and use few more interesting XLConn
 - add a hyperlink
 
 ### Recalculate workbook
-Reading....
+Read the file and update some values on the R objects.
 ```{r , echo = TRUE, eval = FALSE}
 if (!exists("xlconnect-demo/XLCDemo-TplCopy.xlsx")) {
   # Create a copy of the template
