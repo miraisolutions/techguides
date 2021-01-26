@@ -122,13 +122,6 @@ allnr <- getDefinedNames(wb)
 Now let's try out some formatting functionality.
 
 ```{r , echo = TRUE, eval = FALSE}
-# If previous chunks have not been run, the file may not exist
-if(!exists("xlconnect-demo/XLConnectDemo.xlsx")) {
-    # Write and save a data frame into a specific named region of a workbook
-  writeNamedRegionToFile("xlconnect-demo/XLConnectDemo.xlsx", 
-                       data = swissfranc, name = "SwissFrancName", 
-                       formula = "NamedRegionEx!$B$2")
-} 
 # Apply data format only - depending on the data type
 setStyleAction(wb, XLC$STYLE_ACTION.DATA_FORMAT_ONLY)
 
