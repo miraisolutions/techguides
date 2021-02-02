@@ -1,4 +1,4 @@
-# CI/CD pypelines for automatic deployment of a R Shiny web app
+# CI/CD pipelines for automatic deployment of a R Shiny web app
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, eval = FALSE)
@@ -6,12 +6,12 @@ knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, eval = FALSE)
 
 It is good practice to integrate and develop an R Shiny app as an R package, to take full advantage of all the integrated features established for R packages (e.g., documentation, package namespaces, automated testing, `R CMD check`, etc.). A typical development workflow to package a Shiny app is provided by the [`golem` package](https://cran.r-project.org/web/packages/golem/index.html). Furthermore, version control systems such as Git are a great asset for keeping track an manage changes, especially in a collaborative setup.
 
-The development od packaged Shiny app under version control can easily enable and take advantage of:
+The development of a packaged Shiny app under version control can easily enable and take advantage of:
 
 - Continuous Integration (CI) pipelines to automate checks and ensure higher code quality and robustness;
 - Continuous Deployment (CD) pipelines to automate the process of deployment to a _productive_ environment.
 
-This guide is illustrates how to set up CI/CD pipelines on the popular free and open source services [Travis CI](https://travis-ci.com) and [GitHub Actions](https://github.com/features/actions) for a packaged Shiny app on GitHub repository, deployed and hosted on [shinyapps.io](https://www.shinyapps.io). [ShinyCICD](https://github.com/miraisolutions/ShinyCICD) is a minimal example of a packaged Shiny app that will be used as an example throughout the guide. You can simply [fork](https://help.github.com/en/github/getting-started-with-github/fork-a-repo) the repository and setup your specific user settings (especially for shinyapps.io) to see CI/CD pipelines in actions, or follow the steps described below to setup CI/CD pipelines for your own app.
+This guide illustrates how to set up CI/CD pipelines on the popular free and open source services [Travis CI](https://travis-ci.com) and [GitHub Actions](https://github.com/features/actions) for a packaged Shiny app on a GitHub repository, deployed and hosted on [shinyapps.io](https://www.shinyapps.io). [ShinyCICD](https://github.com/miraisolutions/ShinyCICD) is a minimal example of a packaged Shiny app that will be used as an example throughout the guide. You can simply [fork](https://docs.github.com/en/free-pro-team@latest/github/getting-started-with-github/fork-a-repo) the repository and setup your specific user settings (especially for shinyapps.io) to see CI/CD pipelines in actions, or follow the steps described below to setup CI/CD pipelines for your own app.
 
 ## Generic CI/CD pipeline
 
@@ -132,8 +132,8 @@ As visible from the run logs, all the CI/CD pipeline steps are performed, despit
 
 ## GitHub Actions
 
-[GitHub Actions](https://help.github.com/en/actions) is a service for running highly-customizable and flexible automated workflows, fully integrated with GitHub and very suitable to CI/CD pipelines.
-[Workflows](https://help.github.com/en/actions/configuring-and-managing-workflows/configuring-a-workflow) use `YAML` syntax and should be stored in the `.github/workflows` directory in the root of the repository.
+[GitHub Actions](https://docs.github.com/en/free-pro-team@latest/actions) is a service for running highly-customizable and flexible automated workflows, fully integrated with GitHub and very suitable to CI/CD pipelines.
+[Workflows](https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions) use `YAML` syntax and should be stored in the `.github/workflows` directory in the root of the repository.
 Workflows are constituted of jobs and each job is a set of steps to perform individual tasks, e.g. commands or actions.
 
 ### Workflow steps
