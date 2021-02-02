@@ -2,7 +2,6 @@
 # techguides
 
 <!-- badges: start -->
-[![Travis build status](https://travis-ci.com/miraisolutions/techguides.svg?branch=master)](https://travis-ci.com/miraisolutions/techguides)
 [![R build status](https://github.com/miraisolutions/techguides/workflows/site/badge.svg)](https://github.com/miraisolutions/techguides/actions)
 <!-- badges: end -->
 
