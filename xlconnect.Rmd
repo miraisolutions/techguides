@@ -1,0 +1,523 @@
+#  `XLConnect`: easy and controlled interface to Microsoft Excel
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, eval = FALSE)
+```
+
+MS Excel is probably the most used support to share data analysis and reports in enterprise. Despite its popularity, performing data analysis within an Excel workbook can be cumbersome as well as error prone due to irreproducibility. A possible way out is to perform most of the steps of your data analysis and reporting in another programming language, such as R, and just present and share the results in Excel. 
+Using the package [`XLConnect`](https://github.com/miraisolutions/xlconnect) will allow you to read, write and manipulate MS Excel files from within R.
+
+XLConnect's main features:
+
+- read & write Excel worksheets & named regions
+
+- create, remove, rename, clone & hide / unhide worksheets
+
+- add graphs
+
+- specify / apply cell styles, column width & row height
+
+- define behavior when error cells are encountered
+
+- force formula recalculation when workbooks are opened
+
+- others: merge / unmerge cells, set auto-filters
+
+- etc.
+
+## Installation
+
+XLConnect is cross-platform and runs in all operating systems that support Java. Besides R and a JRE (Java Runtime Environment), nothing else is needed, even an installation of MS Excel is NOT required.
+
+```{r , echo = TRUE, eval = FALSE}
+# Install XLConnect
+if (!require(XLConnect)) install.packages("XLConnect")
+
+# Load the XLConnect package and get ready to use it
+require(XLConnect)
+```
+
+## Basic functions: write & read an Excel sheet
+
+### Writing Excel files
+
+```{r , echo = TRUE, eval = FALSE}
+# Load Excel workbook - either .xls or .xlsx. Create if not existing
+wb <- loadWorkbook("xlconnect-demo/XLConnectDemo.xlsx", create = TRUE)
+
+# Create a Sheet within an Excel workbook
+createSheet(wb, name = "CHF")
+
+# Write into a sheet
+# Write Swiss Francs data frame into CHF sheet
+writeWorksheet(wb, swissfranc, sheet = "CHF", startRow = 2, startCol = 2)
+
+# Save workbook - this actually writes the file
+saveWorkbook(wb)
+```
+
+The steps above can be executed in a single call using the `writeWorksheetToFile()` function.
+```{r , echo = TRUE, eval = FALSE}
+# Write and save a data frame into a specific sheet of a workbook
+writeWorksheetToFile("xlconnect-demo/XLConnectDemo.xlsx", 
+                     data = swissfranc, sheet = "OneCall", 
+                     startRow = 2, startCol = 2)
+```
+
+The data frame can also be written in a named region using the single call `writeNamedRegionToFile()` function. This will create the sheet (if necessary) and named region name based on the formula argument and call writeNamedRegion instead of writeWorksheet.
+```{r , echo = TRUE, eval = FALSE}
+# Write and save a data frame into a specific named region of a workbook
+writeNamedRegionToFile("xlconnect-demo/XLConnectDemo.xlsx", 
+                       data = swissfranc, name = "SwissFrancName", 
+                       formula = "NamedRegionEx!$B$2")
+```
+
+### Reading from  Excel files
+
+```{r , echo = TRUE, eval = FALSE}
+# Read data from a specific sheet of a workbook
+dataFromExcel <- readWorksheet(wb, sheet = "CHF")
+
+# Read data from a specific location in a sheet of a workbook
+dataFromExcel <- readWorksheet(wb, 
+                               sheet = "CHF", 
+                               startRow = 2, endRow = 10,
+                               startCol = 2, endCol = 5, 
+                               header = TRUE)
+```
+
+The steps above can be executed in a single call using the `readWorksheetFromFile()` function.
+```{r , echo = TRUE, eval = FALSE}
+# Read data from a specific location in a sheet of a workbook
+dataFromExcel <- readWorksheetFromFile("xlconnect-demo/XLConnectDemo.xlsx", 
+                                       sheet = "OneCall", 
+                                       startRow = 2, endRow = 10, 
+                                       startCol = 2, endCol = 5, 
+                                       header = TRUE)
+```
+
+The data can also be read from an existing named region using the single call `readNamedRegionFromFile()` function.
+```{r , echo = TRUE, eval = FALSE}
+# Read data from a specific named region of a workbook
+dataFromExcel <- readNamedRegionFromFile("xlconnect-demo/XLConnectDemo.xlsx", 
+                                         name = "SwissFrancName", 
+                                         header = TRUE)
+```
+
+It can be useful to retrieve all the sheets of a workbook or all existing named regions.
+```{r , echo = TRUE, eval = FALSE}
+# Get all sheet names of a workbook
+allSheets <- getSheets(wb)
+
+# Get all named regions of a workbook
+allnr <- getDefinedNames(wb)
+```
+
+## Formatting
+
+### Create and apply some formatting
+Now let's try out some formatting functionality.
+
+```{r , echo = TRUE, eval = FALSE}
+# Apply data format only - depending on the data type
+setStyleAction(wb, XLC$STYLE_ACTION.DATA_FORMAT_ONLY)
+
+# Set format for numeric data to 2 decimal digits
+setDataFormatForType(wb, type = XLC$DATA_TYPE.NUMERIC, format = "0.00")
+
+# Write the named region
+writeNamedRegion(wb, data = swissfranc, name = "SwissFrancName")
+
+# Create a cell style for the headers
+csHeader <- createCellStyle(wb, name = "StyleHeader")
+setFillPattern(csHeader, fill = XLC$FILL.SOLID_FOREGROUND)
+setFillForegroundColor(csHeader, color = XLC$COLOR.CORNFLOWER_BLUE)
+setCellStyle(wb, sheet = "NamedRegionEx", 
+             row = 2, col = seq(2, ncol(swissfranc) + 1), 
+             cellstyle = csHeader)
+
+# Set an auto-filter
+setAutoFilter(wb, sheet = "NamedRegionEx", 
+              reference = aref("B2", dim(swissfranc)))
+
+# Create a custom format for the date column
+csDate <- createCellStyle(wb, name = "StyleDate")
+setDataFormat(csDate, format = "yyyy-mm-dd")
+setCellStyle(wb, sheet = "NamedRegionEx", 
+             row = seq(3, nrow(swissfranc) + 2), 
+             col = 2, 
+             cellstyle = csDate)
+
+# Enlarge column "date" to fit full information
+setColumnWidth(wb, sheet = "NamedRegionEx", 
+               column = 2, width = 2800)
+
+# Save workbook - this actually writes the file
+saveWorkbook(wb)
+```
+
+### Retrieve and apply some formatting
+
+Intermediate step to make a copy of the template.
+
+```{r , echo = TRUE, eval = FALSE}
+# Create a copy of the template
+file.copy("xlconnect-demo/XLConnectDemo-Tpl.xlsx", 
+          "xlconnect-demo/XLCDemo-TplCopy.xlsx", 
+          overwrite = FALSE)
+wbcopy <- loadWorkbook("xlconnect-demo/XLCDemo-TplCopy.xlsx")
+
+# Save workbook - this actually writes the file
+saveWorkbook(wbcopy)
+```
+
+Add a new sheet in the copied file and use defined formatting from the template.
+
+```{r , echo = TRUE, eval = FALSE}
+# Create a dummy input sheet
+writeWorksheetToFile("xlconnect-demo/XLCDemo-TplCopy.xlsx", 
+                     data = data.frame("Titles" = c("Dummy Input", "Exchange Rate CHF/Curr")), 
+                     sheet = "Input", 
+                     startRow = 2, startCol = 2, header = FALSE)
+
+# Get some data from the previous file
+# Read data from a specific named region of a workbook
+if (exists("xlconnect-demo/XLConnectDemo.xlsx")) {
+  dataToReuse <- readNamedRegionFromFile("xlconnect-demo/XLConnectDemo.xlsx", 
+                                         name = "SwissFrancName", 
+                                         header = TRUE)
+} else {
+  dataToReuse <- swissfranc
+}
+
+# Add data in a named region
+writeNamedRegionToFile("xlconnect-demo/XLCDemo-TplCopy.xlsx", 
+                       data = dataToReuse, name = "SwissFrancName", 
+                       formula = "Input!$B$5")
+
+# Retrieve formatting from existing cell style names from the template copy
+wbcopy <- loadWorkbook("xlconnect-demo/XLCDemo-TplCopy.xlsx")
+cstitle1 <- getCellStyle(wbcopy, "Title1")
+cstitle2 <- getCellStyle(wbcopy, "Title2")
+csTableHeader <- getCellStyle(wbcopy, "TableHeader")
+csinp <- getCellStyle(wbcopy, "Inp")
+cscalc <- getCellStyle(wbcopy, "Calc")
+
+# Apply formatting - this has to be in the same file
+setCellStyle(wbcopy, 
+             formula = "Input!$B$2:$B$2", 
+             cellstyle = cstitle1)
+setCellStyle(wbcopy, 
+             formula = "Input!$B$3:$B$3", 
+             cellstyle = cstitle2)
+setCellStyle(wbcopy, 
+             formula = "Input!$C$5:$E$425", 
+             cellstyle = csinp)
+setCellStyle(wbcopy, 
+             formula = "Input!$B$5:$B$425", 
+             cellstyle = cscalc)
+if (!existsCellStyle(wbcopy, "csDate")) {
+  csDate <- createCellStyle(wbcopy, name = "DateFormat")
+  setDataFormat(csDate, format = "yyyy-mm-dd")
+}
+setCellStyle(wbcopy, sheet = "Input", 
+             row = 5:425, 
+             col = 2, 
+             cellstyle = csDate)
+
+# Save workbook - this actually writes the file
+saveWorkbook(wbcopy)
+```
+
+## Add a graph
+
+First, create an image out of a graph.
+```{r , echo = TRUE, eval = FALSE}
+# Prepare object
+currencies <- names(swissfranc)[-1]
+gcurr <- reshape(swissfranc, 
+                 varying = currencies, 
+                 direction = "long", 
+                 v.names = "Value", 
+                 times = currencies, 
+                 timevar = "Currency")
+
+# Use ggplot2 to create a graph
+require(ggplot2)
+p <- ggplot(gcurr, aes(Date, Value, colour = Currency)) +
+  geom_line() + stat_smooth(method = "loess") +
+  scale_y_continuous("Exchange Rate CHF/Curr") +
+  labs(title = paste0("CHF vs ", paste(currencies, collapse = ", ")), x = "") + 
+  theme(axis.title.y = element_text(size = 10, angle = 90, vjust = 0.3))
+print(p)
+
+# Save plot to as a png
+dev.copy(png, "xlconnect-demo/swissfrancplot.png")
+dev.off()
+```
+
+Then, add the image to the output file.
+```{r , echo = TRUE, eval = FALSE}
+# Define the location in the output file
+createName(wb, name = "graph", formula = "NamedRegionEx!$H$2")
+
+# Add image to the file
+addImage(wb, 
+         filename = "xlconnect-demo/swissfrancplot.png", 
+         name = "graph", 
+         originalSize = TRUE)
+
+# Save workbook - this actually writes the file
+saveWorkbook(wb)
+```
+
+
+## Other functionalities 
+
+Let's perform some usual tasks on a template and use few more interesting XLConnect functionalities like:
+
+- ensure values get updated when opening a workbook
+
+- check if a sheet is visible
+
+- check if a named region exists
+
+- hide or unhide sheets
+
+- append a named region
+
+- get the coordinates of a named region in a sheet
+
+- additional formatting, e.g. setting the column width
+
+- remove sheets and named regions
+
+- clone a sheet
+
+- add a hyperlink
+
+### Recalculate workbook
+Read the file and update some values on the R objects.
+```{r , echo = TRUE, eval = FALSE}
+if (!exists("xlconnect-demo/XLCDemo-TplCopy.xlsx")) {
+  # Create a copy of the template
+  file.copy("xlconnect-demo/XLConnectDemo-Tpl.xlsx", 
+          "xlconnect-demo/XLCDemo-TplCopy.xlsx", 
+          overwrite = FALSE)
+} 
+
+# Load copy of the template
+wbcopy <- loadWorkbook("xlconnect-demo/XLCDemo-TplCopy.xlsx")
+
+# Read data from template copy using named regions
+inc_df <- readNamedRegion(wbcopy,
+                          name = "Income_inp",
+                          header = TRUE)
+persexp_df <- readNamedRegion(wbcopy,
+                          name = "PersExpenses_inp",
+                          header = TRUE)
+opexp_df <- readNamedRegion(wbcopy,
+                          name = "OpExpenses_inp",
+                          header = TRUE)
+
+# Update numbers: double sales
+inc_df$ACTUAL[inc_df$INCOME == "Net sales"] <- inc_df$ACTUAL[inc_df$INCOME == "Net sales"] * 2
+# Update numbers: add employee benefits
+persexp_df$ACTUAL[persexp_df$PERSONNEL.EXPENSES == "Employee benefits"] <- 3000
+# Update numbers: reduce maintenance
+opexp_df$ACTUAL[opexp_df$OPERATING.EXPENSES == "Maintenance and repairs"] <- 2500
+```
+
+Write the data into the workbook, set the "force formula recalculation" flag on it and save the file.
+```{r , echo = TRUE, eval = FALSE}
+# Update output accordingly
+writeNamedRegion(wbcopy, Sys.Date(), "Date", header = FALSE)
+writeNamedRegion(wbcopy, inc_df, "Income_out", header = FALSE)
+writeNamedRegion(wbcopy, persexp_df, "PersExpenses_out", header = FALSE)
+writeNamedRegion(wbcopy, opexp_df, "OpExpenses_out", header = FALSE)
+
+# Get numbers of sheets
+nb_sheets <- length(getSheets(wbcopy))
+
+# Force Excel to re-calculate when opening the workbook
+setForceFormulaRecalculation(wbcopy, sheet = seq(1, nb_sheets), TRUE)
+
+# Save workbook - this actually writes the file
+saveWorkbook(wbcopy)
+```
+
+### Hide sheets
+Hide irrelevant sheets.
+```{r , echo = TRUE, eval = FALSE}
+# Hide sheets
+sheetsToHide <- c("Style", "Input")
+
+# Ensure those sheets exist in the workbook
+sheetsToHide <- sheetsToHide[sheetsToHide %in% getSheets(wbcopy)]
+hideSheet(wbcopy, sheetsToHide, veryHidden = TRUE)
+
+# Save workbook - this actually writes the file
+saveWorkbook(wbcopy)
+```
+
+### Sheet visibility check and unhide sheets
+Check if a given sheet is visible and unhide it if it is.
+```{r , echo = TRUE, eval = FALSE}
+# Check if a sheet is visible and unhide it
+if (!isSheetVisible(wbcopy, c("Review"))) {
+  # Unhide sheet
+  unhideSheet(wbcopy, "Review")
+}
+
+# Save workbook - this actually writes the file
+saveWorkbook(wbcopy)
+```
+
+### Append named region
+Check if a named region exists and append it if it does.
+```{r , echo = TRUE, eval = FALSE}
+# Check if a named region exists
+if (existsName(wbcopy, c("Review"))) {
+  # Create a new entry to append
+  newreview_df <- data.frame(Reviewer = c("Sam Tire"), 
+                             Function = c("Accounting Reviewer"), 
+                             Date = Sys.Date())
+  # Ensure column matches
+  if (!all(colnames(newreview_df) == colnames(readNamedRegion(wbcopy, "Review")))) {
+    stop("table to populate does not match expected header, column names and order must match")
+  }
+  
+  # Append existing named region
+  appendNamedRegion(wbcopy, newreview_df, name = "Review")
+  csinp <- getCellStyle(wbcopy, "Inp")
+  
+  # Get position of a named region in a Excel file
+  review_pos <- getReferenceCoordinatesForName(wbcopy, "Review")
+  colStart_pos <- LETTERS[review_pos[1,2]]
+  colEnd_pos <- LETTERS[review_pos[2,2]]
+  
+  # Apply cell formatting
+  setCellStyle(wbcopy, 
+             formula = paste0("Review!", colStart_pos, "$", review_pos[1,1] + 1, ":$", colEnd_pos, review_pos[2,1]),
+             cellstyle = csinp)
+  if (!existsCellStyle(wbcopy, "Format-Date")) {
+    # Create a custom format for the date column
+    csDate <- createCellStyle(wbcopy, name = "Format-Date")
+    setDataFormat(csDate, format = "yyyy-mm-dd")
+  }
+  setCellStyle(wbcopy, sheet = "Review", 
+             row = seq(review_pos[1,1] + 1, review_pos[2,1]), 
+             col = review_pos[2,2], 
+             cellstyle = csDate)
+  # Enlarge column date
+  setColumnWidth(wbcopy, sheet = "Review", column = review_pos[2,2], width = 4000 )
+ 
+  # Save workbook - this actually writes the file
+  saveWorkbook(wbcopy)
+}
+```
+
+### Remove sheets
+Delete sheets.
+```{r , echo = TRUE, eval = FALSE}
+# Create a new copy
+file.copy("xlconnect-demo/XLCDemo-TplCopy.xlsx", 
+          "xlconnect-demo/XLCDemo-Input.xlsx", 
+          overwrite = FALSE)
+
+# Load new copy
+wbinput <- loadWorkbook("xlconnect-demo/XLCDemo-Input.xlsx")
+
+# Unhide sheet - if goal is to remove all sheets but "input" then it has to be visible
+unhideSheet(wbinput, "Input")
+
+# Remove all sheets of the copy but "input"
+wbinput_allsheets <- getSheets(wbinput)
+removeSheet(wbinput, wbinput_allsheets[!(wbinput_allsheets %in% c("Input"))])
+
+# Save workbook - this actually writes the file
+saveWorkbook(wbinput)
+```
+
+### Remove named regions
+Delete Named Regions.
+```{r , echo = TRUE, eval = FALSE}
+# Load new copy
+wbinput <- loadWorkbook("xlconnect-demo/XLCDemo-Input.xlsx")
+
+# Remove all named regions of the copy but "SwissFrancName"
+wbinput_allnr <- getDefinedNames(wbinput)
+removeName(wbinput, wbinput_allnr[!(wbinput_allnr %in% c("SwissFrancName"))])
+
+# Save workbook - this actually writes the file
+saveWorkbook(wbinput)
+```
+
+### Clone sheets
+Clone a sheet.
+```{r , echo = TRUE, eval = FALSE}
+# Load new copy
+wbinput <- loadWorkbook("xlconnect-demo/XLCDemo-Input.xlsx") 
+
+# Ensure sheet exists
+if (existsSheet(wbinput, "Input")) {
+  # Clone sheet
+  cloneSheet(wbinput, sheet = "Input", name = "clonedSheet")
+  # Save workbook - this actually writes the file
+  saveWorkbook(wbinput)
+}
+```
+
+### Clear sheets
+Clear a sheet can be useful if data sets in a worksheet need to be replaced in a smaller range as the original data.
+```{r , echo = TRUE, eval = FALSE}
+# Load new copy
+wbinput <- loadWorkbook("xlconnect-demo/XLCDemo-Input.xlsx") 
+if (existsSheet(wbinput, "clonedSheet")) {
+  # Clear sheet
+  clearSheet(wbinput, sheet = "clonedSheet")
+  # Save workbook - this actually writes the file
+  saveWorkbook(wbinput)
+}
+```
+
+### Add hyperlinks
+Write a hyperlink.
+```{r , echo = TRUE, eval = FALSE}
+# Load new copy
+wbinput <- loadWorkbook("xlconnect-demo/XLCDemo-Input.xlsx") 
+if (existsSheet(wbinput, "clonedSheet")) {
+  # Add hyperlink
+  writeWorksheet(wbinput, data.frame(Company = "Mirai Solution"), sheet = "clonedSheet", startRow = 1, startCol = 2)
+  mirai_web <- "https://mirai-solutions.ch/"
+  setHyperlink(wbinput, 
+               sheet = "clonedsheet", 
+               row = 2, col = 2, 
+               type = XLC$HYPERLINK.URL, 
+               address = mirai_web)
+  # Save workbook - this actually writes the file
+  saveWorkbook(wbinput)
+}
+```
+
+### Merge / Unmerge cells
+Merge or unmerge cells.
+```{r , echo = TRUE, eval = FALSE}
+# Load new copy
+wbinput <- loadWorkbook("xlconnect-demo/XLCDemo-Input.xlsx") 
+if (existsSheet(wbinput, "clonedSheet")) {
+  # Merge cells - to unmerge, use the similar function 'unmergeCells()'
+  mergeCells(wbinput, sheet = "clonedsheet", reference = "B2:C2")
+  # Save workbook - this actually writes the file
+  saveWorkbook(wbinput)
+}
+```
+
+### Clean up
+Clean up and remove the demo files.
+```{r , echo = TRUE, eval = FALSE}
+# Remove file
+file.remove("xlconnect-demo/XLConnectDemo.xlsx")
+file.remove("xlconnect-demo/XLCDemo-TplCopy.xlsx")
+file.remove("xlconnect-demo/XLCDemo-Input.xlsx")
+```
