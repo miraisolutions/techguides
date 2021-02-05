@@ -189,3 +189,48 @@ usethis::use_github_action(
 )
 usethis::use_github_actions_badge("CI-CD") # or "CI"
 ```
+
+## Deploying a packaged shiny application
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, eval = FALSE)
+```
+
+It makes sense to structure shiny applications as a package to better control their dependencies. However, some structural conditions are required for the deployment of a packaged shiny application. 
+
+One option is to use the [`golem` package](https://cran.r-project.org/web/packages/golem/index.html), which will initialize the shiny application with its framework that does support deployment of a shiny application as a package. But sometimes you may not want to add an entire framework to an existing application and instead add this support manually.
+
+Since we did not find any good documentation of this online (as of Nov 2020), we investigated this ourselves and are happy to share our findings here.
+
+### Entry point
+
+The application needs an entry point which should be named `app.R` and be situated in the root of the package, i.e. where 
+`DESCRIPTION` and `NAMESPACE` are located. 
+
+It should contain only what is required for the entry point to be able to load the application, e.g.:
+
+```{r, eval = F}
+pkgload::load_all(export_all = FALSE, helpers = FALSE, attach_testthat = FALSE)
+# PKG is the name of the packaged shiny application
+# run_PKG_app is a function that wraps around shiny::shinyApp()
+PKG::run_PKG_app()
+```
+
+```{r, eval = F}
+run_PKG_app <- function() {
+  shinyApp(ui = ui, server = server)
+}
+# where ui and server are both functions
+```
+
+### server and ui
+
+Both `server` and `ui` need to be functions in order to work in the packaged shiny application context. `server` should already be a function and it is enough to wrap `ui` into a function without any arguments or return statements.
+
+In the beginning of the `ui` function, we also need to add a call to `shiny::addResourcePath` to make static resources available.
+
+### non-CRAN dependencies
+
+Deploying a packaged shiny application which uses non-CRAN sources like Github can also cause issues. It is recommended to list these dependencies under [`Remotes:`](https://cran.r-project.org/web/packages/devtools/vignettes/dependencies.html) instead of e.g. `Imports:`, to make sure package versioning tools like `renv` notice the difference.
+
+
