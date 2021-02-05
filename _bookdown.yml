@@ -6,5 +6,5 @@ rmd_files: [
   "roxygen-guidelines.Rmd",
   "version-stable-r-development.Rmd",
   "shiny-ci-cd.Rmd",
-  "shiny-deploy.Rmd"
+  "xlconnect.Rmd"
   ]
