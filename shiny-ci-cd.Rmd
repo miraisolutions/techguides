@@ -1,17 +1,23 @@
 # CI/CD pipelines for automatic deployment of a R Shiny web app
 
-```{r setup, include=FALSE}
+```{r setup-shiny-ci-cd, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, eval = FALSE)
 ```
 
-It is good practice to integrate and develop an R Shiny app as an R package, to take full advantage of all the integrated features established for R packages (e.g., documentation, package namespaces, automated testing, `R CMD check`, etc.). A typical development workflow to package a Shiny app is provided by the [`golem` package](https://cran.r-project.org/web/packages/golem/index.html). Furthermore, version control systems such as Git are a great asset for keeping track an manage changes, especially in a collaborative setup.
+It is good practice to integrate and develop an R Shiny app as an R package, to take full advantage of all the integrated features established for R packages (e.g., documentation, package namespaces, automated testing, `R CMD check`, etc.). A typical development workflow to package a Shiny app is provided by the [`golem` package](https://cran.r-project.org/web/packages/golem/index.html). Later in this chapter we will also indicate how to package a shiny app without the infrastructure provided by `golem`.
+
+Furthermore, version control systems such as Git are a great asset for keeping track an manage changes, especially in a collaborative setup.
 
 The development of a packaged Shiny app under version control can easily enable and take advantage of:
 
 - Continuous Integration (CI) pipelines to automate checks and ensure higher code quality and robustness;
 - Continuous Deployment (CD) pipelines to automate the process of deployment to a _productive_ environment.
 
-This guide illustrates how to set up CI/CD pipelines on the popular free and open source services [Travis CI](https://travis-ci.com) and [GitHub Actions](https://github.com/features/actions) for a packaged Shiny app on a GitHub repository, deployed and hosted on [shinyapps.io](https://www.shinyapps.io). [ShinyCICD](https://github.com/miraisolutions/ShinyCICD) is a minimal example of a packaged Shiny app that will be used as an example throughout the guide. You can simply [fork](https://docs.github.com/en/free-pro-team@latest/github/getting-started-with-github/fork-a-repo) the repository and setup your specific user settings (especially for shinyapps.io) to see CI/CD pipelines in actions, or follow the steps described below to setup CI/CD pipelines for your own app.
+This guide illustrates how to set up CI/CD pipelines on the popular free and open source services [Travis CI](https://travis-ci.com) and [GitHub Actions](https://github.com/features/actions) for a packaged Shiny app on a GitHub repository, deployed and hosted on [shinyapps.io](https://www.shinyapps.io).
+
+As a side note, [Travis CI](https://travis-ci.com)'s change in policy does not make it advantageous for open source projects any longer, as they usually rely on free plans. We therefore suggest to use [GitHub Actions](https://github.com/features/actions) for open source projects.
+
+[ShinyCICD](https://github.com/miraisolutions/ShinyCICD) is a minimal example of a packaged Shiny app that will be used as an example throughout the guide. You can simply [fork](https://docs.github.com/en/free-pro-team@latest/github/getting-started-with-github/fork-a-repo) the repository and setup your specific user settings (especially for shinyapps.io) to see CI/CD pipelines in actions, or follow the steps described below to setup CI/CD pipelines for your own app.
 
 ## Generic CI/CD pipeline
 
@@ -198,7 +204,7 @@ knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, eval = FALSE)
 
 It makes sense to structure shiny applications as a package to better control their dependencies. However, some structural conditions are required for the deployment of a packaged shiny application. 
 
-One option is to use the [`golem` package](https://cran.r-project.org/web/packages/golem/index.html), which will initialize the shiny application with its framework that does support deployment of a shiny application as a package. But sometimes you may not want to add an entire framework to an existing application and instead add this support manually.
+As already mentioned, one option is to use the [`golem` package](https://cran.r-project.org/web/packages/golem/index.html), which will initialize the shiny application with its framework that does support deployment of a shiny application as a package. But sometimes you may not want to add an entire framework to an existing application and instead add this support manually.
 
 Since we did not find any good documentation of this online (as of Nov 2020), we investigated this ourselves and are happy to share our findings here.
 
