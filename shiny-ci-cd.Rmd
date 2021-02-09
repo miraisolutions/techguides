@@ -198,10 +198,6 @@ usethis::use_github_actions_badge("CI-CD") # or "CI"
 
 ## Deploying a packaged shiny application
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, eval = FALSE)
-```
-
 It makes sense to structure shiny applications as a package to better control their dependencies. However, some structural conditions are required for the deployment of a packaged shiny application. 
 
 As already mentioned, one option is to use the [`golem` package](https://cran.r-project.org/web/packages/golem/index.html), which will initialize the shiny application with its framework that does support deployment of a shiny application as a package. But sometimes you may not want to add an entire framework to an existing application and instead add this support manually.
