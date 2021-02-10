@@ -1,7 +1,7 @@
 # Version-stable R development with Docker
 
 
-```{r setup, include=FALSE}
+```{r setup-version-stable-r-development, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, eval = FALSE)
 ```
 
