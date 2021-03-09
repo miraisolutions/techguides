@@ -5,6 +5,7 @@ rmd_files: [
   "index.Rmd",
   "roxygen-guidelines.Rmd",
   "version-stable-r-development.Rmd",
+  "renv.Rmd",
   "shiny-ci-cd.Rmd",
   "xlconnect.Rmd"
   ]
