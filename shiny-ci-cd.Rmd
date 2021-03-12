@@ -233,6 +233,4 @@ In the beginning of the `ui` function, we also need to add a call to `shiny::add
 
 ### non-CRAN dependencies
 
-Deploying a packaged shiny application which uses non-CRAN sources like Github can also cause issues. It is recommended to list these dependencies under [`Remotes:`](https://cran.r-project.org/web/packages/devtools/vignettes/dependencies.html) instead of e.g. `Imports:`, to make sure package versioning tools like `renv` notice the difference.
-
-
+Deploying a packaged shiny application which uses non-CRAN package sources like Github requires additional information in the `DESCRIPTION` file. Namely, the repository details of such dependencies must be included in a [`Remotes:`](https://cran.r-project.org/web/packages/devtools/vignettes/dependencies.html) field, to allow tools like `renv` or `remotes` to know where the packages should be retrieved from.
