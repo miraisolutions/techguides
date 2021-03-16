@@ -26,7 +26,7 @@ NULL
 #'
 #' @md
 divide_by <- function(x, d) {
-  x * d
+  x / d
 }
 
 #' @rdname divide
