@@ -69,18 +69,8 @@ jobs:
           name: site
           path: _book
 
-      - name: Set up Ruby 2.6
-        uses: actions/setup-ruby@v1
-        with:
-          ruby-version: 2.6.x
-
-      - name: Install HTMLProofer
-        run: gem install html-proofer
-        env:
-          NOKOGIRI_USE_SYSTEM_LIBRARIES: true  # Speed up html-proofer install
-
       - name: Test website
-        run: htmlproofer --empty-alt-ignore _book
+        uses: docker://klakegg/html-proofer:3.18.8
 
       - name: Deploy to GitHub Pages
         if: github.ref == 'refs/heads/master'
