@@ -1,5 +1,6 @@
 # https://bookdown.org/yihui/bookdown/usage.html#usage
 
+book_filename: techguides
 new_session: true
 rmd_files: [
   "index.Rmd",
