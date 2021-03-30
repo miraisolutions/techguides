@@ -3,7 +3,7 @@ title: "Technical Guidelines"
 author: "Mirai Solutions"
 date: "`r Sys.time()`"
 site: bookdown::bookdown_site
-output:
+output: 
   bookdown::gitbook:
     split_by: section
 ---
