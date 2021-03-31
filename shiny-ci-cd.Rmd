@@ -57,7 +57,7 @@ cache: packages
 
 As default, Travis CI takes care of package dependency installation and performs the typical package build & check you would run locally via e.g. `devtools::check()`. Such CI pipeline is triggered by any push event on any branch on the GitHub repo, including pull requests.
 
-![](shiny-ci-cd/img/ShinyCICD_travis1.png)
+![Travis CI pipeline](shiny-ci-cd/img/ShinyCICD_travis1.png)\
 
 ### Using renv for your project
 
@@ -133,7 +133,7 @@ deploy:
 
 As visible from the run logs, all the CI/CD pipeline steps are performed, despite only the deployment step being explicitly defined.
 
-![](shiny-ci-cd/img/ShinyCICD_travis2.png)
+![Travis CI executes all pipeline steps](shiny-ci-cd/img/ShinyCICD_travis2.png)\
 
 
 ## GitHub Actions
@@ -180,7 +180,7 @@ knitr::read_chunk("shiny-ci-cd/actions/ci-cd.yml", labels = "ci-cd.yml")
 
 As visible from the run logs, all the CI/CD pipeline steps are performed subsequently, and are identifiable by the `name` field.
 
-![](shiny-ci-cd/img/ShinyCICD_githubactions1.png)
+![GitHub Actions pipeline steps](shiny-ci-cd/img/ShinyCICD_githubactions1.png)\
 
 ### `usethis::use_github_action()`
 
