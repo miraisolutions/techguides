@@ -133,7 +133,7 @@ deploy:
 
 As visible from the run logs, all the CI/CD pipeline steps are performed, despite only the deployment step being explicitly defined.
 
-![Travis CI executes all pipeline steps](shiny-ci-cd/img/ShinyCICD_travis2.png)\
+![Travis Continuous Integration / Continuous Deployment pipeline for a packaged Shiny app](shiny-ci-cd/img/ShinyCICD_travis2.png)
 
 
 ## GitHub Actions
