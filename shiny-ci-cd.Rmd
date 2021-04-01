@@ -57,7 +57,7 @@ cache: packages
 
 As default, Travis CI takes care of package dependency installation and performs the typical package build & check you would run locally via e.g. `devtools::check()`. Such CI pipeline is triggered by any push event on any branch on the GitHub repo, including pull requests.
 
-![Travis CI pipeline](shiny-ci-cd/img/ShinyCICD_travis1.png)\
+![Default Travis Continuous Integration pipeline for an R package](shiny-ci-cd/img/ShinyCICD_travis1.png)
 
 ### Using renv for your project
 
