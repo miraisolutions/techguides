@@ -42,32 +42,34 @@ Workflows are constituted of jobs and each job is a set of steps to perform indi
 
 ### Workflow steps
 
-A workflow should have an identifying `name` and an `on` section indicating upon which events the workflow should be triggered. It should include at least one job and each job will have a set of steps fully specifying what to execute. Such steps can be a (predefined) action or a script, however, for the time being, GitHub Actions does not support a hierarchical, aggregated structure of actions. Being fully customizable, it is necessary to fully specify each step in the CI/CD pipeline explicitly.
+A workflow should have an identifying `name` and an `on` section that indicates upon which events the workflow should be triggered. It should include at least one job and each job will have a set of steps fully specifying what to execute. Such steps can be a (predefined) action or a script, however, for the time being, GitHub Actions does not support a hierarchical, aggregated structure of actions. Being fully customizable, it is necessary to fully specify each step in the CI/CD pipeline explicitly.
 
 #### Setup
 
 - Checkout the source package from the repo, using `actions/checkout` provided by GitHub.
-- Setup R using action [`r-lib/actions/setup-r`](https://github.com/r-lib/actions#readme)
+- Setup R using action [`r-lib/actions/setup-r`](https://github.com/r-lib/actions#readme).
 - Query and cache R package dependencies using `remotes::dev_package_deps()` and the `actions/cache` predefined action.
-- Install system dependencies using package `sysreqs::sysreq_commands()` (for the `ubuntu` runner used to run the action)
-- Install R package dependencies using `remotes::Install_deps()`
+- Install system dependencies using package `sysreqs::sysreq_commands()` (for the `ubuntu` runner used to run the action).
+- Install R package dependencies using `remotes::Install_deps()`.
 
 #### Package check
 
-- Check the package via using `rcmdcheck::rcmdcheck()`
+- Check the package via using `rcmdcheck::rcmdcheck()`.
 
 #### Deployment
 
 - Deploy to shinyapps.io, similar to the Travis CI approach:
-  - In this case, environment variables `SHINYAPPS_ACCOUNT`, `SHINYAPPS_TOKEN` and `SHINYAPPS_SECRET`, defining credentials for [shinyapps.io](https://www.shinyapps.io/)), are specified / accessible as GitHub [secrets](https://docs.github.com/en/free-pro-team@latest/actions/reference#authentication-and-secrets).
+  - In this case, environment variables `SHINYAPPS_ACCOUNT`, `SHINYAPPS_TOKEN` and `SHINYAPPS_SECRET` (defining credentials for [shinyapps.io](https://www.shinyapps.io/)), are specified / accessible as GitHub [secrets](https://docs.github.com/en/free-pro-team@latest/actions/reference#authentication-and-secrets).
   - An R script e.g. `deploy/deploy-shinyapps.R` (build-ignored via `usethis::use_build_ignore("deploy")`) defines the deployment commands based on the environment variables:
-  ```{r deploy-shinyapps}
-  ```
-
+```{r read-deploy-script, eval = TRUE, echo = FALSE}
+knitr::read_chunk("shiny-ci-cd/deploy/deploy-shinyapps.R", labels = "deploy-shinyapps")
+```
+```{r deploy-shinyapps}
+```
 
 ### Workflow file
 
-The `steps` above are defined in the `.yml` workflow file as follows
+The `steps` above are defined in the `.yml` workflow file as follows:
 
 ```{r read-ci-cd.yml, eval = TRUE, include = FALSE}
 file.copy("shiny-ci-cd", "_book", recursive = TRUE)
@@ -158,8 +160,7 @@ deploy:
 where `SHINYAPPS_ACCOUNT`, `SHINYAPPS_TOKEN`, `SHINYAPPS_SECRET` are [secure variables defined on Travis CI](https://docs.travis-ci.com/user/environment-variables/) holding your account name and corresponding  [tokens](https://docs.rstudio.com/shinyapps.io/getting-started.html#deploying-applications) for shinyapps.io.
 
 It is in fact more convenient to write an R script, saved as e.g. `deploy/deploy-shinyapps.R` (build-ignored via `usethis::use_build_ignore("deploy")`) defining the deployment commands:
-```{r read-deploy-script, eval = TRUE, echo = FALSE}
-knitr::read_chunk("shiny-ci-cd/deploy/deploy-shinyapps.R", labels = "deploy-shinyapps")
+```{r deploy-shinyapps}
 ```
 
 and then simply execute it as `deploy` `script`:
