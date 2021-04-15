@@ -13,7 +13,7 @@ The development of a packaged Shiny app under version control can easily enable 
 - Continuous Integration (CI) pipelines to automate checks and ensure higher code quality and robustness;
 - Continuous Deployment (CD) pipelines to automate the process of deployment to a _productive_ environment.
 
-This guide illustrates how to set up CI/CD pipelines on the popular free and open source services [Travis CI](https://travis-ci.com) and [GitHub Actions](https://github.com/features/actions) for a packaged Shiny app on a GitHub repository, deployed and hosted on [shinyapps.io](https://www.shinyapps.io).
+This guide illustrates how to set up CI/CD pipelines on the new and increasingly popular [GitHub Actions](https://github.com/features/actions) and the previously fully open source [Travis CI](https://travis-ci.com). It also shows how a packaged Shiny app can be maintained on a GitHub repository, and deployed and hosted on [shinyapps.io](https://www.shinyapps.io) using said CI/CD pipelines.
 
 As a side note, [Travis CI](https://travis-ci.com)'s change in policy does not make it advantageous for open source projects any longer, as they usually rely on free plans. We therefore suggest to use [GitHub Actions](https://github.com/features/actions) for open source projects.
 
@@ -97,7 +97,7 @@ usethis::use_github_actions_badge("CI-CD") # or "CI"
 
 ## Travis CI
 
-Travis CI is an open-source continuous integration service that can be used to build and test software projects hosted on GitHub. To set up Travis CI you need to login at [https://travis-ci.com/](https://travis-ci.com/) (using your GitHub account) and provide authorization via GitHub (see [Travis CI Tutorial](https://docs.travis-ci.com/user/tutorial)).
+Travis CI is a previously fully open-source continuous integration service that can be used to build and test software projects hosted on GitHub. To set up Travis CI you need to login at [https://travis-ci.com/](https://travis-ci.com/) (using your GitHub account) and provide authorization via GitHub (see [Travis CI Tutorial](https://docs.travis-ci.com/user/tutorial)).
 
 ### Standard CI setup
 
@@ -116,13 +116,14 @@ language: R
 cache: packages
 ```
 
-As default, Travis CI takes care of package dependency installation and performs the typical package build & check you would run locally via e.g. `devtools::check()`. Such CI pipeline is triggered by any push event on any branch on the GitHub repo, including pull requests.
+As default, Travis CI takes care of package dependency installation and performs the typical package build & check you would run locally via e.g. `devtools::check()`. Such a CI pipeline is triggered by any push event on any branch on the GitHub repo, including pull requests.
 
 ![Default Travis Continuous Integration pipeline for an R package](shiny-ci-cd/img/ShinyCICD_travis1.png)
 
 ### Using renv for your project
 
-If your project relies on package [renv](https://rstudio.github.io/renv) for tracking dependencies via an `renv.lock` file, you should override the default `install`ation package dependencies and make sure `cache`ing is adjusted accordingly, as follows
+If your project relies on the package [renv](https://rstudio.github.io/renv) for tracking dependencies via an `renv.lock` file, you should override the default `install`ation package dependencies and make sure `cache`ing is adjusted accordingly, as described in the [Using renv with Continuous Integration](https://rstudio.github.io/renv/articles/ci.html
+) vignette:
 ```yaml
 cache:
   directories:
@@ -133,8 +134,6 @@ install:
   - Rscript -e "if (!requireNamespace('renv', quietly = TRUE)) install.packages('renv')"
   - Rscript -e "renv::restore()"
 ```
-as described in the [Using renv with Continuous Integration](https://rstudio.github.io/renv/articles/ci.html
-) vignette.
 
 ### Automated deployment
 
@@ -158,12 +157,11 @@ deploy:
 
 where `SHINYAPPS_ACCOUNT`, `SHINYAPPS_TOKEN`, `SHINYAPPS_SECRET` are [secure variables defined on Travis CI](https://docs.travis-ci.com/user/environment-variables/) holding your account name and corresponding  [tokens](https://docs.rstudio.com/shinyapps.io/getting-started.html#deploying-applications) for shinyapps.io.
 
-It is in fact more convenient to write an R script, saved e.g. as `deploy/deploy-shinyapps.R` (build-ignored via `usethis::use_build_ignore("deploy")`) defining the deployment commands:
+It is in fact more convenient to write an R script, saved as e.g. `deploy/deploy-shinyapps.R` (build-ignored via `usethis::use_build_ignore("deploy")`) defining the deployment commands:
 ```{r read-deploy-script, eval = TRUE, echo = FALSE}
 knitr::read_chunk("shiny-ci-cd/deploy/deploy-shinyapps.R", labels = "deploy-shinyapps")
 ```
-```{r deploy-shinyapps}
-```
+
 and then simply execute it as `deploy` `script`:
 ```yml
 deploy:
@@ -173,7 +171,6 @@ deploy:
   on:
     branch: master
 ```
-
 
 ### Putting it all together
 
