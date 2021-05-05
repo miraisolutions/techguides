@@ -78,7 +78,7 @@ knitr::read_chunk("shiny-ci-cd/actions/ci-cd.yml", labels = "ci-cd.yml")
 ```{yml ci-cd.yml}
 ```
 
-As visible from the run logs, all the CI/CD pipeline steps are performed subsequently, and are identifiable by the `name` field.
+As visible from the run logs that can be found on GitHub under the `Actions` tab, all the CI/CD pipeline steps are performed subsequently, and are identifiable by the `name` field. See the example below:
 
 ![GitHub Actions Continuous Integration / Continuous Deployment pipeline for a packaged Shiny app](shiny-ci-cd/img/ShinyCICD_githubactions1.png)
 
