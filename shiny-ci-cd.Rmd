@@ -42,7 +42,7 @@ Workflows are constituted of jobs and each job is a set of steps to perform indi
 
 ### Workflow steps
 
-A workflow should have an identifying `name` and an `on` section that indicates upon which events the workflow should be triggered. It should include at least one job and each job will have a set of steps fully specifying what to execute. Such steps can be a (predefined) action or a script, however, for the time being, GitHub Actions does not support a hierarchical, aggregated structure of actions. Being entirely customizable, it is necessary to fully specify each step in the CI/CD pipeline explicitly.
+A workflow should have an identifying `name` and an `on` section that indicates upon which events the workflow should be triggered. It should include at least one job and each job will have a set of steps fully specifying what to execute. Such steps can be an action (predefined, sourcing from GitHub repos that contain such actions) or a script. However, for the time being, GitHub Actions does not support a hierarchical, aggregated structure of actions. Being entirely customizable, it is necessary to fully specify each step in the CI/CD pipeline explicitly.
 
 #### Setup
 
