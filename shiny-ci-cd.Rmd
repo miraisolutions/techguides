@@ -69,7 +69,7 @@ knitr::read_chunk("shiny-ci-cd/deploy/deploy-shinyapps.R", labels = "deploy-shin
 
 ### Workflow file
 
-The `steps` above are defined in the `.yml` workflow file as follows:
+The `steps` described in the previous section are defined in the `.yml` workflow file as follows:
 
 ```{r read-ci-cd.yml, eval = TRUE, include = FALSE}
 file.copy("shiny-ci-cd", "_book", recursive = TRUE)
