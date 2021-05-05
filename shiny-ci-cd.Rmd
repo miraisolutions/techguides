@@ -54,7 +54,7 @@ A workflow should have an identifying `name` and an `on` section that indicates 
 
 #### Package check
 
-- Check the package via using `rcmdcheck::rcmdcheck()`.
+- Check the package via `rcmdcheck::rcmdcheck()`.
 
 #### Deployment
 
