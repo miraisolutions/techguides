@@ -13,7 +13,7 @@ The development of a packaged Shiny app under version control can easily enable 
 - Continuous Integration (CI) pipelines to automate checks and ensure higher code quality and robustness;
 - Continuous Deployment (CD) pipelines to automate the process of deployment to a _productive_ environment.
 
-This guide illustrates how to set up CI/CD pipelines on the new and increasingly popular [GitHub Actions](https://github.com/features/actions) and the previously fully open source [Travis CI](https://travis-ci.com). It also shows how a packaged Shiny app can be maintained on a GitHub repository, and deployed and hosted on [shinyapps.io](https://www.shinyapps.io) using said CI/CD pipelines.
+This guide illustrates how to set up CI/CD pipelines on the new and increasingly popular [GitHub Actions](https://github.com/features/actions) and for completeness on  [Travis CI](https://travis-ci.com) for an R package. It also shows how a packaged Shiny app can be maintained on a GitHub repository, be deployed to and hosted on [shinyapps.io](https://www.shinyapps.io) using said CI/CD pipelines.
 
 As a side note, [Travis CI](https://travis-ci.com)'s change in policy does not make it advantageous for open source projects any longer, as they usually rely on free plans. We therefore suggest to use [GitHub Actions](https://github.com/features/actions) for open source projects.
 
