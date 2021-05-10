@@ -44,7 +44,7 @@ A workflow should have an identifying `name` and an `on` section that indicates 
 
 #### Setup
 
-- Checkout the source package from the current repo, using `actions/checkout` provided by GitHub.
+- Checkout the source package from the repository, using `actions/checkout` provided by GitHub.
 - Setup R using the action [`r-lib/actions/setup-r`](https://github.com/r-lib/actions#readme).
 - Query and cache R package dependencies using `remotes::dev_package_deps()` and the `actions/cache` predefined action.
 - Install system dependencies using package `sysreqs::sysreq_commands()` (for the `ubuntu` runner used to run the action).
