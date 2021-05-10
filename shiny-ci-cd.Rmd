@@ -13,9 +13,7 @@ The development of a packaged Shiny app under version control can easily enable 
 - Continuous Integration (CI) pipelines to automate checks and ensure higher code quality and robustness;
 - Continuous Deployment (CD) pipelines to automate the process of deployment to a _productive_ environment.
 
-This guide illustrates how to set up CI/CD pipelines on the new and increasingly popular [GitHub Actions](https://github.com/features/actions) and for completeness on  [Travis CI](https://travis-ci.com) for an R package. It also shows how a packaged Shiny app can be maintained on a GitHub repository, be deployed to and hosted on [shinyapps.io](https://www.shinyapps.io) using said CI/CD pipelines.
-
-As a side note, [Travis CI](https://travis-ci.com)'s change in policy does not make it advantageous for open source projects any longer, as they usually rely on free plans. We therefore suggest to use [GitHub Actions](https://github.com/features/actions) for open source projects.
+This guide illustrates how to set up CI/CD pipelines with a focus on the increasingly popular [GitHub Actions](https://github.com/features/actions), which we recommend as a natural choice for GitHub open source projects. In particular, it shows how a Shiny app developed as an R package can be maintained on a GitHub repository, be deployed to and hosted on [shinyapps.io](https://www.shinyapps.io) using said CI/CD pipelines. For the sake of completeness, and for historical reasons, the guide also covers the CI/CD setup on [Travis CI](https://travis-ci.com), a well established service that has become not attractive any longer for open source projects due to its change of policy in recent years.
 
 [ShinyCICD](https://github.com/miraisolutions/ShinyCICD) is a minimal example of a packaged Shiny app that will be used as an example throughout the guide. You can simply [fork](https://docs.github.com/en/free-pro-team@latest/github/getting-started-with-github/fork-a-repo) the repository and setup your specific user settings (especially for shinyapps.io) to see CI/CD pipelines in actions, or follow the steps described below to setup CI/CD pipelines for your own app.
 
