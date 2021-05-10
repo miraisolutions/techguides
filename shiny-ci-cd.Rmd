@@ -48,7 +48,7 @@ A workflow should have an identifying `name` and an `on` section that indicates 
 - Setup R using the action [`r-lib/actions/setup-r`](https://github.com/r-lib/actions#readme).
 - Query and cache R package dependencies using `remotes::dev_package_deps()` and the `actions/cache` predefined action.
 - Install system dependencies (for the `ubuntu` runner defined for the workflow) using `sysreqs::sysreq_commands()`.
-- Install R package dependencies using `remotes::Install_deps()`.
+- Install R package dependencies using `remotes::install_deps()`.
 
 #### Package check
 
