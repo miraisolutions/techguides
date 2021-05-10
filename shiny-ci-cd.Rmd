@@ -97,7 +97,9 @@ usethis::use_github_actions_badge("CI-CD") # or "CI"
 
 ## Travis CI
 
-Travis CI is a continuous integration service, which used to be fully open-source, that can be used to build and test software projects hosted on GitHub. To set up Travis CI you need to login at [https://travis-ci.com/](https://travis-ci.com/) (using your GitHub account) and provide authorization via GitHub (see [Travis CI Tutorial](https://docs.travis-ci.com/user/tutorial)).
+Travis CI is a continuous integration service that can be used to build and test software projects hosted on GitHub. To set up Travis CI you need to login at [https://travis-ci.com/](https://travis-ci.com/) (using your GitHub account) and provide authorization via GitHub (see [Travis CI Tutorial](https://docs.travis-ci.com/user/tutorial)).
+
+Travis CI used to be a very established, mature and popular tool in the open-source source community, before a recent change of policy made it less focused on open-source, offering only limited free trial plans.
 
 ### Standard CI setup
 
