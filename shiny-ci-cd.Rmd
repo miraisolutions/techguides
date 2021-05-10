@@ -38,6 +38,7 @@ Most of these steps are implemented by default in Travis CI for an R package. In
 [Workflows](https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions) use `YAML` syntax and should be stored in the `.github/workflows` directory in the root of the repository.
 Workflows are constituted of jobs and each job is a set of steps to perform individual tasks, e.g. commands or actions.
 
+The next sections describe in detail the relevant workflow steps of a typical CI/CD pipeline for a packages Shiny app, also covering the usage of `renv` to track package dependencies. Finally, we will show how you can use the convenience function `usethis::use_github_action()` for including such workflows in you project.
 ### Workflow steps
 
 A workflow should have an identifying `name` and an `on` section that indicates upon which events the workflow should be triggered. It should include at least one job and each job will have a set of steps fully specifying what to execute. Such steps can be an action (predefined, sourcing from GitHub repos that contain such actions) or a script. However, for the time being, GitHub Actions does not provide a mature support for hierarchical, aggregated structure of actions. Being entirely customizable, it is necessary to fully specify each step in the CI/CD pipeline explicitly.
