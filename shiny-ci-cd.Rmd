@@ -69,12 +69,16 @@ knitr::read_chunk("shiny-ci-cd/deploy/deploy-shinyapps.R", labels = "deploy-shin
 
 ### Workflow file
 
-The `steps` described in the previous section are defined in the `.yml` workflow file as follows:
-
 ```{r read-ci-cd.yml, eval = TRUE, include = FALSE}
 file.copy("shiny-ci-cd", "_book", recursive = TRUE)
 knitr::read_chunk("shiny-ci-cd/actions/ci-cd.yml", labels = "ci-cd.yml")
+knitr::read_chunk("shiny-ci-cd/actions/ci-cd-renv.yml", labels = "ci-cd-renv.yml")
+knitr::read_chunk("shiny-ci-cd/actions/ci.yml", labels = "ci.yml")
+knitr::read_chunk("shiny-ci-cd/actions/ci-renv.yml", labels = "ci-renv.yml")
 ```
+
+The `steps` described in the previous section are defined in the `.yml` workflow file as follows:
+
 ```{yml ci-cd.yml}
 ```
 
@@ -84,7 +88,8 @@ As visible from the run logs that can be found in the GitHub repository under th
 
 ### Complete workflows and `usethis::use_github_action()`
 
-Full YAML workflows for CI and CI/CD pipelines, with and without `renv` are shown below and provided as part of this guide.
+Full YAML workflows for CI and CI/CD pipelines, with and without `renv`, are shown below and provided as part of this guide.
+
 In order to setup and use CI/CD GitHub Actions workflows as described above, you can simply include the relevant workflow file your project via:
 ```{r}
 usethis::use_github_action(
@@ -96,6 +101,30 @@ usethis::use_github_action(
 )
 usethis::use_github_actions_badge("CI-CD") # or "CI"
 ```
+
+#### `shiny-ci-cd/actions/ci-cd.yml` {-}
+<details>
+```{yml ci-cd.yml}
+```
+</details>
+
+#### `shiny-ci-cd/actions/ci-cd-renv.yml` {-}
+<details>
+```{yml ci-cd-renv.yml}
+```
+</details>
+
+#### `shiny-ci-cd/actions/ci.yml` {-}
+<details>
+```{yml ci-cd.yml}
+```
+</details>
+
+#### `shiny-ci-cd/actions/ci-renv.yml` {-}
+<details>
+```{yml ci-cd-renv.yml}
+```
+</details>
 
 
 ## Travis CI
