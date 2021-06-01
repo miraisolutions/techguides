@@ -18,7 +18,9 @@ jobs:
           - {os: ubuntu-20.04, r: 'release', rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest"}
 
     env:
+      # Enable RStudio Package Manager to speed up package installation
       RSPM: ${{ matrix.config.rspm }}
+      # Access token for GitHub
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
@@ -60,7 +62,7 @@ jobs:
 
       - name: Check package
         run: |
-          options(crayon.enabled = TRUE)
+          options(crayon.enabled = TRUE) # enable colorful R CMD check output
           rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "warning")
         shell: Rscript {0}
 

@@ -20,7 +20,9 @@ jobs:
           - {os: ubuntu-20.04, r: 'release'}
 
     env:
+      # Default renv location for Linux
       RENV_PATHS_ROOT: ~/.local/share/renv
+      # Access token for GitHub
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
@@ -56,7 +58,7 @@ jobs:
       - name: Check package
         run: |
           install.packages("rcmdcheck")
-          options(crayon.enabled = TRUE)
+          options(crayon.enabled = TRUE) # enable colorful R CMD check output
           rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "warning")
         shell: Rscript {0}
 
