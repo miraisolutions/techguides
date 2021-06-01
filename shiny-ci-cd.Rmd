@@ -86,7 +86,7 @@ The `steps` described in the previous section are defined in the `.yml` workflow
 ```{yml ci-cd.yml}
 ```
 
-As visible from the run logs that can be found in the GitHub repository under the `Actions` tab, all the CI/CD pipeline steps are performed subsequently, and are identifiable by the `name` field. See the example below (where the deployment step was skipped as the screenshot is taken from a push event):
+As visible from the run logs that can be found in the GitHub repository under the `Actions` tab, all the CI/CD pipeline steps are performed subsequently, and are identifiable by the `name` field. See the example below, showing how the deployment step is skipped for a run not triggered by a push action on `master`:
 
 ![GitHub Actions Continuous Integration / Continuous Deployment pipeline for a packaged Shiny app](shiny-ci-cd/img/ShinyCICD_githubactions1.png)
 
