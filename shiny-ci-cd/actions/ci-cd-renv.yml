@@ -20,7 +20,7 @@ jobs:
           - {os: ubuntu-20.04, r: 'release'}
 
     env:
-      # Default renv location for Linux
+      # Root path used by renv and cached
       RENV_PATHS_ROOT: ~/.local/share/renv
       # Access token for GitHub
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
