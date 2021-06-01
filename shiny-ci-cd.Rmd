@@ -106,27 +106,29 @@ usethis::use_github_action(
 usethis::use_github_actions_badge("CI-CD") # or "CI"
 ```
 
-#### `shiny-ci-cd/actions/ci-cd.yml` {-}
+#### Complete workflow files
+
 <details>
+<summary><code>shiny-ci-cd/actions/ci-cd.yml</code></summary>
 ```{yml ci-cd.yml}
 ```
 </details>
 
-#### `shiny-ci-cd/actions/ci-cd-renv.yml` {-}
 <details>
+<summary><code>shiny-ci-cd/actions/ci-cd-renv.yml</code></summary>
 ```{yml ci-cd-renv.yml}
 ```
 </details>
 
-#### `shiny-ci-cd/actions/ci.yml` {-}
 <details>
-```{yml ci-cd.yml}
+<summary><code>shiny-ci-cd/actions/ci.yml</code></summary>
+```{yml ci.yml}
 ```
 </details>
 
-#### `shiny-ci-cd/actions/ci-renv.yml` {-}
 <details>
-```{yml ci-cd-renv.yml}
+<summary><code>shiny-ci-cd/actions/ci-renv.yml</code></summary>
+```{yml ci-renv.yml}
 ```
 </details>
 
