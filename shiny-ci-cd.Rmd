@@ -52,6 +52,10 @@ A workflow should have an identifying `name` and an `on` section that indicates 
 - Install system dependencies (for the `ubuntu` runner defined for the workflow) using `sysreqs::sysreq_commands()`.
 - Install R package dependencies using `remotes::install_deps()`.
 
+##### Using renv {-}
+
+If your project relies on package [renv](https://rstudio.github.io/renv) for tracking dependencies via an `renv.lock` file, caching and installation of R package dependencies requires a different setup, as described in the [Using renv with Continuous Integration](https://rstudio.github.io/renv/articles/ci.html#github-actions) vignette and shown in complete workflow files [below](#complete-wfs-use-gh-action).
+
 #### Package check
 
 - Check the package via `rcmdcheck::rcmdcheck()`.
@@ -86,7 +90,7 @@ As visible from the run logs that can be found in the GitHub repository under th
 
 ![GitHub Actions Continuous Integration / Continuous Deployment pipeline for a packaged Shiny app](shiny-ci-cd/img/ShinyCICD_githubactions1.png)
 
-### Complete workflows and `usethis::use_github_action()`
+### Complete workflows and `usethis::use_github_action()` {#complete-wfs-use-gh-action}
 
 Full YAML workflows for CI and CI/CD pipelines, with and without `renv`, are shown below and provided as part of this guide.
 
