@@ -13,9 +13,7 @@ The development of a packaged Shiny app under version control can easily enable 
 - Continuous Integration (CI) pipelines to automate checks and ensure higher code quality and robustness;
 - Continuous Deployment (CD) pipelines to automate the process of deployment to a _productive_ environment.
 
-This guide illustrates how to set up CI/CD pipelines on the popular free and open source services [Travis CI](https://travis-ci.com) and [GitHub Actions](https://github.com/features/actions) for a packaged Shiny app on a GitHub repository, deployed and hosted on [shinyapps.io](https://www.shinyapps.io).
-
-As a side note, [Travis CI](https://travis-ci.com)'s change in policy does not make it advantageous for open source projects any longer, as they usually rely on free plans. We therefore suggest to use [GitHub Actions](https://github.com/features/actions) for open source projects.
+This guide illustrates how to set up CI/CD pipelines with a focus on the increasingly popular [GitHub Actions](https://github.com/features/actions), which we recommend as a natural choice for GitHub open source projects. In particular, it shows how a Shiny app developed as an R package can be maintained on a GitHub repository, be deployed to and hosted on [shinyapps.io](https://www.shinyapps.io) using said CI/CD pipelines. For the sake of completeness, and for historical reasons, the guide also covers the CI/CD setup on [Travis CI](https://travis-ci.com), a well established service that has become not attractive any longer for open source projects due to its change of policy in recent years.
 
 [ShinyCICD](https://github.com/miraisolutions/ShinyCICD) is a minimal example of a packaged Shiny app that will be used as an example throughout the guide. You can simply [fork](https://docs.github.com/en/free-pro-team@latest/github/getting-started-with-github/fork-a-repo) the repository and setup your specific user settings (especially for shinyapps.io) to see CI/CD pipelines in actions, or follow the steps described below to setup CI/CD pipelines for your own app.
 
@@ -34,9 +32,112 @@ Generally speaking, a CI/CD pipeline related to an R package is comprised of the
 
 Most of these steps are implemented by default in Travis CI for an R package. In GitHub Actions, on the other hand, it is currently necessary to manually specify each of them.
 
+## GitHub Actions
+
+[GitHub Actions](https://docs.github.com/en/free-pro-team@latest/actions) is a service for running highly-customizable and flexible automated workflows, fully integrated with GitHub and very suitable to CI/CD pipelines.
+[Workflows](https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions) use `YAML` syntax and should be stored in the `.github/workflows` directory in the root of the repository.
+Workflows are constituted of jobs and each job is a set of steps to perform individual tasks, e.g. commands or actions.
+
+The next sections describe in detail the relevant workflow steps of a typical CI/CD pipeline for a packages Shiny app, also covering the usage of `renv` to track package dependencies. Finally, we will show how you can use the convenience function `usethis::use_github_action()` for including such workflows in you project.
+
+### Workflow steps
+
+A workflow should have an identifying `name` and an `on` section that indicates upon which events the workflow should be triggered. It should include at least one job and each job will have a set of steps fully specifying what to execute. Such steps can be an action (predefined, sourcing from GitHub repos that contain such actions) or a script. However, for the time being, GitHub Actions does not provide a mature support for hierarchical, aggregated structure of actions. Being entirely customizable, it is necessary to fully specify each step in the CI/CD pipeline explicitly.
+
+#### Setup
+
+- Checkout the source package from the repository, using `actions/checkout` provided by GitHub.
+- Setup R using the action [`r-lib/actions/setup-r`](https://github.com/r-lib/actions#readme).
+- Query and cache R package dependencies using `remotes::dev_package_deps()` and the `actions/cache` predefined action.
+- Install system dependencies (for the `ubuntu` runner defined for the workflow) using `sysreqs::sysreq_commands()`.
+- Install R package dependencies using `remotes::install_deps()`.
+
+##### Using renv {-}
+
+If your project relies on package [renv](https://rstudio.github.io/renv) for tracking dependencies via an `renv.lock` file, caching and installation of R package dependencies requires a different setup, as described in the [Using renv with Continuous Integration](https://rstudio.github.io/renv/articles/ci.html#github-actions) vignette and shown in complete workflow files [below](#complete-wfs-use-gh-action).
+
+#### Package check
+
+- Check the package via `rcmdcheck::rcmdcheck()`.
+
+#### Deployment
+
+- Continuous deployment to shinyapps.io is automated upon any push to the `master` branch
+  - In order to provide credentials for the deployment, account name and corresponding [tokens](https://docs.rstudio.com/shinyapps.io/getting-started.html#deploying-applications) for shinyapps.io are defined as environment variables `SHINYAPPS_ACCOUNT`, `SHINYAPPS_TOKEN` and `SHINYAPPS_SECRET`, specified / accessible as GitHub [secrets](https://docs.github.com/en/free-pro-team@latest/actions/reference#authentication-and-secrets).
+  - A convenience R script, e.g. `deploy/deploy-shinyapps.R` (build-ignored via `usethis::use_build_ignore("deploy")`), defines the deployment commands based on the environment variables.
+```{r read-deploy-script, eval = TRUE, echo = FALSE}
+knitr::read_chunk("shiny-ci-cd/deploy/deploy-shinyapps.R", labels = "deploy-shinyapps")
+```
+```{r deploy-shinyapps}
+```
+
+### Workflow file
+
+```{r read-ci-cd.yml, eval = TRUE, include = FALSE}
+file.copy("shiny-ci-cd", "_book", recursive = TRUE)
+knitr::read_chunk("shiny-ci-cd/actions/ci-cd.yml", labels = "ci-cd.yml")
+knitr::read_chunk("shiny-ci-cd/actions/ci-cd-renv.yml", labels = "ci-cd-renv.yml")
+knitr::read_chunk("shiny-ci-cd/actions/ci.yml", labels = "ci.yml")
+knitr::read_chunk("shiny-ci-cd/actions/ci-renv.yml", labels = "ci-renv.yml")
+```
+
+The `steps` described in the previous section are defined in the `.yml` workflow file as follows:
+
+```{yml ci-cd.yml}
+```
+
+As visible from the run logs that can be found in the GitHub repository under the `Actions` tab, all the CI/CD pipeline steps are performed subsequently, and are identifiable by the `name` field. See the example below, showing how the deployment step is skipped for a run not triggered by a push action on `master`:
+
+![GitHub Actions Continuous Integration / Continuous Deployment pipeline for a packaged Shiny app](shiny-ci-cd/img/ShinyCICD_githubactions1.png)
+
+### Complete workflows and `usethis::use_github_action()` {#complete-wfs-use-gh-action}
+
+Full YAML workflows for CI and CI/CD pipelines, with and without `renv`, are shown below and provided as part of this guide.
+
+In order to setup and use CI/CD GitHub Actions workflows as described above, you can simply include the relevant workflow file your project via:
+```{r}
+usethis::use_github_action(
+  url = 
+    "https://mirai-solutions.ch/techguides/shiny-ci-cd/actions/ci-cd.yml"
+  # "https://mirai-solutions.ch/techguides/shiny-ci-cd/actions/ci-cd-renv.yml"
+  # "https://mirai-solutions.ch/techguides/shiny-ci-cd/actions/ci.yml"
+  # "https://mirai-solutions.ch/techguides/shiny-ci-cd/actions/ci-renv.yml"
+)
+usethis::use_github_actions_badge("CI-CD") # or "CI"
+```
+
+#### Complete workflow files
+
+<details>
+<summary><code>shiny-ci-cd/actions/ci-cd.yml</code></summary>
+```{yml ci-cd.yml}
+```
+</details>
+
+<details>
+<summary><code>shiny-ci-cd/actions/ci-cd-renv.yml</code></summary>
+```{yml ci-cd-renv.yml}
+```
+</details>
+
+<details>
+<summary><code>shiny-ci-cd/actions/ci.yml</code></summary>
+```{yml ci.yml}
+```
+</details>
+
+<details>
+<summary><code>shiny-ci-cd/actions/ci-renv.yml</code></summary>
+```{yml ci-renv.yml}
+```
+</details>
+
+
 ## Travis CI
 
-Travis CI is an open-source continuous integration service that can be used to build and test software projects hosted on GitHub. To set up Travis CI you need to login at [https://travis-ci.com/](https://travis-ci.com/) (using your GitHub account) and provide authorization via GitHub (see [Travis CI Tutorial](https://docs.travis-ci.com/user/tutorial)).
+Travis CI is a continuous integration service that can be used to build and test software projects hosted on GitHub. To set up Travis CI you need to login at [https://travis-ci.com/](https://travis-ci.com/) (using your GitHub account) and provide authorization via GitHub (see [Travis CI Tutorial](https://docs.travis-ci.com/user/tutorial)).
+
+Travis CI used to be a very established, mature and popular tool in the open-source source community, before a recent change of policy made it less focused on open-source, offering only limited free trial plans.
 
 ### Standard CI setup
 
@@ -55,13 +156,14 @@ language: R
 cache: packages
 ```
 
-As default, Travis CI takes care of package dependency installation and performs the typical package build & check you would run locally via e.g. `devtools::check()`. Such CI pipeline is triggered by any push event on any branch on the GitHub repo, including pull requests.
+As default, Travis CI takes care of package dependency installation and performs the typical package build & check you would run locally via e.g. `devtools::check()`. Such a CI pipeline is triggered by any push event on any branch on the GitHub repo, including pull requests.
 
 ![Default Travis Continuous Integration pipeline for an R package](shiny-ci-cd/img/ShinyCICD_travis1.png)
 
 ### Using renv for your project
 
-If your project relies on package [renv](https://rstudio.github.io/renv) for tracking dependencies via an `renv.lock` file, you should override the default `install`ation package dependencies and make sure `cache`ing is adjusted accordingly, as follows
+If your project relies on the package [renv](https://rstudio.github.io/renv) for tracking dependencies via an `renv.lock` file, you should override the default `install`ation package dependencies and make sure `cache`ing is adjusted accordingly, as described in the [Using renv with Continuous Integration](https://rstudio.github.io/renv/articles/ci.html
+) vignette:
 ```yaml
 cache:
   directories:
@@ -72,8 +174,6 @@ install:
   - Rscript -e "if (!requireNamespace('renv', quietly = TRUE)) install.packages('renv')"
   - Rscript -e "renv::restore()"
 ```
-as described in the [Using renv with Continuous Integration](https://rstudio.github.io/renv/articles/ci.html
-) vignette.
 
 ### Automated deployment
 
@@ -97,12 +197,10 @@ deploy:
 
 where `SHINYAPPS_ACCOUNT`, `SHINYAPPS_TOKEN`, `SHINYAPPS_SECRET` are [secure variables defined on Travis CI](https://docs.travis-ci.com/user/environment-variables/) holding your account name and corresponding  [tokens](https://docs.rstudio.com/shinyapps.io/getting-started.html#deploying-applications) for shinyapps.io.
 
-It is in fact more convenient to write an R script, saved e.g. as `deploy/deploy-shinyapps.R` (build-ignored via `usethis::use_build_ignore("deploy")`) defining the deployment commands:
-```{r read-deploy-script, eval = TRUE, echo = FALSE}
-knitr::read_chunk("shiny-ci-cd/deploy/deploy-shinyapps.R", labels = "deploy-shinyapps")
-```
+It is in fact more convenient to write an R script, saved as e.g. `deploy/deploy-shinyapps.R` (build-ignored via `usethis::use_build_ignore("deploy")`) defining the deployment commands:
 ```{r deploy-shinyapps}
 ```
+
 and then simply execute it as `deploy` `script`:
 ```yml
 deploy:
@@ -112,7 +210,6 @@ deploy:
   on:
     branch: master
 ```
-
 
 ### Putting it all together
 
@@ -135,66 +232,6 @@ As visible from the run logs, all the CI/CD pipeline steps are performed, despit
 
 ![Travis Continuous Integration / Continuous Deployment pipeline for a packaged Shiny app](shiny-ci-cd/img/ShinyCICD_travis2.png)
 
-
-## GitHub Actions
-
-[GitHub Actions](https://docs.github.com/en/free-pro-team@latest/actions) is a service for running highly-customizable and flexible automated workflows, fully integrated with GitHub and very suitable to CI/CD pipelines.
-[Workflows](https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions) use `YAML` syntax and should be stored in the `.github/workflows` directory in the root of the repository.
-Workflows are constituted of jobs and each job is a set of steps to perform individual tasks, e.g. commands or actions.
-
-### Workflow steps
-
-A workflow should have an identifying `name` and an `on` section indicating upon which events the workflow should be triggered. It should include at least one job and each job will have a set of steps fully specifying what to execute. Such steps can be a (predefined) action or a script, however, for the time being, GitHub Actions does not support a hierarchical, aggregated structure of actions. Being fully customizable, it is necessary to fully specify each step in the CI/CD pipeline explicitly.
-
-#### Setup
-
-- Checkout the source package from the repo, using `actions/checkout` provided by GitHub.
-- Setup R using action [`r-lib/actions/setup-r`](https://github.com/r-lib/actions#readme)
-- Query and cache R package dependencies using `remotes::dev_package_deps()` and the `actions/cache` predefined action.
-- Install system dependencies using package `sysreqs::sysreq_commands()` (for the `ubuntu` runner used to run the action)
-- Install R package dependencies using `remotes::Install_deps()`
-
-#### Package check
-
-- Check the package via using `rcmdcheck::rcmdcheck()`
-
-#### Deployment
-
-- Deploy to shinyapps.io, similar to the Travis CI approach:
-  - In this case, environment variables `SHINYAPPS_ACCOUNT`, `SHINYAPPS_TOKEN` and `SHINYAPPS_SECRET`, defining credentials for [shinyapps.io](https://www.shinyapps.io/)), are specified / accessible as GitHub [secrets](https://docs.github.com/en/free-pro-team@latest/actions/reference#authentication-and-secrets).
-  - An R script e.g. `deploy/deploy-shinyapps.R` (build-ignored via `usethis::use_build_ignore("deploy")`) defines the deployment commands based on the environment variables:
-  ```{r deploy-shinyapps}
-  ```
-
-
-### Workflow file
-
-The `steps` above are defined in the `.yml` workflow file as follows
-
-```{r read-ci-cd.yml, eval = TRUE, include = FALSE}
-file.copy("shiny-ci-cd", "_book", recursive = TRUE)
-knitr::read_chunk("shiny-ci-cd/actions/ci-cd.yml", labels = "ci-cd.yml")
-```
-```{yml ci-cd.yml}
-```
-
-As visible from the run logs, all the CI/CD pipeline steps are performed subsequently, and are identifiable by the `name` field.
-
-![GitHub Actions Continuous Integration / Continuous Deployment pipeline for a packaged Shiny app](shiny-ci-cd/img/ShinyCICD_githubactions1.png)
-
-### `usethis::use_github_action()`
-
-In order to use the GitHub action workflow above, or its renv-based variant, you can simply:
-```{r}
-usethis::use_github_action(
-  url = 
-    "https://mirai-solutions.ch/techguides/shiny-ci-cd/actions/ci-cd.yml"
-  # "https://mirai-solutions.ch/techguides/shiny-ci-cd/actions/ci-cd-renv.yml"
-  # "https://mirai-solutions.ch/techguides/shiny-ci-cd/actions/ci.yml"
-  # "https://mirai-solutions.ch/techguides/shiny-ci-cd/actions/ci-renv.yml"
-)
-usethis::use_github_actions_badge("CI-CD") # or "CI"
-```
 
 ## Deploying a packaged shiny application
 
