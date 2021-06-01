@@ -45,6 +45,7 @@ jobs:
 
       - name: Install system dependencies
         run: |
+          Rscript -e "install.packages('remotes')"
           while read -r cmd
           do
             eval sudo $cmd
