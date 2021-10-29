@@ -13,7 +13,7 @@ The development of a packaged Shiny app under version control can easily enable 
 - Continuous Integration (CI) pipelines to automate checks and ensure higher code quality and robustness;
 - Continuous Deployment (CD) pipelines to automate the process of deployment to a _productive_ environment.
 
-This guide illustrates how to set up CI/CD pipelines with a focus on the increasingly popular [GitHub Actions](https://github.com/features/actions), which we recommend as a natural choice for GitHub open source projects. In particular, it shows how a Shiny app developed as an R package can be maintained on a GitHub repository, be deployed to and hosted on [shinyapps.io](https://www.shinyapps.io) using said CI/CD pipelines. For the sake of completeness, and for historical reasons, the guide also covers the CI/CD setup on [Travis CI](https://travis-ci.com), a well established service that has become not attractive any longer for open source projects due to its change of policy in recent years.
+This guide illustrates how to set up CI/CD pipelines with a focus on the increasingly popular [GitHub Actions](https://github.com/features/actions), which we recommend as a natural choice for GitHub open source projects. In particular, it shows how a Shiny app developed as an R package can be maintained on a GitHub repository, be deployed to and hosted on [shinyapps.io](https://www.shinyapps.io) using said CI/CD pipelines. For the sake of completeness, and for historical reasons, the guide also covers the CI/CD setup on [Travis CI](https://www.travis-ci.com), a well established service that has become not attractive any longer for open source projects due to its change of policy in recent years.
 
 [ShinyCICD](https://github.com/miraisolutions/ShinyCICD) is a minimal example of a packaged Shiny app that will be used as an example throughout the guide. You can simply [fork](https://docs.github.com/en/get-started/quickstart/fork-a-repo) the repository and setup your specific user settings (especially for shinyapps.io) to see CI/CD pipelines in actions, or follow the steps described below to setup CI/CD pipelines for your own app.
 
@@ -54,7 +54,7 @@ A workflow should have an identifying `name` and an `on` section that indicates 
 
 ##### Using renv {-}
 
-If your project relies on package [renv](https://rstudio.github.io/renv) for tracking dependencies via an `renv.lock` file, caching and installation of R package dependencies requires a different setup, as described in the [Using renv with Continuous Integration](https://rstudio.github.io/renv/articles/ci.html#github-actions) vignette and shown in complete workflow files [below](#complete-wfs-use-gh-action).
+If your project relies on package [renv](https://rstudio.github.io/renv/) for tracking dependencies via an `renv.lock` file, caching and installation of R package dependencies requires a different setup, as described in the [Using renv with Continuous Integration](https://rstudio.github.io/renv//articles/ci.html#github-actions) vignette and shown in complete workflow files [below](#complete-wfs-use-gh-action).
 
 #### Package check
 
@@ -135,7 +135,7 @@ usethis::use_github_actions_badge("CI-CD") # or "CI"
 
 ## Travis CI
 
-Travis CI is a continuous integration service that can be used to build and test software projects hosted on GitHub. To set up Travis CI you need to login at [https://travis-ci.com/](https://travis-ci.com/) (using your GitHub account) and provide authorization via GitHub (see [Travis CI Tutorial](https://docs.travis-ci.com/user/tutorial)).
+Travis CI is a continuous integration service that can be used to build and test software projects hosted on GitHub. To set up Travis CI you need to login at [travis-ci.com](https://www.travis-ci.com) (using your GitHub account) and provide authorization via GitHub (see [Travis CI Tutorial](https://docs.travis-ci.com/user/tutorial)).
 
 Travis CI used to be a very established, mature and popular tool in the open-source source community, before a recent change of policy made it less focused on open-source, offering only limited free trial plans.
 
@@ -162,7 +162,7 @@ As default, Travis CI takes care of package dependency installation and performs
 
 ### Using renv for your project
 
-If your project relies on the package [renv](https://rstudio.github.io/renv) for tracking dependencies via an `renv.lock` file, you should override the default `install`ation package dependencies and make sure `cache`ing is adjusted accordingly, as described in the [Using renv with Continuous Integration](https://rstudio.github.io/renv/articles/ci.html
+If your project relies on the package [renv](https://rstudio.github.io/renv/) for tracking dependencies via an `renv.lock` file, you should override the default `install`ation package dependencies and make sure `cache`ing is adjusted accordingly, as described in the [Using renv with Continuous Integration](https://rstudio.github.io/renv/articles/ci.html
 ) vignette:
 ```yaml
 cache:

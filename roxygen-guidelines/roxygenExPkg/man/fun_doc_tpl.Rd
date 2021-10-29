@@ -41,7 +41,7 @@ Hadley Wickham, Peter Danenberg and Manuel Eugster. roxygen2: In-Line
 Documentation for R. \url{https://CRAN.R-project.org/package=roxygen2}.
 
 Hadley Wickham, The tidyverse style guide.
-\url{http://style.tidyverse.org/documentation.html}.
+\url{https://style.tidyverse.org/documentation.html}.
 }
 \seealso{
 \code{\link[=fun_doc_tpl]{fun_doc_tpl()}}, \code{\link[roxygen2:roxygenize]{roxygen2::roxygenize()}}. Even if you just put

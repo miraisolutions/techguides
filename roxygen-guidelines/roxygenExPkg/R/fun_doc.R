@@ -25,7 +25,7 @@
 #' Documentation for R. [https://CRAN.R-project.org/package=roxygen2]().
 #'
 #' Hadley Wickham, The tidyverse style guide.
-#' [http://style.tidyverse.org/documentation.html]().
+#' [https://style.tidyverse.org/documentation.html]().
 #'
 #' @seealso [fun_doc_tpl()], [roxygen2::roxygenize()]. Even if you just put
 #'   comma-separated links to functions, don't forget the final period (.).

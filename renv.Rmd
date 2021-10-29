@@ -3,7 +3,7 @@
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, eval = FALSE)
 ```
-For production readiness - and project safety - it is important to control the dependencies of a piece of development. This can be done at project level using the package [`renv`](https://rstudio.github.io/renv).
+For production readiness - and project safety - it is important to control the dependencies of a piece of development. This can be done at project level using the package [`renv`](https://rstudio.github.io/renv/).
 
 In a `renv`-project (and a new R session starts), `renv` detects the project dependencies and whether they are out of sync, ensuring the same virtual environment applies all the time the project is opened.
 
