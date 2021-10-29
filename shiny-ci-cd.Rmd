@@ -42,19 +42,20 @@ The next sections describe in detail the relevant workflow steps of a typical CI
 
 ### Workflow steps
 
-A workflow should have an identifying `name` and an `on` section that indicates upon which events the workflow should be triggered. It should include at least one job and each job will have a set of steps fully specifying what to execute. Such steps can be an action (predefined, sourcing from GitHub repos that contain such actions) or a script. However, for the time being, GitHub Actions does not provide a mature support for hierarchical, aggregated structure of actions. Being entirely customizable, it is necessary to fully specify each step in the CI/CD pipeline explicitly.
+A workflow should have an identifying `name` and an `on` section that indicates upon which events the workflow should be triggered. It should include at least one job and each job will have a set of steps fully specifying what to execute. Such steps can be an action (predefined, sourcing from GitHub repos that contain such actions) or custom shell commands. With the introduction of [composite Actions](https://docs.github.com/en/actions/creating-actions/creating-a-composite-action), most of the relevant workflow steps for an R project are covered by actions provided by the [r-lib/actions](https://github.com/r-lib/actions#readme).
 
 #### Setup
 
 - Checkout the source package from the repository, using `actions/checkout` provided by GitHub.
-- Setup R using the action [`r-lib/actions/setup-r`](https://github.com/r-lib/actions#readme).
-- Query and cache R package dependencies using `remotes::dev_package_deps()` and the `actions/cache` predefined action.
-- Install system dependencies (for the `ubuntu` runner defined for the workflow) using `sysreqs::sysreq_commands()`.
-- Install R package dependencies using `remotes::install_deps()`.
+- Setup R using the action [`r-lib/actions/setup-r`](https://github.com/r-lib/actions/tree/master/setup-r#readme).
+- Install package dependencies (including system requirements and caching) using [`r-lib/actions/setup-r-dependencies`](https://github.com/r-lib/actions/tree/master/setup-r-dependencies#readme).
 
 ##### Using renv {-}
 
-If your project relies on package [renv](https://rstudio.github.io/renv/) for tracking dependencies via an `renv.lock` file, caching and installation of R package dependencies requires a different setup, as described in the [Using renv with Continuous Integration](https://rstudio.github.io/renv//articles/ci.html#github-actions) vignette and shown in complete workflow files [below](#complete-wfs-use-gh-action).
+If your project relies on package [renv](https://rstudio.github.io/renv/) for tracking dependencies via an `renv.lock` file, caching and installation of R package dependencies requires a different setup, as described in the [Using renv with Continuous Integration](https://rstudio.github.io/renv//articles/ci.html#github-actions) vignette. As shown in the complete workflow files [below](#complete-wfs-use-gh-action):
+
+- system requirements are installed explicitly (for the `ubuntu` runner defined for the workflow) based on `remotes::system_requirements()`
+- dependencies tracked by renv are installed (including caching) using [`r-lib/actions/setup-renv`](https://github.com/r-lib/actions/tree/master/setup-renv#readme)
 
 #### Package check
 
@@ -86,7 +87,7 @@ The `steps` described in the previous section are defined in the `.yml` workflow
 ```{yml ci-cd.yml}
 ```
 
-As visible from the run logs that can be found in the GitHub repository under the `Actions` tab, all the CI/CD pipeline steps are performed subsequently, and are identifiable by the `name` field. See the example below, showing how the deployment step is skipped for a run not triggered by a push action on `master`:
+As visible from the run logs that can be found in the GitHub repository under the `Actions` tab, all the CI/CD pipeline steps are performed subsequently, and are identifiable by the `name` field. See the example below, showing how the deployment step is skipped for a run not triggered by a push action the `main` (or `master`) branch:
 
 ![GitHub Actions Continuous Integration / Continuous Deployment pipeline for a packaged Shiny app](shiny-ci-cd/img/ShinyCICD_githubactions1.png)
 
