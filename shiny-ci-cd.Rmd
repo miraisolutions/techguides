@@ -27,10 +27,10 @@ Generally speaking, a CI/CD pipeline related to an R package is comprised of the
 - install system dependencies
 - install package dependencies (with caching)
 - build the package
-- checks the package
+- check the package
 - deploy
 
-Most of these steps are implemented by default in Travis CI for an R package. In GitHub Actions, on the other hand, it is currently necessary to manually specify each of them.
+GitHub Actions provides great flexibility in specifying and customizing each individual step, but many are covered by the R-specific actions provided by the [r-lib/actions](https://github.com/r-lib/actions#readme) project. Most of these steps are implemented by default in Travis CI for an R package.
 
 ## GitHub Actions
 
