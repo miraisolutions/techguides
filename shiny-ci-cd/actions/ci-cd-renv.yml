@@ -1,10 +1,11 @@
+# Workflow derived from https://github.com/r-lib/actions/tree/master/examples
+# Need help debugging build failures? Start at https://github.com/r-lib/actions#where-to-find-help
+
 # Triggered on push and pull request events
 on: [push, pull_request]
 
-# Name of the workflow => usethis::use_github_actions_badge("CI-CD")
+# Name of the workflow => usethis::use_github_actions_badge("CI-CD-renv")
 name: CI-CD
-
-# renv with GitHub actions: https://rstudio.github.io/renv/articles/ci.html#github-actions
 
 jobs:
   CI-CD:
@@ -13,17 +14,17 @@ jobs:
     name: ${{ matrix.config.os }} (${{ matrix.config.r }})
 
     strategy:
-      # we keep a matrix for convenience, but we would typically just run on one
+      # We keep a matrix for convenience, but we would typically just run on one
       # single OS and R version, aligned with the target deployment environment
       matrix:
         config:
-          - {os: ubuntu-20.04, r: 'release'}
+          - {os: ubuntu-latest, r: 'release'}
 
     env:
-      # Root path used by renv and cached
-      RENV_PATHS_ROOT: ~/.local/share/renv
       # Access token for GitHub
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      # Preserve package sources for informative references in case of errors
+      R_KEEP_PKG_SOURCE: yes
 
     steps:
 
@@ -34,27 +35,21 @@ jobs:
         uses: r-lib/actions/setup-r@v1
         with:
           r-version: ${{ matrix.config.r }}
-
-      - name: Cache R packages
-        uses: actions/cache@v2
-        with:
-          path: ${{ env.RENV_PATHS_ROOT }}
-          key: ${{ runner.os }}-renv-${{ hashFiles('**/renv.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-renv-
+          # Enable RStudio Package Manager to speed up package installation
+          use-public-rspm: true
 
       - name: Install system dependencies
+        # This is not taken care of (yet) by r-lib/actions/setup-renv
+        # Package distro used to get the distro for the used ubuntu-latest
         run: |
-          Rscript -e "install.packages('remotes')"
+          Rscript -e "install.packages(c('remotes', 'distro'))"
           while read -r cmd
           do
             eval sudo $cmd
-          done < <(Rscript -e 'writeLines(remotes::system_requirements("ubuntu", "20.04"))')
+          done < <(Rscript -e 'writeLines(with(distro::distro(), remotes::system_requirements(id, short_version)))')
 
-      - name: Restore packages
-        run: |
-          renv::restore()
-        shell: Rscript {0}
+      - name: Activate renv and restore packages with cache
+        uses: r-lib/actions/setup-renv@master
 
       - name: Check package
         run: |
@@ -64,7 +59,7 @@ jobs:
         shell: Rscript {0}
 
       - name: Deploy to shinyapps.io
-        # continuous deployment only for pushes to the main / master branch
+        # Continuous deployment only for pushes to the main / master branch
         if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
         env:
           SHINYAPPS_ACCOUNT: ${{ secrets.SHINYAPPS_ACCOUNT }}
