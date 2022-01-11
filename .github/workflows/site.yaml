@@ -35,6 +35,8 @@ jobs:
 
       - name: Install and cache dependencies
         uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          extra-packages: any::rcmdcheck
 
       - name: Build site
         run: |
