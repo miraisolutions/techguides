@@ -10,3 +10,4 @@ Authors@R:
 Description: Collection of technical guidelines.
 Imports: 
     bookdown
+License: LGPL (>= 2.1)
