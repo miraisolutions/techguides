@@ -56,4 +56,4 @@ jobs:
         shell: Rscript {0}
 
       - name: Check package
-        uses: r-lib/actions/check-r-package@v2^
+        uses: r-lib/actions/check-r-package@v2
