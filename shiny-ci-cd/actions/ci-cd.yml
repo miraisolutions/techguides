@@ -1,4 +1,4 @@
-# Workflow derived from https://github.com/r-lib/actions/tree/master/examples
+# Workflow derived from https://github.com/r-lib/actions/tree/v2/examples
 # Need help debugging build failures? Start at https://github.com/r-lib/actions#where-to-find-help
 
 # Triggered on push and pull request events
@@ -44,10 +44,7 @@ jobs:
           extra-packages: any::rcmdcheck
 
       - name: Check package
-        run: |
-          options(crayon.enabled = TRUE) # enable colorful R CMD check output
-          rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "warning")
-        shell: Rscript {0}
+        uses: r-lib/actions/check-r-package@v2
 
       - name: Deploy to shinyapps.io
         # Continuous deployment only for pushes to the main / master branch

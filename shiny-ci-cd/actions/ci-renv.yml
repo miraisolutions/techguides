@@ -1,11 +1,11 @@
-# Workflow derived from https://github.com/r-lib/actions/tree/master/examples
+# Workflow derived from https://github.com/r-lib/actions/tree/v2/examples
 # Need help debugging build failures? Start at https://github.com/r-lib/actions#where-to-find-help
 
 # Triggered on push and pull request events
 on: [push, pull_request]
 
-# Name of the workflow => usethis::use_github_actions_badge("CI-CD-renv")
-name: CI-CD
+# Name of the workflow => usethis::use_github_actions_badge("CI-renv")
+name: CI-renv
 
 jobs:
   CI-CD:
@@ -51,9 +51,9 @@ jobs:
       - name: Activate renv and restore packages with cache
         uses: r-lib/actions/setup-renv@v2
 
-      - name: Check package
-        run: |
-          install.packages("rcmdcheck")
-          options(crayon.enabled = TRUE) # enable colorful R CMD check output
-          rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "warning")
+      - name: Install R CMD check
+        run: install.packages("rcmdcheck")
         shell: Rscript {0}
+
+      - name: Check package
+        uses: r-lib/actions/check-r-package@v2^
