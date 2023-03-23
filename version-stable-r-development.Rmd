@@ -247,7 +247,5 @@ docker rm $(docker stop rstudio_3.6.1)
 
 - [The Rocker Project](https://www.rocker-project.org/)
 - [Shared Volumes](https://www.rocker-project.org/use/shared_volumes/)
-- [Managing Users](https://www.rocker-project.org/use/managing_users/)
-- [Managing containers](https://www.rocker-project.org/use/managing_containers/)
 - [Rocker Wiki](https://github.com/rocker-org/rocker/wiki)
 - [Sharing files with host machine](https://github.com/rocker-org/rocker/wiki/Sharing-files-with-host-machine)
