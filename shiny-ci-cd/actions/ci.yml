@@ -1,11 +1,15 @@
 # Workflow derived from https://github.com/r-lib/actions/tree/v2/examples
 # Need help debugging build failures? Start at https://github.com/r-lib/actions#where-to-find-help
 
-# Triggered on push and pull request events
-on: [push, pull_request]
-
 # Name of the workflow => usethis::use_github_actions_badge("CI")
 name: CI
+
+on:
+  # Triggered on push and pull request events
+  push:
+  pull_request:
+  # Allow manual runs from the Actions tab
+  workflow_dispatch:
 
 jobs:
   CI-CD:
@@ -29,7 +33,7 @@ jobs:
     steps:
 
       - name: Checkout repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Setup R
         uses: r-lib/actions/setup-r@v2
