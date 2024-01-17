@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>4.2 GitHub Actions | Technical Guidelines</title>
+  <meta name="description" content="4.2 GitHub Actions | Technical Guidelines" />
+  <meta name="generator" content="bookdown 0.37 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="4.2 GitHub Actions | Technical Guidelines" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta name="github-repo" content="miraisolutions/techguides" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="4.2 GitHub Actions | Technical Guidelines" />
+  
+  
+  
+
+<meta name="author" content="Mirai Solutions" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="generic-cicd-pipeline.html"/>
+<link rel="next" href="travis-ci.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Introduction</a></li>
+<li class="chapter" data-level="1" data-path="roxygen-documentation-guidelines.html"><a href="roxygen-documentation-guidelines.html"><i class="fa fa-check"></i><b>1</b> Roxygen documentation guidelines</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="general-guidelines-and-documentation-workflow.html"><a href="general-guidelines-and-documentation-workflow.html"><i class="fa fa-check"></i><b>1.1</b> General guidelines and documentation workflow</a></li>
+<li class="chapter" data-level="1.2" data-path="content-organization.html"><a href="content-organization.html"><i class="fa fa-check"></i><b>1.2</b> Content organization</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="content-organization.html"><a href="content-organization.html#note-about-title"><i class="fa fa-check"></i><b>1.2.1</b> Note about <code>@title</code></a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="advanced-usage-and-consistent-documentation.html"><a href="advanced-usage-and-consistent-documentation.html"><i class="fa fa-check"></i><b>1.3</b> Advanced usage and consistent documentation</a>
+<ul>
+<li class="chapter" data-level="1.3.1" data-path="advanced-usage-and-consistent-documentation.html"><a href="advanced-usage-and-consistent-documentation.html#roxygen-templates-and-example-scripts"><i class="fa fa-check"></i><b>1.3.1</b> Roxygen templates and example scripts</a></li>
+<li class="chapter" data-level="1.3.2" data-path="advanced-usage-and-consistent-documentation.html"><a href="advanced-usage-and-consistent-documentation.html#using-rdname-and-describein"><i class="fa fa-check"></i><b>1.3.2</b> Using <code>@rdname</code> and <code>@describeIn</code></a></li>
+</ul></li>
+<li class="chapter" data-level="1.4" data-path="examples.html"><a href="examples.html"><i class="fa fa-check"></i><b>1.4</b> Examples</a>
+<ul>
+<li class="chapter" data-level="1.4.1" data-path="examples.html"><a href="examples.html#general-content-organization"><i class="fa fa-check"></i><b>1.4.1</b> General content organization</a></li>
+<li class="chapter" data-level="1.4.2" data-path="examples.html"><a href="examples.html#templates-and-example-scripts"><i class="fa fa-check"></i><b>1.4.2</b> Templates and example scripts</a></li>
+<li class="chapter" data-level="1.4.3" data-path="examples.html"><a href="examples.html#rdname"><i class="fa fa-check"></i><b>1.4.3</b> <code>@rdname</code></a></li>
+<li class="chapter" data-level="1.4.4" data-path="examples.html"><a href="examples.html#describein"><i class="fa fa-check"></i><b>1.4.4</b> <code>@describeIn</code></a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="version-stable-r-development-with-docker.html"><a href="version-stable-r-development-with-docker.html"><i class="fa fa-check"></i><b>2</b> Version-stable R development with Docker</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="version-stable-deployments.html"><a href="version-stable-deployments.html"><i class="fa fa-check"></i><b>2.1</b> Version-stable deployments</a></li>
+<li class="chapter" data-level="2.2" data-path="align-local-development-and-deployment-environments.html"><a href="align-local-development-and-deployment-environments.html"><i class="fa fa-check"></i><b>2.2</b> Align local development and deployment environments</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="align-local-development-and-deployment-environments.html"><a href="align-local-development-and-deployment-environments.html#running-versioned-rstudio-instances"><i class="fa fa-check"></i><b>2.2.1</b> Running versioned RStudio instances</a></li>
+<li class="chapter" data-level="2.2.2" data-path="align-local-development-and-deployment-environments.html"><a href="align-local-development-and-deployment-environments.html#tinytex-considerations"><i class="fa fa-check"></i><b>2.2.2</b> TinyTeX considerations</a></li>
+<li class="chapter" data-level="2.2.3" data-path="align-local-development-and-deployment-environments.html"><a href="align-local-development-and-deployment-environments.html#cleanup"><i class="fa fa-check"></i><b>2.2.3</b> Cleanup</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><b>2.3</b> References</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="control-dependencies-with-renv.html"><a href="control-dependencies-with-renv.html"><i class="fa fa-check"></i><b>3</b> Control dependencies with <code>renv</code></a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="install-renv.html"><a href="install-renv.html"><i class="fa fa-check"></i><b>3.1</b> Install <code>renv</code></a></li>
+<li class="chapter" data-level="3.2" data-path="initialize-an-renv-project.html"><a href="initialize-an-renv-project.html"><i class="fa fa-check"></i><b>3.2</b> Initialize an <code>renv</code> project</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="initialize-an-renv-project.html"><a href="initialize-an-renv-project.html#control-packages-version"><i class="fa fa-check"></i><b>3.2.1</b> Control packages version</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="caching-the-packages-versions.html"><a href="caching-the-packages-versions.html"><i class="fa fa-check"></i><b>3.3</b> Caching the packages’ versions</a></li>
+<li class="chapter" data-level="3.4" data-path="removing-the-renv-setup-from-a-project.html"><a href="removing-the-renv-setup-from-a-project.html"><i class="fa fa-check"></i><b>3.4</b> Removing the <code>renv</code> setup from a project</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="cicd-pipelines-for-automatic-deployment-of-a-r-shiny-web-app.html"><a href="cicd-pipelines-for-automatic-deployment-of-a-r-shiny-web-app.html"><i class="fa fa-check"></i><b>4</b> CI/CD pipelines for automatic deployment of a R Shiny web app</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="generic-cicd-pipeline.html"><a href="generic-cicd-pipeline.html"><i class="fa fa-check"></i><b>4.1</b> Generic CI/CD pipeline</a></li>
+<li class="chapter" data-level="4.2" data-path="github-actions.html"><a href="github-actions.html"><i class="fa fa-check"></i><b>4.2</b> GitHub Actions</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="github-actions.html"><a href="github-actions.html#workflow-steps"><i class="fa fa-check"></i><b>4.2.1</b> Workflow steps</a></li>
+<li class="chapter" data-level="4.2.2" data-path="github-actions.html"><a href="github-actions.html#workflow-file"><i class="fa fa-check"></i><b>4.2.2</b> Workflow file</a></li>
+<li class="chapter" data-level="4.2.3" data-path="github-actions.html"><a href="github-actions.html#complete-wfs-use-gh-action"><i class="fa fa-check"></i><b>4.2.3</b> Complete workflows and <code>usethis::use_github_action()</code></a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="travis-ci.html"><a href="travis-ci.html"><i class="fa fa-check"></i><b>4.3</b> Travis CI</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="travis-ci.html"><a href="travis-ci.html#standard-ci-setup"><i class="fa fa-check"></i><b>4.3.1</b> Standard CI setup</a></li>
+<li class="chapter" data-level="4.3.2" data-path="travis-ci.html"><a href="travis-ci.html#using-renv-for-your-project"><i class="fa fa-check"></i><b>4.3.2</b> Using renv for your project</a></li>
+<li class="chapter" data-level="4.3.3" data-path="travis-ci.html"><a href="travis-ci.html#automated-deployment"><i class="fa fa-check"></i><b>4.3.3</b> Automated deployment</a></li>
+<li class="chapter" data-level="4.3.4" data-path="travis-ci.html"><a href="travis-ci.html#putting-it-all-together"><i class="fa fa-check"></i><b>4.3.4</b> Putting it all together</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="deploying-a-packaged-shiny-application.html"><a href="deploying-a-packaged-shiny-application.html"><i class="fa fa-check"></i><b>4.4</b> Deploying a packaged shiny application</a>
+<ul>
+<li class="chapter" data-level="4.4.1" data-path="deploying-a-packaged-shiny-application.html"><a href="deploying-a-packaged-shiny-application.html#entry-point"><i class="fa fa-check"></i><b>4.4.1</b> Entry point</a></li>
+<li class="chapter" data-level="4.4.2" data-path="deploying-a-packaged-shiny-application.html"><a href="deploying-a-packaged-shiny-application.html#server-and-ui"><i class="fa fa-check"></i><b>4.4.2</b> server and ui</a></li>
+<li class="chapter" data-level="4.4.3" data-path="deploying-a-packaged-shiny-application.html"><a href="deploying-a-packaged-shiny-application.html#non-cran-dependencies"><i class="fa fa-check"></i><b>4.4.3</b> non-CRAN dependencies</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="xlconnect-easy-and-controlled-interface-to-microsoft-excel.html"><a href="xlconnect-easy-and-controlled-interface-to-microsoft-excel.html"><i class="fa fa-check"></i><b>5</b> <code>XLConnect</code>: easy and controlled interface to Microsoft Excel</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="installation.html"><a href="installation.html"><i class="fa fa-check"></i><b>5.1</b> Installation</a></li>
+<li class="chapter" data-level="5.2" data-path="basic-functions-write-read-an-excel-sheet.html"><a href="basic-functions-write-read-an-excel-sheet.html"><i class="fa fa-check"></i><b>5.2</b> Basic functions: write &amp; read an Excel sheet</a>
+<ul>
+<li class="chapter" data-level="5.2.1" data-path="basic-functions-write-read-an-excel-sheet.html"><a href="basic-functions-write-read-an-excel-sheet.html#writing-excel-files"><i class="fa fa-check"></i><b>5.2.1</b> Writing Excel files</a></li>
+<li class="chapter" data-level="5.2.2" data-path="basic-functions-write-read-an-excel-sheet.html"><a href="basic-functions-write-read-an-excel-sheet.html#reading-from-excel-files"><i class="fa fa-check"></i><b>5.2.2</b> Reading from Excel files</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="formatting.html"><a href="formatting.html"><i class="fa fa-check"></i><b>5.3</b> Formatting</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="formatting.html"><a href="formatting.html#create-and-apply-some-formatting"><i class="fa fa-check"></i><b>5.3.1</b> Create and apply some formatting</a></li>
+<li class="chapter" data-level="5.3.2" data-path="formatting.html"><a href="formatting.html#retrieve-and-apply-some-formatting"><i class="fa fa-check"></i><b>5.3.2</b> Retrieve and apply some formatting</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="add-a-graph.html"><a href="add-a-graph.html"><i class="fa fa-check"></i><b>5.4</b> Add a graph</a></li>
+<li class="chapter" data-level="5.5" data-path="other-functionalities.html"><a href="other-functionalities.html"><i class="fa fa-check"></i><b>5.5</b> Other functionalities</a>
+<ul>
+<li class="chapter" data-level="5.5.1" data-path="other-functionalities.html"><a href="other-functionalities.html#recalculate-workbook"><i class="fa fa-check"></i><b>5.5.1</b> Recalculate workbook</a></li>
+<li class="chapter" data-level="5.5.2" data-path="other-functionalities.html"><a href="other-functionalities.html#hide-sheets"><i class="fa fa-check"></i><b>5.5.2</b> Hide sheets</a></li>
+<li class="chapter" data-level="5.5.3" data-path="other-functionalities.html"><a href="other-functionalities.html#sheet-visibility-check-and-unhide-sheets"><i class="fa fa-check"></i><b>5.5.3</b> Sheet visibility check and unhide sheets</a></li>
+<li class="chapter" data-level="5.5.4" data-path="other-functionalities.html"><a href="other-functionalities.html#append-named-region"><i class="fa fa-check"></i><b>5.5.4</b> Append named region</a></li>
+<li class="chapter" data-level="5.5.5" data-path="other-functionalities.html"><a href="other-functionalities.html#remove-sheets"><i class="fa fa-check"></i><b>5.5.5</b> Remove sheets</a></li>
+<li class="chapter" data-level="5.5.6" data-path="other-functionalities.html"><a href="other-functionalities.html#remove-named-regions"><i class="fa fa-check"></i><b>5.5.6</b> Remove named regions</a></li>
+<li class="chapter" data-level="5.5.7" data-path="other-functionalities.html"><a href="other-functionalities.html#clone-sheets"><i class="fa fa-check"></i><b>5.5.7</b> Clone sheets</a></li>
+<li class="chapter" data-level="5.5.8" data-path="other-functionalities.html"><a href="other-functionalities.html#clear-sheets"><i class="fa fa-check"></i><b>5.5.8</b> Clear sheets</a></li>
+<li class="chapter" data-level="5.5.9" data-path="other-functionalities.html"><a href="other-functionalities.html#add-hyperlinks"><i class="fa fa-check"></i><b>5.5.9</b> Add hyperlinks</a></li>
+<li class="chapter" data-level="5.5.10" data-path="other-functionalities.html"><a href="other-functionalities.html#merge-unmerge-cells"><i class="fa fa-check"></i><b>5.5.10</b> Merge / Unmerge cells</a></li>
+<li class="chapter" data-level="5.5.11" data-path="other-functionalities.html"><a href="other-functionalities.html#clean-up"><i class="fa fa-check"></i><b>5.5.11</b> Clean up</a></li>
+</ul></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Technical Guidelines</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="github-actions" class="section level2 hasAnchor" number="4.2">
+<h2><span class="header-section-number">4.2</span> GitHub Actions<a href="github-actions.html#github-actions" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><a href="https://docs.github.com/en/actions">GitHub Actions</a> is a service for running highly-customizable and flexible automated workflows, fully integrated with GitHub and very suitable to CI/CD pipelines.
+<a href="https://docs.github.com/en/actions/learn-github-actions/workflow-syntax-for-github-actions">Workflows</a> use <code>YAML</code> syntax and should be stored in the <code>.github/workflows</code> directory in the root of the repository.
+Workflows are constituted of jobs and each job is a set of steps to perform individual tasks, e.g. commands or actions.</p>
+<p>The next sections describe in detail the relevant workflow steps of a typical CI/CD pipeline for a packages Shiny app, also covering the usage of <code>renv</code> to track package dependencies. Finally, we will show how you can use the convenience function <code>usethis::use_github_action()</code> for including such workflows in you project.</p>
+<div id="workflow-steps" class="section level3 hasAnchor" number="4.2.1">
+<h3><span class="header-section-number">4.2.1</span> Workflow steps<a href="github-actions.html#workflow-steps" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>A workflow should have an identifying <code>name</code> and an <code>on</code> section that indicates upon which events the workflow should be triggered. It should include at least one job and each job will have a set of steps fully specifying what to execute. Such steps can be an action (predefined, sourcing from GitHub repos that contain such actions) or custom shell commands. With the introduction of <a href="https://docs.github.com/en/actions/creating-actions/creating-a-composite-action">composite Actions</a>, most of the relevant workflow steps for an R project are covered by actions provided by the <a href="https://github.com/r-lib/actions#readme">r-lib/actions</a>.</p>
+<div id="setup" class="section level4 hasAnchor" number="4.2.1.1">
+<h4><span class="header-section-number">4.2.1.1</span> Setup<a href="github-actions.html#setup" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<ul>
+<li>Checkout the source package from the repository, using <code>actions/checkout</code> provided by GitHub.</li>
+<li>Setup R using the action <a href="https://github.com/r-lib/actions/tree/master/setup-r#readme"><code>r-lib/actions/setup-r</code></a>.</li>
+<li>Install package dependencies (including system requirements and caching) using <a href="https://github.com/r-lib/actions/tree/master/setup-r-dependencies#readme"><code>r-lib/actions/setup-r-dependencies</code></a>.</li>
+</ul>
+<div id="using-renv" class="section level5 unnumbered hasAnchor">
+<h5>Using renv<a href="github-actions.html#using-renv" class="anchor-section" aria-label="Anchor link to header"></a></h5>
+<p>If your project relies on package <a href="https://rstudio.github.io/renv/">renv</a> for tracking dependencies via an <code>renv.lock</code> file, caching and installation of R package dependencies requires a different setup, as described in the <a href="https://rstudio.github.io/renv//articles/ci.html#github-actions">Using renv with Continuous Integration</a> vignette. As shown in the complete workflow files <a href="github-actions.html#complete-wfs-use-gh-action">below</a>:</p>
+<ul>
+<li>system requirements are installed explicitly (for the <code>ubuntu</code> runner defined for the workflow) based on <code>remotes::system_requirements()</code></li>
+<li>dependencies tracked by renv are installed (including caching) using <a href="https://github.com/r-lib/actions/tree/master/setup-renv#readme"><code>r-lib/actions/setup-renv</code></a></li>
+</ul>
+</div>
+</div>
+<div id="package-check" class="section level4 hasAnchor" number="4.2.1.2">
+<h4><span class="header-section-number">4.2.1.2</span> Package check<a href="github-actions.html#package-check" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<ul>
+<li>Check the package via <code>rcmdcheck::rcmdcheck()</code>.</li>
+</ul>
+</div>
+<div id="deployment" class="section level4 hasAnchor" number="4.2.1.3">
+<h4><span class="header-section-number">4.2.1.3</span> Deployment<a href="github-actions.html#deployment" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<ul>
+<li>Continuous deployment to shinyapps.io is automated upon any push to the <code>master</code> branch
+<ul>
+<li>In order to provide credentials for the deployment, account name and corresponding <a href="https://docs.rstudio.com/shinyapps.io/getting-started.html#deploying-applications">tokens</a> for shinyapps.io are defined as environment variables <code>SHINYAPPS_ACCOUNT</code>, <code>SHINYAPPS_TOKEN</code> and <code>SHINYAPPS_SECRET</code>, specified / accessible as GitHub <a href="https://docs.github.com/en/actions/security-guides/encrypted-secrets">secrets</a>.</li>
+<li>A convenience R script, e.g. <code>deploy/deploy-shinyapps.R</code> (build-ignored via <code>usethis::use_build_ignore("deploy")</code>), defines the deployment commands based on the environment variables.</li>
+</ul></li>
+</ul>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="github-actions.html#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># deploy/deploy-shinyapps.R</span></span>
+<span id="cb26-2"><a href="github-actions.html#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="co"># usethis::use_build_ignore(&quot;deploy&quot;)</span></span>
+<span id="cb26-3"><a href="github-actions.html#cb26-3" aria-hidden="true" tabindex="-1"></a>rsconnect<span class="sc">::</span><span class="fu">setAccountInfo</span>(</span>
+<span id="cb26-4"><a href="github-actions.html#cb26-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">Sys.getenv</span>(<span class="st">&quot;SHINYAPPS_ACCOUNT&quot;</span>),</span>
+<span id="cb26-5"><a href="github-actions.html#cb26-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">Sys.getenv</span>(<span class="st">&quot;SHINYAPPS_TOKEN&quot;</span>),</span>
+<span id="cb26-6"><a href="github-actions.html#cb26-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">Sys.getenv</span>(<span class="st">&quot;SHINYAPPS_SECRET&quot;</span>)</span>
+<span id="cb26-7"><a href="github-actions.html#cb26-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb26-8"><a href="github-actions.html#cb26-8" aria-hidden="true" tabindex="-1"></a>rsconnect<span class="sc">::</span><span class="fu">deployApp</span>(<span class="at">appName =</span> <span class="st">&quot;ShinyCICD&quot;</span>)</span></code></pre></div>
+</div>
+</div>
+<div id="workflow-file" class="section level3 hasAnchor" number="4.2.2">
+<h3><span class="header-section-number">4.2.2</span> Workflow file<a href="github-actions.html#workflow-file" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The <code>steps</code> described in the previous section are defined in the <code>.yml</code> workflow file as follows:</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode yml"><code class="sourceCode yaml"><span id="cb27-1"><a href="github-actions.html#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Workflow derived from https://github.com/r-lib/actions/tree/v2/examples</span></span>
+<span id="cb27-2"><a href="github-actions.html#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Need help debugging build failures? Start at https://github.com/r-lib/actions#where-to-find-help</span></span>
+<span id="cb27-3"><a href="github-actions.html#cb27-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-4"><a href="github-actions.html#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Name of the workflow =&gt; usethis::use_github_actions_badge(&quot;CI-CD&quot;)</span></span>
+<span id="cb27-5"><a href="github-actions.html#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="fu">name</span><span class="kw">:</span><span class="at"> CI-CD</span></span>
+<span id="cb27-6"><a href="github-actions.html#cb27-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-7"><a href="github-actions.html#cb27-7" aria-hidden="true" tabindex="-1"></a><span class="fu">on</span><span class="kw">:</span></span>
+<span id="cb27-8"><a href="github-actions.html#cb27-8" aria-hidden="true" tabindex="-1"></a><span class="co">  # Triggered on push and pull request events</span></span>
+<span id="cb27-9"><a href="github-actions.html#cb27-9" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">push</span><span class="kw">:</span></span>
+<span id="cb27-10"><a href="github-actions.html#cb27-10" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">pull_request</span><span class="kw">:</span></span>
+<span id="cb27-11"><a href="github-actions.html#cb27-11" aria-hidden="true" tabindex="-1"></a><span class="co">  # Allow manual runs from the Actions tab</span></span>
+<span id="cb27-12"><a href="github-actions.html#cb27-12" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">workflow_dispatch</span><span class="kw">:</span></span>
+<span id="cb27-13"><a href="github-actions.html#cb27-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-14"><a href="github-actions.html#cb27-14" aria-hidden="true" tabindex="-1"></a><span class="fu">jobs</span><span class="kw">:</span></span>
+<span id="cb27-15"><a href="github-actions.html#cb27-15" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">CI-CD</span><span class="kw">:</span></span>
+<span id="cb27-16"><a href="github-actions.html#cb27-16" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">runs-on</span><span class="kw">:</span><span class="at"> ${{ matrix.config.os }}</span></span>
+<span id="cb27-17"><a href="github-actions.html#cb27-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-18"><a href="github-actions.html#cb27-18" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">name</span><span class="kw">:</span><span class="at"> ${{ matrix.config.os }} (${{ matrix.config.r }})</span></span>
+<span id="cb27-19"><a href="github-actions.html#cb27-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-20"><a href="github-actions.html#cb27-20" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">strategy</span><span class="kw">:</span></span>
+<span id="cb27-21"><a href="github-actions.html#cb27-21" aria-hidden="true" tabindex="-1"></a><span class="co">      # We keep a matrix for convenience, but we would typically just run on one</span></span>
+<span id="cb27-22"><a href="github-actions.html#cb27-22" aria-hidden="true" tabindex="-1"></a><span class="co">      # single OS and R version, aligned with the target deployment environment</span></span>
+<span id="cb27-23"><a href="github-actions.html#cb27-23" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">matrix</span><span class="kw">:</span></span>
+<span id="cb27-24"><a href="github-actions.html#cb27-24" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">config</span><span class="kw">:</span></span>
+<span id="cb27-25"><a href="github-actions.html#cb27-25" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="kw">-</span><span class="at"> </span><span class="kw">{</span><span class="fu">os</span><span class="kw">:</span><span class="at"> ubuntu-latest</span><span class="kw">,</span><span class="at"> </span><span class="fu">r</span><span class="kw">:</span><span class="at"> </span><span class="st">&#39;release&#39;</span><span class="kw">}</span></span>
+<span id="cb27-26"><a href="github-actions.html#cb27-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-27"><a href="github-actions.html#cb27-27" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">env</span><span class="kw">:</span></span>
+<span id="cb27-28"><a href="github-actions.html#cb27-28" aria-hidden="true" tabindex="-1"></a><span class="co">      # Access token for GitHub</span></span>
+<span id="cb27-29"><a href="github-actions.html#cb27-29" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">GITHUB_PAT</span><span class="kw">:</span><span class="at"> ${{ secrets.GITHUB_TOKEN }}</span></span>
+<span id="cb27-30"><a href="github-actions.html#cb27-30" aria-hidden="true" tabindex="-1"></a><span class="co">      # Preserve package sources for informative references in case of errors</span></span>
+<span id="cb27-31"><a href="github-actions.html#cb27-31" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">R_KEEP_PKG_SOURCE</span><span class="kw">:</span><span class="at"> </span><span class="ch">yes</span></span>
+<span id="cb27-32"><a href="github-actions.html#cb27-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-33"><a href="github-actions.html#cb27-33" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">steps</span><span class="kw">:</span></span>
+<span id="cb27-34"><a href="github-actions.html#cb27-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-35"><a href="github-actions.html#cb27-35" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Checkout repo</span></span>
+<span id="cb27-36"><a href="github-actions.html#cb27-36" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> actions/checkout@v3</span></span>
+<span id="cb27-37"><a href="github-actions.html#cb27-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-38"><a href="github-actions.html#cb27-38" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Setup R</span></span>
+<span id="cb27-39"><a href="github-actions.html#cb27-39" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> r-lib/actions/setup-r@v2</span></span>
+<span id="cb27-40"><a href="github-actions.html#cb27-40" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">with</span><span class="kw">:</span></span>
+<span id="cb27-41"><a href="github-actions.html#cb27-41" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">r-version</span><span class="kw">:</span><span class="at"> ${{ matrix.config.r }}</span></span>
+<span id="cb27-42"><a href="github-actions.html#cb27-42" aria-hidden="true" tabindex="-1"></a><span class="co">          # Enable RStudio Package Manager to speed up package installation</span></span>
+<span id="cb27-43"><a href="github-actions.html#cb27-43" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">use-public-rspm</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb27-44"><a href="github-actions.html#cb27-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-45"><a href="github-actions.html#cb27-45" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Install and cache dependencies</span></span>
+<span id="cb27-46"><a href="github-actions.html#cb27-46" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> r-lib/actions/setup-r-dependencies@v2</span></span>
+<span id="cb27-47"><a href="github-actions.html#cb27-47" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">with</span><span class="kw">:</span></span>
+<span id="cb27-48"><a href="github-actions.html#cb27-48" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">extra-packages</span><span class="kw">:</span><span class="at"> any::rcmdcheck</span></span>
+<span id="cb27-49"><a href="github-actions.html#cb27-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-50"><a href="github-actions.html#cb27-50" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Check package</span></span>
+<span id="cb27-51"><a href="github-actions.html#cb27-51" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> r-lib/actions/check-r-package@v2</span></span>
+<span id="cb27-52"><a href="github-actions.html#cb27-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-53"><a href="github-actions.html#cb27-53" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Deploy to shinyapps.io</span></span>
+<span id="cb27-54"><a href="github-actions.html#cb27-54" aria-hidden="true" tabindex="-1"></a><span class="co">        # Continuous deployment only for pushes to the main / master branch</span></span>
+<span id="cb27-55"><a href="github-actions.html#cb27-55" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">if</span><span class="kw">:</span><span class="at"> github.ref == &#39;refs/heads/main&#39; || github.ref == &#39;refs/heads/master&#39;</span></span>
+<span id="cb27-56"><a href="github-actions.html#cb27-56" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">env</span><span class="kw">:</span></span>
+<span id="cb27-57"><a href="github-actions.html#cb27-57" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">SHINYAPPS_ACCOUNT</span><span class="kw">:</span><span class="at"> ${{ secrets.SHINYAPPS_ACCOUNT }}</span></span>
+<span id="cb27-58"><a href="github-actions.html#cb27-58" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">SHINYAPPS_TOKEN</span><span class="kw">:</span><span class="at"> ${{ secrets.SHINYAPPS_TOKEN }}</span></span>
+<span id="cb27-59"><a href="github-actions.html#cb27-59" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">SHINYAPPS_SECRET</span><span class="kw">:</span><span class="at"> ${{ secrets.SHINYAPPS_SECRET }}</span></span>
+<span id="cb27-60"><a href="github-actions.html#cb27-60" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">run</span><span class="kw">:</span><span class="at"> Rscript deploy/deploy-shinyapps.R</span></span></code></pre></div>
+<p>As visible from the run logs that can be found in the GitHub repository under the <code>Actions</code> tab, all the CI/CD pipeline steps are performed subsequently, and are identifiable by the <code>name</code> field. See the example below, showing how the deployment step is skipped for a run not triggered by a push action the <code>main</code> (or <code>master</code>) branch:</p>
+<p><img src="shiny-ci-cd/img/ShinyCICD_githubactions1.png" alt="GitHub Actions Continuous Integration / Continuous Deployment pipeline for a packaged Shiny app" /></p>
+</div>
+<div id="complete-wfs-use-gh-action" class="section level3 hasAnchor" number="4.2.3">
+<h3><span class="header-section-number">4.2.3</span> Complete workflows and <code>usethis::use_github_action()</code><a href="github-actions.html#complete-wfs-use-gh-action" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Full YAML workflows for CI and CI/CD pipelines, with and without <code>renv</code>, are shown below and provided as part of this guide.</p>
+<p>In order to setup and use CI/CD GitHub Actions workflows as described above, you can simply include the relevant workflow file your project via:</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="github-actions.html#cb28-1" aria-hidden="true" tabindex="-1"></a>usethis<span class="sc">::</span><span class="fu">use_github_action</span>(<span class="at">url =</span> <span class="fu">paste0</span>(</span>
+<span id="cb28-2"><a href="github-actions.html#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;https://github.com/miraisolutions/techguides/blob/master/&quot;</span>,</span>
+<span id="cb28-3"><a href="github-actions.html#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;shiny-ci-cd/actions/ci-cd.yml&quot;</span></span>
+<span id="cb28-4"><a href="github-actions.html#cb28-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># &quot;shiny-ci-cd/actions/ci-cd-renv.yml&quot;</span></span>
+<span id="cb28-5"><a href="github-actions.html#cb28-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># &quot;shiny-ci-cd/actions/ci.yml&quot;</span></span>
+<span id="cb28-6"><a href="github-actions.html#cb28-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># &quot;shiny-ci-cd/actions/ci-renv.yml&quot;</span></span>
+<span id="cb28-7"><a href="github-actions.html#cb28-7" aria-hidden="true" tabindex="-1"></a>))</span>
+<span id="cb28-8"><a href="github-actions.html#cb28-8" aria-hidden="true" tabindex="-1"></a>usethis<span class="sc">::</span><span class="fu">use_github_actions_badge</span>(<span class="st">&quot;CI-CD&quot;</span>) <span class="co"># or &quot;CI&quot;</span></span></code></pre></div>
+<div id="complete-workflow-files" class="section level4 hasAnchor" number="4.2.3.1">
+<h4><span class="header-section-number">4.2.3.1</span> Complete workflow files<a href="github-actions.html#complete-workflow-files" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<details>
+<summary>
+<code>shiny-ci-cd/actions/ci-cd.yml</code>
+</summary>
+<div class="sourceCode" id="cb29"><pre class="sourceCode yml"><code class="sourceCode yaml"><span id="cb29-1"><a href="github-actions.html#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Workflow derived from https://github.com/r-lib/actions/tree/v2/examples</span></span>
+<span id="cb29-2"><a href="github-actions.html#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Need help debugging build failures? Start at https://github.com/r-lib/actions#where-to-find-help</span></span>
+<span id="cb29-3"><a href="github-actions.html#cb29-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-4"><a href="github-actions.html#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Name of the workflow =&gt; usethis::use_github_actions_badge(&quot;CI-CD&quot;)</span></span>
+<span id="cb29-5"><a href="github-actions.html#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="fu">name</span><span class="kw">:</span><span class="at"> CI-CD</span></span>
+<span id="cb29-6"><a href="github-actions.html#cb29-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-7"><a href="github-actions.html#cb29-7" aria-hidden="true" tabindex="-1"></a><span class="fu">on</span><span class="kw">:</span></span>
+<span id="cb29-8"><a href="github-actions.html#cb29-8" aria-hidden="true" tabindex="-1"></a><span class="co">  # Triggered on push and pull request events</span></span>
+<span id="cb29-9"><a href="github-actions.html#cb29-9" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">push</span><span class="kw">:</span></span>
+<span id="cb29-10"><a href="github-actions.html#cb29-10" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">pull_request</span><span class="kw">:</span></span>
+<span id="cb29-11"><a href="github-actions.html#cb29-11" aria-hidden="true" tabindex="-1"></a><span class="co">  # Allow manual runs from the Actions tab</span></span>
+<span id="cb29-12"><a href="github-actions.html#cb29-12" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">workflow_dispatch</span><span class="kw">:</span></span>
+<span id="cb29-13"><a href="github-actions.html#cb29-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-14"><a href="github-actions.html#cb29-14" aria-hidden="true" tabindex="-1"></a><span class="fu">jobs</span><span class="kw">:</span></span>
+<span id="cb29-15"><a href="github-actions.html#cb29-15" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">CI-CD</span><span class="kw">:</span></span>
+<span id="cb29-16"><a href="github-actions.html#cb29-16" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">runs-on</span><span class="kw">:</span><span class="at"> ${{ matrix.config.os }}</span></span>
+<span id="cb29-17"><a href="github-actions.html#cb29-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-18"><a href="github-actions.html#cb29-18" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">name</span><span class="kw">:</span><span class="at"> ${{ matrix.config.os }} (${{ matrix.config.r }})</span></span>
+<span id="cb29-19"><a href="github-actions.html#cb29-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-20"><a href="github-actions.html#cb29-20" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">strategy</span><span class="kw">:</span></span>
+<span id="cb29-21"><a href="github-actions.html#cb29-21" aria-hidden="true" tabindex="-1"></a><span class="co">      # We keep a matrix for convenience, but we would typically just run on one</span></span>
+<span id="cb29-22"><a href="github-actions.html#cb29-22" aria-hidden="true" tabindex="-1"></a><span class="co">      # single OS and R version, aligned with the target deployment environment</span></span>
+<span id="cb29-23"><a href="github-actions.html#cb29-23" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">matrix</span><span class="kw">:</span></span>
+<span id="cb29-24"><a href="github-actions.html#cb29-24" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">config</span><span class="kw">:</span></span>
+<span id="cb29-25"><a href="github-actions.html#cb29-25" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="kw">-</span><span class="at"> </span><span class="kw">{</span><span class="fu">os</span><span class="kw">:</span><span class="at"> ubuntu-latest</span><span class="kw">,</span><span class="at"> </span><span class="fu">r</span><span class="kw">:</span><span class="at"> </span><span class="st">&#39;release&#39;</span><span class="kw">}</span></span>
+<span id="cb29-26"><a href="github-actions.html#cb29-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-27"><a href="github-actions.html#cb29-27" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">env</span><span class="kw">:</span></span>
+<span id="cb29-28"><a href="github-actions.html#cb29-28" aria-hidden="true" tabindex="-1"></a><span class="co">      # Access token for GitHub</span></span>
+<span id="cb29-29"><a href="github-actions.html#cb29-29" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">GITHUB_PAT</span><span class="kw">:</span><span class="at"> ${{ secrets.GITHUB_TOKEN }}</span></span>
+<span id="cb29-30"><a href="github-actions.html#cb29-30" aria-hidden="true" tabindex="-1"></a><span class="co">      # Preserve package sources for informative references in case of errors</span></span>
+<span id="cb29-31"><a href="github-actions.html#cb29-31" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">R_KEEP_PKG_SOURCE</span><span class="kw">:</span><span class="at"> </span><span class="ch">yes</span></span>
+<span id="cb29-32"><a href="github-actions.html#cb29-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-33"><a href="github-actions.html#cb29-33" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">steps</span><span class="kw">:</span></span>
+<span id="cb29-34"><a href="github-actions.html#cb29-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-35"><a href="github-actions.html#cb29-35" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Checkout repo</span></span>
+<span id="cb29-36"><a href="github-actions.html#cb29-36" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> actions/checkout@v3</span></span>
+<span id="cb29-37"><a href="github-actions.html#cb29-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-38"><a href="github-actions.html#cb29-38" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Setup R</span></span>
+<span id="cb29-39"><a href="github-actions.html#cb29-39" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> r-lib/actions/setup-r@v2</span></span>
+<span id="cb29-40"><a href="github-actions.html#cb29-40" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">with</span><span class="kw">:</span></span>
+<span id="cb29-41"><a href="github-actions.html#cb29-41" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">r-version</span><span class="kw">:</span><span class="at"> ${{ matrix.config.r }}</span></span>
+<span id="cb29-42"><a href="github-actions.html#cb29-42" aria-hidden="true" tabindex="-1"></a><span class="co">          # Enable RStudio Package Manager to speed up package installation</span></span>
+<span id="cb29-43"><a href="github-actions.html#cb29-43" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">use-public-rspm</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb29-44"><a href="github-actions.html#cb29-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-45"><a href="github-actions.html#cb29-45" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Install and cache dependencies</span></span>
+<span id="cb29-46"><a href="github-actions.html#cb29-46" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> r-lib/actions/setup-r-dependencies@v2</span></span>
+<span id="cb29-47"><a href="github-actions.html#cb29-47" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">with</span><span class="kw">:</span></span>
+<span id="cb29-48"><a href="github-actions.html#cb29-48" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">extra-packages</span><span class="kw">:</span><span class="at"> any::rcmdcheck</span></span>
+<span id="cb29-49"><a href="github-actions.html#cb29-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-50"><a href="github-actions.html#cb29-50" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Check package</span></span>
+<span id="cb29-51"><a href="github-actions.html#cb29-51" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> r-lib/actions/check-r-package@v2</span></span>
+<span id="cb29-52"><a href="github-actions.html#cb29-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-53"><a href="github-actions.html#cb29-53" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Deploy to shinyapps.io</span></span>
+<span id="cb29-54"><a href="github-actions.html#cb29-54" aria-hidden="true" tabindex="-1"></a><span class="co">        # Continuous deployment only for pushes to the main / master branch</span></span>
+<span id="cb29-55"><a href="github-actions.html#cb29-55" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">if</span><span class="kw">:</span><span class="at"> github.ref == &#39;refs/heads/main&#39; || github.ref == &#39;refs/heads/master&#39;</span></span>
+<span id="cb29-56"><a href="github-actions.html#cb29-56" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">env</span><span class="kw">:</span></span>
+<span id="cb29-57"><a href="github-actions.html#cb29-57" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">SHINYAPPS_ACCOUNT</span><span class="kw">:</span><span class="at"> ${{ secrets.SHINYAPPS_ACCOUNT }}</span></span>
+<span id="cb29-58"><a href="github-actions.html#cb29-58" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">SHINYAPPS_TOKEN</span><span class="kw">:</span><span class="at"> ${{ secrets.SHINYAPPS_TOKEN }}</span></span>
+<span id="cb29-59"><a href="github-actions.html#cb29-59" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">SHINYAPPS_SECRET</span><span class="kw">:</span><span class="at"> ${{ secrets.SHINYAPPS_SECRET }}</span></span>
+<span id="cb29-60"><a href="github-actions.html#cb29-60" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">run</span><span class="kw">:</span><span class="at"> Rscript deploy/deploy-shinyapps.R</span></span></code></pre></div>
+</details>
+<details>
+<summary>
+<code>shiny-ci-cd/actions/ci-cd-renv.yml</code>
+</summary>
+<div class="sourceCode" id="cb30"><pre class="sourceCode yml"><code class="sourceCode yaml"><span id="cb30-1"><a href="github-actions.html#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Workflow derived from https://github.com/r-lib/actions/tree/v2/examples</span></span>
+<span id="cb30-2"><a href="github-actions.html#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Need help debugging build failures? Start at https://github.com/r-lib/actions#where-to-find-help</span></span>
+<span id="cb30-3"><a href="github-actions.html#cb30-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-4"><a href="github-actions.html#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Name of the workflow =&gt; usethis::use_github_actions_badge(&quot;CI-CD-renv&quot;)</span></span>
+<span id="cb30-5"><a href="github-actions.html#cb30-5" aria-hidden="true" tabindex="-1"></a><span class="fu">name</span><span class="kw">:</span><span class="at"> CI-CD-renv</span></span>
+<span id="cb30-6"><a href="github-actions.html#cb30-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-7"><a href="github-actions.html#cb30-7" aria-hidden="true" tabindex="-1"></a><span class="fu">on</span><span class="kw">:</span></span>
+<span id="cb30-8"><a href="github-actions.html#cb30-8" aria-hidden="true" tabindex="-1"></a><span class="co">  # Triggered on push and pull request events</span></span>
+<span id="cb30-9"><a href="github-actions.html#cb30-9" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">push</span><span class="kw">:</span></span>
+<span id="cb30-10"><a href="github-actions.html#cb30-10" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">pull_request</span><span class="kw">:</span></span>
+<span id="cb30-11"><a href="github-actions.html#cb30-11" aria-hidden="true" tabindex="-1"></a><span class="co">  # Allow manual runs from the Actions tab</span></span>
+<span id="cb30-12"><a href="github-actions.html#cb30-12" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">workflow_dispatch</span><span class="kw">:</span></span>
+<span id="cb30-13"><a href="github-actions.html#cb30-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-14"><a href="github-actions.html#cb30-14" aria-hidden="true" tabindex="-1"></a><span class="fu">jobs</span><span class="kw">:</span></span>
+<span id="cb30-15"><a href="github-actions.html#cb30-15" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">CI-CD</span><span class="kw">:</span></span>
+<span id="cb30-16"><a href="github-actions.html#cb30-16" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">runs-on</span><span class="kw">:</span><span class="at"> ${{ matrix.config.os }}</span></span>
+<span id="cb30-17"><a href="github-actions.html#cb30-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-18"><a href="github-actions.html#cb30-18" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">name</span><span class="kw">:</span><span class="at"> ${{ matrix.config.os }} (${{ matrix.config.r }})</span></span>
+<span id="cb30-19"><a href="github-actions.html#cb30-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-20"><a href="github-actions.html#cb30-20" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">strategy</span><span class="kw">:</span></span>
+<span id="cb30-21"><a href="github-actions.html#cb30-21" aria-hidden="true" tabindex="-1"></a><span class="co">      # We keep a matrix for convenience, but we would typically just run on one</span></span>
+<span id="cb30-22"><a href="github-actions.html#cb30-22" aria-hidden="true" tabindex="-1"></a><span class="co">      # single OS and R version, aligned with the target deployment environment</span></span>
+<span id="cb30-23"><a href="github-actions.html#cb30-23" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">matrix</span><span class="kw">:</span></span>
+<span id="cb30-24"><a href="github-actions.html#cb30-24" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">config</span><span class="kw">:</span></span>
+<span id="cb30-25"><a href="github-actions.html#cb30-25" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="kw">-</span><span class="at"> </span><span class="kw">{</span><span class="fu">os</span><span class="kw">:</span><span class="at"> ubuntu-latest</span><span class="kw">,</span><span class="at"> </span><span class="fu">r</span><span class="kw">:</span><span class="at"> </span><span class="st">&#39;release&#39;</span><span class="kw">}</span></span>
+<span id="cb30-26"><a href="github-actions.html#cb30-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-27"><a href="github-actions.html#cb30-27" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">env</span><span class="kw">:</span></span>
+<span id="cb30-28"><a href="github-actions.html#cb30-28" aria-hidden="true" tabindex="-1"></a><span class="co">      # Access token for GitHub</span></span>
+<span id="cb30-29"><a href="github-actions.html#cb30-29" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">GITHUB_PAT</span><span class="kw">:</span><span class="at"> ${{ secrets.GITHUB_TOKEN }}</span></span>
+<span id="cb30-30"><a href="github-actions.html#cb30-30" aria-hidden="true" tabindex="-1"></a><span class="co">      # Preserve package sources for informative references in case of errors</span></span>
+<span id="cb30-31"><a href="github-actions.html#cb30-31" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">R_KEEP_PKG_SOURCE</span><span class="kw">:</span><span class="at"> </span><span class="ch">yes</span></span>
+<span id="cb30-32"><a href="github-actions.html#cb30-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-33"><a href="github-actions.html#cb30-33" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">steps</span><span class="kw">:</span></span>
+<span id="cb30-34"><a href="github-actions.html#cb30-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-35"><a href="github-actions.html#cb30-35" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Checkout repo</span></span>
+<span id="cb30-36"><a href="github-actions.html#cb30-36" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> actions/checkout@v3</span></span>
+<span id="cb30-37"><a href="github-actions.html#cb30-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-38"><a href="github-actions.html#cb30-38" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Setup R</span></span>
+<span id="cb30-39"><a href="github-actions.html#cb30-39" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> r-lib/actions/setup-r@v2</span></span>
+<span id="cb30-40"><a href="github-actions.html#cb30-40" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">with</span><span class="kw">:</span></span>
+<span id="cb30-41"><a href="github-actions.html#cb30-41" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">r-version</span><span class="kw">:</span><span class="at"> ${{ matrix.config.r }}</span></span>
+<span id="cb30-42"><a href="github-actions.html#cb30-42" aria-hidden="true" tabindex="-1"></a><span class="co">          # Enable RStudio Package Manager to speed up package installation</span></span>
+<span id="cb30-43"><a href="github-actions.html#cb30-43" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">use-public-rspm</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb30-44"><a href="github-actions.html#cb30-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-45"><a href="github-actions.html#cb30-45" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Install system dependencies</span></span>
+<span id="cb30-46"><a href="github-actions.html#cb30-46" aria-hidden="true" tabindex="-1"></a><span class="co">        # This is not taken care of (yet) by r-lib/actions/setup-renv</span></span>
+<span id="cb30-47"><a href="github-actions.html#cb30-47" aria-hidden="true" tabindex="-1"></a><span class="co">        # Package distro used to get the distro for the used ubuntu-latest</span></span>
+<span id="cb30-48"><a href="github-actions.html#cb30-48" aria-hidden="true" tabindex="-1"></a><span class="fu">        run</span><span class="kw">: </span><span class="ch">|</span></span>
+<span id="cb30-49"><a href="github-actions.html#cb30-49" aria-hidden="true" tabindex="-1"></a>          Rscript -e &quot;install.packages(c(&#39;remotes&#39;, &#39;distro&#39;))&quot;</span>
+<span id="cb30-50"><a href="github-actions.html#cb30-50" aria-hidden="true" tabindex="-1"></a>          while read -r cmd</span>
+<span id="cb30-51"><a href="github-actions.html#cb30-51" aria-hidden="true" tabindex="-1"></a>          do</span>
+<span id="cb30-52"><a href="github-actions.html#cb30-52" aria-hidden="true" tabindex="-1"></a>            eval sudo $cmd</span>
+<span id="cb30-53"><a href="github-actions.html#cb30-53" aria-hidden="true" tabindex="-1"></a>          done &lt; &lt;(Rscript -e &#39;writeLines(with(distro::distro(), remotes::system_requirements(id, short_version)))&#39;)</span>
+<span id="cb30-54"><a href="github-actions.html#cb30-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-55"><a href="github-actions.html#cb30-55" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Activate renv and restore packages with cache</span></span>
+<span id="cb30-56"><a href="github-actions.html#cb30-56" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> r-lib/actions/setup-renv@v2</span></span>
+<span id="cb30-57"><a href="github-actions.html#cb30-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-58"><a href="github-actions.html#cb30-58" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Install R CMD check</span></span>
+<span id="cb30-59"><a href="github-actions.html#cb30-59" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">run</span><span class="kw">:</span><span class="at"> install.packages(&quot;rcmdcheck&quot;)</span></span>
+<span id="cb30-60"><a href="github-actions.html#cb30-60" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">shell</span><span class="kw">:</span><span class="at"> Rscript {0}</span></span>
+<span id="cb30-61"><a href="github-actions.html#cb30-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-62"><a href="github-actions.html#cb30-62" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Check package</span></span>
+<span id="cb30-63"><a href="github-actions.html#cb30-63" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> r-lib/actions/check-r-package@v2</span></span>
+<span id="cb30-64"><a href="github-actions.html#cb30-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-65"><a href="github-actions.html#cb30-65" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Deploy to shinyapps.io</span></span>
+<span id="cb30-66"><a href="github-actions.html#cb30-66" aria-hidden="true" tabindex="-1"></a><span class="co">        # Continuous deployment only for pushes to the main / master branch</span></span>
+<span id="cb30-67"><a href="github-actions.html#cb30-67" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">if</span><span class="kw">:</span><span class="at"> github.ref == &#39;refs/heads/main&#39; || github.ref == &#39;refs/heads/master&#39;</span></span>
+<span id="cb30-68"><a href="github-actions.html#cb30-68" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">env</span><span class="kw">:</span></span>
+<span id="cb30-69"><a href="github-actions.html#cb30-69" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">SHINYAPPS_ACCOUNT</span><span class="kw">:</span><span class="at"> ${{ secrets.SHINYAPPS_ACCOUNT }}</span></span>
+<span id="cb30-70"><a href="github-actions.html#cb30-70" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">SHINYAPPS_TOKEN</span><span class="kw">:</span><span class="at"> ${{ secrets.SHINYAPPS_TOKEN }}</span></span>
+<span id="cb30-71"><a href="github-actions.html#cb30-71" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">SHINYAPPS_SECRET</span><span class="kw">:</span><span class="at"> ${{ secrets.SHINYAPPS_SECRET }}</span></span>
+<span id="cb30-72"><a href="github-actions.html#cb30-72" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">run</span><span class="kw">:</span><span class="at"> Rscript deploy/deploy-shinyapps.R</span></span></code></pre></div>
+</details>
+<details>
+<summary>
+<code>shiny-ci-cd/actions/ci.yml</code>
+</summary>
+<div class="sourceCode" id="cb31"><pre class="sourceCode yml"><code class="sourceCode yaml"><span id="cb31-1"><a href="github-actions.html#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Workflow derived from https://github.com/r-lib/actions/tree/v2/examples</span></span>
+<span id="cb31-2"><a href="github-actions.html#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Need help debugging build failures? Start at https://github.com/r-lib/actions#where-to-find-help</span></span>
+<span id="cb31-3"><a href="github-actions.html#cb31-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-4"><a href="github-actions.html#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Name of the workflow =&gt; usethis::use_github_actions_badge(&quot;CI&quot;)</span></span>
+<span id="cb31-5"><a href="github-actions.html#cb31-5" aria-hidden="true" tabindex="-1"></a><span class="fu">name</span><span class="kw">:</span><span class="at"> CI</span></span>
+<span id="cb31-6"><a href="github-actions.html#cb31-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-7"><a href="github-actions.html#cb31-7" aria-hidden="true" tabindex="-1"></a><span class="fu">on</span><span class="kw">:</span></span>
+<span id="cb31-8"><a href="github-actions.html#cb31-8" aria-hidden="true" tabindex="-1"></a><span class="co">  # Triggered on push and pull request events</span></span>
+<span id="cb31-9"><a href="github-actions.html#cb31-9" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">push</span><span class="kw">:</span></span>
+<span id="cb31-10"><a href="github-actions.html#cb31-10" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">pull_request</span><span class="kw">:</span></span>
+<span id="cb31-11"><a href="github-actions.html#cb31-11" aria-hidden="true" tabindex="-1"></a><span class="co">  # Allow manual runs from the Actions tab</span></span>
+<span id="cb31-12"><a href="github-actions.html#cb31-12" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">workflow_dispatch</span><span class="kw">:</span></span>
+<span id="cb31-13"><a href="github-actions.html#cb31-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-14"><a href="github-actions.html#cb31-14" aria-hidden="true" tabindex="-1"></a><span class="fu">jobs</span><span class="kw">:</span></span>
+<span id="cb31-15"><a href="github-actions.html#cb31-15" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">CI-CD</span><span class="kw">:</span></span>
+<span id="cb31-16"><a href="github-actions.html#cb31-16" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">runs-on</span><span class="kw">:</span><span class="at"> ${{ matrix.config.os }}</span></span>
+<span id="cb31-17"><a href="github-actions.html#cb31-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-18"><a href="github-actions.html#cb31-18" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">name</span><span class="kw">:</span><span class="at"> ${{ matrix.config.os }} (${{ matrix.config.r }})</span></span>
+<span id="cb31-19"><a href="github-actions.html#cb31-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-20"><a href="github-actions.html#cb31-20" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">strategy</span><span class="kw">:</span></span>
+<span id="cb31-21"><a href="github-actions.html#cb31-21" aria-hidden="true" tabindex="-1"></a><span class="co">      # We keep a matrix for convenience, but we would typically just run on one</span></span>
+<span id="cb31-22"><a href="github-actions.html#cb31-22" aria-hidden="true" tabindex="-1"></a><span class="co">      # single OS and R version, aligned with the target deployment environment</span></span>
+<span id="cb31-23"><a href="github-actions.html#cb31-23" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">matrix</span><span class="kw">:</span></span>
+<span id="cb31-24"><a href="github-actions.html#cb31-24" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">config</span><span class="kw">:</span></span>
+<span id="cb31-25"><a href="github-actions.html#cb31-25" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="kw">-</span><span class="at"> </span><span class="kw">{</span><span class="fu">os</span><span class="kw">:</span><span class="at"> ubuntu-latest</span><span class="kw">,</span><span class="at"> </span><span class="fu">r</span><span class="kw">:</span><span class="at"> </span><span class="st">&#39;release&#39;</span><span class="kw">}</span></span>
+<span id="cb31-26"><a href="github-actions.html#cb31-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-27"><a href="github-actions.html#cb31-27" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">env</span><span class="kw">:</span></span>
+<span id="cb31-28"><a href="github-actions.html#cb31-28" aria-hidden="true" tabindex="-1"></a><span class="co">      # Access token for GitHub</span></span>
+<span id="cb31-29"><a href="github-actions.html#cb31-29" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">GITHUB_PAT</span><span class="kw">:</span><span class="at"> ${{ secrets.GITHUB_TOKEN }}</span></span>
+<span id="cb31-30"><a href="github-actions.html#cb31-30" aria-hidden="true" tabindex="-1"></a><span class="co">      # Preserve package sources for informative references in case of errors</span></span>
+<span id="cb31-31"><a href="github-actions.html#cb31-31" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">R_KEEP_PKG_SOURCE</span><span class="kw">:</span><span class="at"> </span><span class="ch">yes</span></span>
+<span id="cb31-32"><a href="github-actions.html#cb31-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-33"><a href="github-actions.html#cb31-33" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">steps</span><span class="kw">:</span></span>
+<span id="cb31-34"><a href="github-actions.html#cb31-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-35"><a href="github-actions.html#cb31-35" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Checkout repo</span></span>
+<span id="cb31-36"><a href="github-actions.html#cb31-36" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> actions/checkout@v3</span></span>
+<span id="cb31-37"><a href="github-actions.html#cb31-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-38"><a href="github-actions.html#cb31-38" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Setup R</span></span>
+<span id="cb31-39"><a href="github-actions.html#cb31-39" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> r-lib/actions/setup-r@v2</span></span>
+<span id="cb31-40"><a href="github-actions.html#cb31-40" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">with</span><span class="kw">:</span></span>
+<span id="cb31-41"><a href="github-actions.html#cb31-41" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">r-version</span><span class="kw">:</span><span class="at"> ${{ matrix.config.r }}</span></span>
+<span id="cb31-42"><a href="github-actions.html#cb31-42" aria-hidden="true" tabindex="-1"></a><span class="co">          # Enable RStudio Package Manager to speed up package installation</span></span>
+<span id="cb31-43"><a href="github-actions.html#cb31-43" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">use-public-rspm</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb31-44"><a href="github-actions.html#cb31-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-45"><a href="github-actions.html#cb31-45" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Install and cache dependencies</span></span>
+<span id="cb31-46"><a href="github-actions.html#cb31-46" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> r-lib/actions/setup-r-dependencies@v2</span></span>
+<span id="cb31-47"><a href="github-actions.html#cb31-47" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">with</span><span class="kw">:</span></span>
+<span id="cb31-48"><a href="github-actions.html#cb31-48" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">extra-packages</span><span class="kw">:</span><span class="at"> any::rcmdcheck</span></span>
+<span id="cb31-49"><a href="github-actions.html#cb31-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-50"><a href="github-actions.html#cb31-50" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Check package</span></span>
+<span id="cb31-51"><a href="github-actions.html#cb31-51" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> r-lib/actions/check-r-package@v2</span></span></code></pre></div>
+</details>
+<details>
+<summary>
+<code>shiny-ci-cd/actions/ci-renv.yml</code>
+</summary>
+<div class="sourceCode" id="cb32"><pre class="sourceCode yml"><code class="sourceCode yaml"><span id="cb32-1"><a href="github-actions.html#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Workflow derived from https://github.com/r-lib/actions/tree/v2/examples</span></span>
+<span id="cb32-2"><a href="github-actions.html#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Need help debugging build failures? Start at https://github.com/r-lib/actions#where-to-find-help</span></span>
+<span id="cb32-3"><a href="github-actions.html#cb32-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-4"><a href="github-actions.html#cb32-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Name of the workflow =&gt; usethis::use_github_actions_badge(&quot;CI-renv&quot;)</span></span>
+<span id="cb32-5"><a href="github-actions.html#cb32-5" aria-hidden="true" tabindex="-1"></a><span class="fu">name</span><span class="kw">:</span><span class="at"> CI-renv</span></span>
+<span id="cb32-6"><a href="github-actions.html#cb32-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-7"><a href="github-actions.html#cb32-7" aria-hidden="true" tabindex="-1"></a><span class="fu">on</span><span class="kw">:</span></span>
+<span id="cb32-8"><a href="github-actions.html#cb32-8" aria-hidden="true" tabindex="-1"></a><span class="co">  # Triggered on push and pull request events</span></span>
+<span id="cb32-9"><a href="github-actions.html#cb32-9" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">push</span><span class="kw">:</span></span>
+<span id="cb32-10"><a href="github-actions.html#cb32-10" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">pull_request</span><span class="kw">:</span></span>
+<span id="cb32-11"><a href="github-actions.html#cb32-11" aria-hidden="true" tabindex="-1"></a><span class="co">  # Allow manual runs from the Actions tab</span></span>
+<span id="cb32-12"><a href="github-actions.html#cb32-12" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">workflow_dispatch</span><span class="kw">:</span></span>
+<span id="cb32-13"><a href="github-actions.html#cb32-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-14"><a href="github-actions.html#cb32-14" aria-hidden="true" tabindex="-1"></a><span class="fu">jobs</span><span class="kw">:</span></span>
+<span id="cb32-15"><a href="github-actions.html#cb32-15" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">CI-CD</span><span class="kw">:</span></span>
+<span id="cb32-16"><a href="github-actions.html#cb32-16" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">runs-on</span><span class="kw">:</span><span class="at"> ${{ matrix.config.os }}</span></span>
+<span id="cb32-17"><a href="github-actions.html#cb32-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-18"><a href="github-actions.html#cb32-18" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">name</span><span class="kw">:</span><span class="at"> ${{ matrix.config.os }} (${{ matrix.config.r }})</span></span>
+<span id="cb32-19"><a href="github-actions.html#cb32-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-20"><a href="github-actions.html#cb32-20" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">strategy</span><span class="kw">:</span></span>
+<span id="cb32-21"><a href="github-actions.html#cb32-21" aria-hidden="true" tabindex="-1"></a><span class="co">      # We keep a matrix for convenience, but we would typically just run on one</span></span>
+<span id="cb32-22"><a href="github-actions.html#cb32-22" aria-hidden="true" tabindex="-1"></a><span class="co">      # single OS and R version, aligned with the target deployment environment</span></span>
+<span id="cb32-23"><a href="github-actions.html#cb32-23" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">matrix</span><span class="kw">:</span></span>
+<span id="cb32-24"><a href="github-actions.html#cb32-24" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">config</span><span class="kw">:</span></span>
+<span id="cb32-25"><a href="github-actions.html#cb32-25" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="kw">-</span><span class="at"> </span><span class="kw">{</span><span class="fu">os</span><span class="kw">:</span><span class="at"> ubuntu-latest</span><span class="kw">,</span><span class="at"> </span><span class="fu">r</span><span class="kw">:</span><span class="at"> </span><span class="st">&#39;release&#39;</span><span class="kw">}</span></span>
+<span id="cb32-26"><a href="github-actions.html#cb32-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-27"><a href="github-actions.html#cb32-27" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">env</span><span class="kw">:</span></span>
+<span id="cb32-28"><a href="github-actions.html#cb32-28" aria-hidden="true" tabindex="-1"></a><span class="co">      # Access token for GitHub</span></span>
+<span id="cb32-29"><a href="github-actions.html#cb32-29" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">GITHUB_PAT</span><span class="kw">:</span><span class="at"> ${{ secrets.GITHUB_TOKEN }}</span></span>
+<span id="cb32-30"><a href="github-actions.html#cb32-30" aria-hidden="true" tabindex="-1"></a><span class="co">      # Preserve package sources for informative references in case of errors</span></span>
+<span id="cb32-31"><a href="github-actions.html#cb32-31" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">R_KEEP_PKG_SOURCE</span><span class="kw">:</span><span class="at"> </span><span class="ch">yes</span></span>
+<span id="cb32-32"><a href="github-actions.html#cb32-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-33"><a href="github-actions.html#cb32-33" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">steps</span><span class="kw">:</span></span>
+<span id="cb32-34"><a href="github-actions.html#cb32-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-35"><a href="github-actions.html#cb32-35" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Checkout repo</span></span>
+<span id="cb32-36"><a href="github-actions.html#cb32-36" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> actions/checkout@v3</span></span>
+<span id="cb32-37"><a href="github-actions.html#cb32-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-38"><a href="github-actions.html#cb32-38" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Setup R</span></span>
+<span id="cb32-39"><a href="github-actions.html#cb32-39" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> r-lib/actions/setup-r@v2</span></span>
+<span id="cb32-40"><a href="github-actions.html#cb32-40" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">with</span><span class="kw">:</span></span>
+<span id="cb32-41"><a href="github-actions.html#cb32-41" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">r-version</span><span class="kw">:</span><span class="at"> ${{ matrix.config.r }}</span></span>
+<span id="cb32-42"><a href="github-actions.html#cb32-42" aria-hidden="true" tabindex="-1"></a><span class="co">          # Enable RStudio Package Manager to speed up package installation</span></span>
+<span id="cb32-43"><a href="github-actions.html#cb32-43" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">use-public-rspm</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb32-44"><a href="github-actions.html#cb32-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-45"><a href="github-actions.html#cb32-45" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Install system dependencies</span></span>
+<span id="cb32-46"><a href="github-actions.html#cb32-46" aria-hidden="true" tabindex="-1"></a><span class="co">        # This is not taken care of (yet) by r-lib/actions/setup-renv</span></span>
+<span id="cb32-47"><a href="github-actions.html#cb32-47" aria-hidden="true" tabindex="-1"></a><span class="co">        # Package distro used to get the distro for the used ubuntu-latest</span></span>
+<span id="cb32-48"><a href="github-actions.html#cb32-48" aria-hidden="true" tabindex="-1"></a><span class="fu">        run</span><span class="kw">: </span><span class="ch">|</span></span>
+<span id="cb32-49"><a href="github-actions.html#cb32-49" aria-hidden="true" tabindex="-1"></a>          Rscript -e &quot;install.packages(c(&#39;remotes&#39;, &#39;distro&#39;))&quot;</span>
+<span id="cb32-50"><a href="github-actions.html#cb32-50" aria-hidden="true" tabindex="-1"></a>          while read -r cmd</span>
+<span id="cb32-51"><a href="github-actions.html#cb32-51" aria-hidden="true" tabindex="-1"></a>          do</span>
+<span id="cb32-52"><a href="github-actions.html#cb32-52" aria-hidden="true" tabindex="-1"></a>            eval sudo $cmd</span>
+<span id="cb32-53"><a href="github-actions.html#cb32-53" aria-hidden="true" tabindex="-1"></a>          done &lt; &lt;(Rscript -e &#39;writeLines(with(distro::distro(), remotes::system_requirements(id, short_version)))&#39;)</span>
+<span id="cb32-54"><a href="github-actions.html#cb32-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-55"><a href="github-actions.html#cb32-55" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Activate renv and restore packages with cache</span></span>
+<span id="cb32-56"><a href="github-actions.html#cb32-56" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> r-lib/actions/setup-renv@v2</span></span>
+<span id="cb32-57"><a href="github-actions.html#cb32-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-58"><a href="github-actions.html#cb32-58" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Install R CMD check</span></span>
+<span id="cb32-59"><a href="github-actions.html#cb32-59" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">run</span><span class="kw">:</span><span class="at"> install.packages(&quot;rcmdcheck&quot;)</span></span>
+<span id="cb32-60"><a href="github-actions.html#cb32-60" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">shell</span><span class="kw">:</span><span class="at"> Rscript {0}</span></span>
+<span id="cb32-61"><a href="github-actions.html#cb32-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-62"><a href="github-actions.html#cb32-62" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Check package</span></span>
+<span id="cb32-63"><a href="github-actions.html#cb32-63" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> r-lib/actions/check-r-package@v2</span></span></code></pre></div>
+</details>
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="generic-cicd-pipeline.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="travis-ci.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": true,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

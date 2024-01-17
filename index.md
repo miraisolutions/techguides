@@ -1,0 +1,20 @@
+--- 
+title: "Technical Guidelines"
+author: "Mirai Solutions"
+date: "2024-01-17 11:06:53.288005"
+github-repo: "miraisolutions/techguides"
+site: bookdown::bookdown_site
+output:
+  bookdown::gitbook:
+    split_by: section
+    # disable alt text rendered as figure caption
+    fig_caption: false
+    config:
+      sharing:
+        github: yes
+---
+
+# Introduction {-}
+
+[Mirai Solutions](https://mirai-solutions.ch) is happy to share technical
+guidelines, how-tos and best practices in different areas.

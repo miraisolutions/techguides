@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>1.4 Examples | Technical Guidelines</title>
+  <meta name="description" content="1.4 Examples | Technical Guidelines" />
+  <meta name="generator" content="bookdown 0.37 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="1.4 Examples | Technical Guidelines" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta name="github-repo" content="miraisolutions/techguides" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="1.4 Examples | Technical Guidelines" />
+  
+  
+  
+
+<meta name="author" content="Mirai Solutions" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="advanced-usage-and-consistent-documentation.html"/>
+<link rel="next" href="version-stable-r-development-with-docker.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Introduction</a></li>
+<li class="chapter" data-level="1" data-path="roxygen-documentation-guidelines.html"><a href="roxygen-documentation-guidelines.html"><i class="fa fa-check"></i><b>1</b> Roxygen documentation guidelines</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="general-guidelines-and-documentation-workflow.html"><a href="general-guidelines-and-documentation-workflow.html"><i class="fa fa-check"></i><b>1.1</b> General guidelines and documentation workflow</a></li>
+<li class="chapter" data-level="1.2" data-path="content-organization.html"><a href="content-organization.html"><i class="fa fa-check"></i><b>1.2</b> Content organization</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="content-organization.html"><a href="content-organization.html#note-about-title"><i class="fa fa-check"></i><b>1.2.1</b> Note about <code>@title</code></a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="advanced-usage-and-consistent-documentation.html"><a href="advanced-usage-and-consistent-documentation.html"><i class="fa fa-check"></i><b>1.3</b> Advanced usage and consistent documentation</a>
+<ul>
+<li class="chapter" data-level="1.3.1" data-path="advanced-usage-and-consistent-documentation.html"><a href="advanced-usage-and-consistent-documentation.html#roxygen-templates-and-example-scripts"><i class="fa fa-check"></i><b>1.3.1</b> Roxygen templates and example scripts</a></li>
+<li class="chapter" data-level="1.3.2" data-path="advanced-usage-and-consistent-documentation.html"><a href="advanced-usage-and-consistent-documentation.html#using-rdname-and-describein"><i class="fa fa-check"></i><b>1.3.2</b> Using <code>@rdname</code> and <code>@describeIn</code></a></li>
+</ul></li>
+<li class="chapter" data-level="1.4" data-path="examples.html"><a href="examples.html"><i class="fa fa-check"></i><b>1.4</b> Examples</a>
+<ul>
+<li class="chapter" data-level="1.4.1" data-path="examples.html"><a href="examples.html#general-content-organization"><i class="fa fa-check"></i><b>1.4.1</b> General content organization</a></li>
+<li class="chapter" data-level="1.4.2" data-path="examples.html"><a href="examples.html#templates-and-example-scripts"><i class="fa fa-check"></i><b>1.4.2</b> Templates and example scripts</a></li>
+<li class="chapter" data-level="1.4.3" data-path="examples.html"><a href="examples.html#rdname"><i class="fa fa-check"></i><b>1.4.3</b> <code>@rdname</code></a></li>
+<li class="chapter" data-level="1.4.4" data-path="examples.html"><a href="examples.html#describein"><i class="fa fa-check"></i><b>1.4.4</b> <code>@describeIn</code></a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="version-stable-r-development-with-docker.html"><a href="version-stable-r-development-with-docker.html"><i class="fa fa-check"></i><b>2</b> Version-stable R development with Docker</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="version-stable-deployments.html"><a href="version-stable-deployments.html"><i class="fa fa-check"></i><b>2.1</b> Version-stable deployments</a></li>
+<li class="chapter" data-level="2.2" data-path="align-local-development-and-deployment-environments.html"><a href="align-local-development-and-deployment-environments.html"><i class="fa fa-check"></i><b>2.2</b> Align local development and deployment environments</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="align-local-development-and-deployment-environments.html"><a href="align-local-development-and-deployment-environments.html#running-versioned-rstudio-instances"><i class="fa fa-check"></i><b>2.2.1</b> Running versioned RStudio instances</a></li>
+<li class="chapter" data-level="2.2.2" data-path="align-local-development-and-deployment-environments.html"><a href="align-local-development-and-deployment-environments.html#tinytex-considerations"><i class="fa fa-check"></i><b>2.2.2</b> TinyTeX considerations</a></li>
+<li class="chapter" data-level="2.2.3" data-path="align-local-development-and-deployment-environments.html"><a href="align-local-development-and-deployment-environments.html#cleanup"><i class="fa fa-check"></i><b>2.2.3</b> Cleanup</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><b>2.3</b> References</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="control-dependencies-with-renv.html"><a href="control-dependencies-with-renv.html"><i class="fa fa-check"></i><b>3</b> Control dependencies with <code>renv</code></a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="install-renv.html"><a href="install-renv.html"><i class="fa fa-check"></i><b>3.1</b> Install <code>renv</code></a></li>
+<li class="chapter" data-level="3.2" data-path="initialize-an-renv-project.html"><a href="initialize-an-renv-project.html"><i class="fa fa-check"></i><b>3.2</b> Initialize an <code>renv</code> project</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="initialize-an-renv-project.html"><a href="initialize-an-renv-project.html#control-packages-version"><i class="fa fa-check"></i><b>3.2.1</b> Control packages version</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="caching-the-packages-versions.html"><a href="caching-the-packages-versions.html"><i class="fa fa-check"></i><b>3.3</b> Caching the packages’ versions</a></li>
+<li class="chapter" data-level="3.4" data-path="removing-the-renv-setup-from-a-project.html"><a href="removing-the-renv-setup-from-a-project.html"><i class="fa fa-check"></i><b>3.4</b> Removing the <code>renv</code> setup from a project</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="cicd-pipelines-for-automatic-deployment-of-a-r-shiny-web-app.html"><a href="cicd-pipelines-for-automatic-deployment-of-a-r-shiny-web-app.html"><i class="fa fa-check"></i><b>4</b> CI/CD pipelines for automatic deployment of a R Shiny web app</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="generic-cicd-pipeline.html"><a href="generic-cicd-pipeline.html"><i class="fa fa-check"></i><b>4.1</b> Generic CI/CD pipeline</a></li>
+<li class="chapter" data-level="4.2" data-path="github-actions.html"><a href="github-actions.html"><i class="fa fa-check"></i><b>4.2</b> GitHub Actions</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="github-actions.html"><a href="github-actions.html#workflow-steps"><i class="fa fa-check"></i><b>4.2.1</b> Workflow steps</a></li>
+<li class="chapter" data-level="4.2.2" data-path="github-actions.html"><a href="github-actions.html#workflow-file"><i class="fa fa-check"></i><b>4.2.2</b> Workflow file</a></li>
+<li class="chapter" data-level="4.2.3" data-path="github-actions.html"><a href="github-actions.html#complete-wfs-use-gh-action"><i class="fa fa-check"></i><b>4.2.3</b> Complete workflows and <code>usethis::use_github_action()</code></a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="travis-ci.html"><a href="travis-ci.html"><i class="fa fa-check"></i><b>4.3</b> Travis CI</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="travis-ci.html"><a href="travis-ci.html#standard-ci-setup"><i class="fa fa-check"></i><b>4.3.1</b> Standard CI setup</a></li>
+<li class="chapter" data-level="4.3.2" data-path="travis-ci.html"><a href="travis-ci.html#using-renv-for-your-project"><i class="fa fa-check"></i><b>4.3.2</b> Using renv for your project</a></li>
+<li class="chapter" data-level="4.3.3" data-path="travis-ci.html"><a href="travis-ci.html#automated-deployment"><i class="fa fa-check"></i><b>4.3.3</b> Automated deployment</a></li>
+<li class="chapter" data-level="4.3.4" data-path="travis-ci.html"><a href="travis-ci.html#putting-it-all-together"><i class="fa fa-check"></i><b>4.3.4</b> Putting it all together</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="deploying-a-packaged-shiny-application.html"><a href="deploying-a-packaged-shiny-application.html"><i class="fa fa-check"></i><b>4.4</b> Deploying a packaged shiny application</a>
+<ul>
+<li class="chapter" data-level="4.4.1" data-path="deploying-a-packaged-shiny-application.html"><a href="deploying-a-packaged-shiny-application.html#entry-point"><i class="fa fa-check"></i><b>4.4.1</b> Entry point</a></li>
+<li class="chapter" data-level="4.4.2" data-path="deploying-a-packaged-shiny-application.html"><a href="deploying-a-packaged-shiny-application.html#server-and-ui"><i class="fa fa-check"></i><b>4.4.2</b> server and ui</a></li>
+<li class="chapter" data-level="4.4.3" data-path="deploying-a-packaged-shiny-application.html"><a href="deploying-a-packaged-shiny-application.html#non-cran-dependencies"><i class="fa fa-check"></i><b>4.4.3</b> non-CRAN dependencies</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="xlconnect-easy-and-controlled-interface-to-microsoft-excel.html"><a href="xlconnect-easy-and-controlled-interface-to-microsoft-excel.html"><i class="fa fa-check"></i><b>5</b> <code>XLConnect</code>: easy and controlled interface to Microsoft Excel</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="installation.html"><a href="installation.html"><i class="fa fa-check"></i><b>5.1</b> Installation</a></li>
+<li class="chapter" data-level="5.2" data-path="basic-functions-write-read-an-excel-sheet.html"><a href="basic-functions-write-read-an-excel-sheet.html"><i class="fa fa-check"></i><b>5.2</b> Basic functions: write &amp; read an Excel sheet</a>
+<ul>
+<li class="chapter" data-level="5.2.1" data-path="basic-functions-write-read-an-excel-sheet.html"><a href="basic-functions-write-read-an-excel-sheet.html#writing-excel-files"><i class="fa fa-check"></i><b>5.2.1</b> Writing Excel files</a></li>
+<li class="chapter" data-level="5.2.2" data-path="basic-functions-write-read-an-excel-sheet.html"><a href="basic-functions-write-read-an-excel-sheet.html#reading-from-excel-files"><i class="fa fa-check"></i><b>5.2.2</b> Reading from Excel files</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="formatting.html"><a href="formatting.html"><i class="fa fa-check"></i><b>5.3</b> Formatting</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="formatting.html"><a href="formatting.html#create-and-apply-some-formatting"><i class="fa fa-check"></i><b>5.3.1</b> Create and apply some formatting</a></li>
+<li class="chapter" data-level="5.3.2" data-path="formatting.html"><a href="formatting.html#retrieve-and-apply-some-formatting"><i class="fa fa-check"></i><b>5.3.2</b> Retrieve and apply some formatting</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="add-a-graph.html"><a href="add-a-graph.html"><i class="fa fa-check"></i><b>5.4</b> Add a graph</a></li>
+<li class="chapter" data-level="5.5" data-path="other-functionalities.html"><a href="other-functionalities.html"><i class="fa fa-check"></i><b>5.5</b> Other functionalities</a>
+<ul>
+<li class="chapter" data-level="5.5.1" data-path="other-functionalities.html"><a href="other-functionalities.html#recalculate-workbook"><i class="fa fa-check"></i><b>5.5.1</b> Recalculate workbook</a></li>
+<li class="chapter" data-level="5.5.2" data-path="other-functionalities.html"><a href="other-functionalities.html#hide-sheets"><i class="fa fa-check"></i><b>5.5.2</b> Hide sheets</a></li>
+<li class="chapter" data-level="5.5.3" data-path="other-functionalities.html"><a href="other-functionalities.html#sheet-visibility-check-and-unhide-sheets"><i class="fa fa-check"></i><b>5.5.3</b> Sheet visibility check and unhide sheets</a></li>
+<li class="chapter" data-level="5.5.4" data-path="other-functionalities.html"><a href="other-functionalities.html#append-named-region"><i class="fa fa-check"></i><b>5.5.4</b> Append named region</a></li>
+<li class="chapter" data-level="5.5.5" data-path="other-functionalities.html"><a href="other-functionalities.html#remove-sheets"><i class="fa fa-check"></i><b>5.5.5</b> Remove sheets</a></li>
+<li class="chapter" data-level="5.5.6" data-path="other-functionalities.html"><a href="other-functionalities.html#remove-named-regions"><i class="fa fa-check"></i><b>5.5.6</b> Remove named regions</a></li>
+<li class="chapter" data-level="5.5.7" data-path="other-functionalities.html"><a href="other-functionalities.html#clone-sheets"><i class="fa fa-check"></i><b>5.5.7</b> Clone sheets</a></li>
+<li class="chapter" data-level="5.5.8" data-path="other-functionalities.html"><a href="other-functionalities.html#clear-sheets"><i class="fa fa-check"></i><b>5.5.8</b> Clear sheets</a></li>
+<li class="chapter" data-level="5.5.9" data-path="other-functionalities.html"><a href="other-functionalities.html#add-hyperlinks"><i class="fa fa-check"></i><b>5.5.9</b> Add hyperlinks</a></li>
+<li class="chapter" data-level="5.5.10" data-path="other-functionalities.html"><a href="other-functionalities.html#merge-unmerge-cells"><i class="fa fa-check"></i><b>5.5.10</b> Merge / Unmerge cells</a></li>
+<li class="chapter" data-level="5.5.11" data-path="other-functionalities.html"><a href="other-functionalities.html#clean-up"><i class="fa fa-check"></i><b>5.5.11</b> Clean up</a></li>
+</ul></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Technical Guidelines</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="examples" class="section level2 hasAnchor" number="1.4">
+<h2><span class="header-section-number">1.4</span> Examples<a href="examples.html#examples" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The following examples make use of the demo package <code>roxygenExPkg</code>. The package can be installed as:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="examples.html#cb1-1" aria-hidden="true" tabindex="-1"></a>remotes<span class="sc">::</span><span class="fu">install_github</span>(</span>
+<span id="cb1-2"><a href="examples.html#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;miraisolutions/techguides/roxygen-guidelines/roxygenExPkg&quot;</span></span>
+<span id="cb1-3"><a href="examples.html#cb1-3" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<p>The command <code>help(package = "roxygenExPkg")</code> will give you access to the package help.</p>
+<div id="general-content-organization" class="section level3 hasAnchor" number="1.4.1">
+<h3><span class="header-section-number">1.4.1</span> General content organization<a href="examples.html#general-content-organization" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>See the corresponding <code>?roxygenExPkg::fun_doc</code>.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="examples.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; Function Documentation Example</span></span>
+<span id="cb2-2"><a href="examples.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39;</span></span>
+<span id="cb2-3"><a href="examples.html#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; Show an example of roxygen tags organization, providing documentation best</span></span>
+<span id="cb2-4"><a href="examples.html#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; practices and guidelines. An explicit `@description` is only needed for</span></span>
+<span id="cb2-5"><a href="examples.html#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; multi-paragraph descriptions.</span></span>
+<span id="cb2-6"><a href="examples.html#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39;</span></span>
+<span id="cb2-7"><a href="examples.html#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @param first_arg Description of the first argument. Also define data type /</span></span>
+<span id="cb2-8"><a href="examples.html#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39;   class / structure / vectorization expectations where not obvious, and</span></span>
+<span id="cb2-9"><a href="examples.html#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39;   possibly use (see &#39;Details&#39;).</span></span>
+<span id="cb2-10"><a href="examples.html#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @param second_arg Second argument of the function.</span></span>
+<span id="cb2-11"><a href="examples.html#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39;</span></span>
+<span id="cb2-12"><a href="examples.html#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @details More details or context about the function and its behaviour. List</span></span>
+<span id="cb2-13"><a href="examples.html#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39;   possible side-effects, corner-cases and limitations here. Also use this</span></span>
+<span id="cb2-14"><a href="examples.html#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39;   section for describing the meaning and usage of arguments when this is too</span></span>
+<span id="cb2-15"><a href="examples.html#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39;   complex or verbose for the `@param` tags.</span></span>
+<span id="cb2-16"><a href="examples.html#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39;</span></span>
+<span id="cb2-17"><a href="examples.html#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @section Custom section:</span></span>
+<span id="cb2-18"><a href="examples.html#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; The content of a custom section.</span></span>
+<span id="cb2-19"><a href="examples.html#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39;</span></span>
+<span id="cb2-20"><a href="examples.html#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @return Returns `NULL`, invisibly. The function is called for illustration</span></span>
+<span id="cb2-21"><a href="examples.html#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39;   purposes only.</span></span>
+<span id="cb2-22"><a href="examples.html#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39;</span></span>
+<span id="cb2-23"><a href="examples.html#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @references</span></span>
+<span id="cb2-24"><a href="examples.html#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; Hadley Wickham, Peter Danenberg and Manuel Eugster. roxygen2: In-Line</span></span>
+<span id="cb2-25"><a href="examples.html#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; Documentation for R. [https://CRAN.R-project.org/package=roxygen2]().</span></span>
+<span id="cb2-26"><a href="examples.html#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39;</span></span>
+<span id="cb2-27"><a href="examples.html#cb2-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; Hadley Wickham, The tidyverse style guide.</span></span>
+<span id="cb2-28"><a href="examples.html#cb2-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; [https://style.tidyverse.org/documentation.html]().</span></span>
+<span id="cb2-29"><a href="examples.html#cb2-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39;</span></span>
+<span id="cb2-30"><a href="examples.html#cb2-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @seealso [fun_doc_tpl()], [roxygen2::roxygenize()]. Even if you just put</span></span>
+<span id="cb2-31"><a href="examples.html#cb2-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39;   comma-separated links to functions, don&#39;t forget the final period (.).</span></span>
+<span id="cb2-32"><a href="examples.html#cb2-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @family function documentation examples</span></span>
+<span id="cb2-33"><a href="examples.html#cb2-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39;</span></span>
+<span id="cb2-34"><a href="examples.html#cb2-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @examples</span></span>
+<span id="cb2-35"><a href="examples.html#cb2-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; # illustrate through examples how functions can be used</span></span>
+<span id="cb2-36"><a href="examples.html#cb2-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; fun_doc(&quot;example_string&quot;, 3)</span></span>
+<span id="cb2-37"><a href="examples.html#cb2-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39;</span></span>
+<span id="cb2-38"><a href="examples.html#cb2-38" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @importFrom roxygen2 roxygenize</span></span>
+<span id="cb2-39"><a href="examples.html#cb2-39" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @importFrom roxygen2 roxygenise</span></span>
+<span id="cb2-40"><a href="examples.html#cb2-40" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @export</span></span>
+<span id="cb2-41"><a href="examples.html#cb2-41" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39;</span></span>
+<span id="cb2-42"><a href="examples.html#cb2-42" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @md</span></span>
+<span id="cb2-43"><a href="examples.html#cb2-43" aria-hidden="true" tabindex="-1"></a>fun_doc <span class="ot">&lt;-</span> <span class="cf">function</span>(first_arg, second_arg) {</span>
+<span id="cb2-44"><a href="examples.html#cb2-44" aria-hidden="true" tabindex="-1"></a>  <span class="fu">invisible</span>()</span>
+<span id="cb2-45"><a href="examples.html#cb2-45" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+</div>
+<div id="templates-and-example-scripts" class="section level3 hasAnchor" number="1.4.2">
+<h3><span class="header-section-number">1.4.2</span> Templates and example scripts<a href="examples.html#templates-and-example-scripts" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>See the corresponding <code>?roxygenExPkg::fun_doc_tpl</code>.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="examples.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; Template Documentation Example</span></span>
+<span id="cb3-2"><a href="examples.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39;</span></span>
+<span id="cb3-3"><a href="examples.html#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; Show an example of roxygen tags organization, providing documentation best</span></span>
+<span id="cb3-4"><a href="examples.html#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; practices and guidelines, using templates.</span></span>
+<span id="cb3-5"><a href="examples.html#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39;</span></span>
+<span id="cb3-6"><a href="examples.html#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @template param-first_arg</span></span>
+<span id="cb3-7"><a href="examples.html#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @param second_arg Description of the second argument.</span></span>
+<span id="cb3-8"><a href="examples.html#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39;</span></span>
+<span id="cb3-9"><a href="examples.html#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @template details-fun_doc</span></span>
+<span id="cb3-10"><a href="examples.html#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39;</span></span>
+<span id="cb3-11"><a href="examples.html#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @section Custom section:</span></span>
+<span id="cb3-12"><a href="examples.html#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; The content of a custom section.</span></span>
+<span id="cb3-13"><a href="examples.html#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39;</span></span>
+<span id="cb3-14"><a href="examples.html#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @template return-NULL</span></span>
+<span id="cb3-15"><a href="examples.html#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39;</span></span>
+<span id="cb3-16"><a href="examples.html#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @template reference-roxygen2</span></span>
+<span id="cb3-17"><a href="examples.html#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @template reference-tidyverse_style_guide</span></span>
+<span id="cb3-18"><a href="examples.html#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39;</span></span>
+<span id="cb3-19"><a href="examples.html#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @seealso [fun_doc_tpl()], [roxygen2::roxygenize()]. Even if you just put</span></span>
+<span id="cb3-20"><a href="examples.html#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39;   comma-separated links to functions, don&#39;t forget the final period (.).</span></span>
+<span id="cb3-21"><a href="examples.html#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @family function documentation examples</span></span>
+<span id="cb3-22"><a href="examples.html#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39;</span></span>
+<span id="cb3-23"><a href="examples.html#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @example man-roxygen/ex-fun_doc_tpl.R</span></span>
+<span id="cb3-24"><a href="examples.html#cb3-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39;</span></span>
+<span id="cb3-25"><a href="examples.html#cb3-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @importFrom roxygen2 roxygenize</span></span>
+<span id="cb3-26"><a href="examples.html#cb3-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @importFrom roxygen2 roxygenise</span></span>
+<span id="cb3-27"><a href="examples.html#cb3-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @export</span></span>
+<span id="cb3-28"><a href="examples.html#cb3-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39;</span></span>
+<span id="cb3-29"><a href="examples.html#cb3-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @md</span></span>
+<span id="cb3-30"><a href="examples.html#cb3-30" aria-hidden="true" tabindex="-1"></a>fun_doc_tpl <span class="ot">&lt;-</span> <span class="cf">function</span>(first_arg, second_arg) {</span>
+<span id="cb3-31"><a href="examples.html#cb3-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">invisible</span>()</span>
+<span id="cb3-32"><a href="examples.html#cb3-32" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+</div>
+<div id="rdname" class="section level3 hasAnchor" number="1.4.3">
+<h3><span class="header-section-number">1.4.3</span> <code>@rdname</code><a href="examples.html#rdname" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>See the corresponding <code>?roxygenExPkg::divide</code>.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="examples.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; Scalar Division</span></span>
+<span id="cb4-2"><a href="examples.html#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39;</span></span>
+<span id="cb4-3"><a href="examples.html#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; Divide an object by a scalar.</span></span>
+<span id="cb4-4"><a href="examples.html#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39;</span></span>
+<span id="cb4-5"><a href="examples.html#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @param x The object to be divided</span></span>
+<span id="cb4-6"><a href="examples.html#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @param d Scalar to divide `x` by.</span></span>
+<span id="cb4-7"><a href="examples.html#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39;</span></span>
+<span id="cb4-8"><a href="examples.html#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @return The result of the scalar division of `x`.</span></span>
+<span id="cb4-9"><a href="examples.html#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39;</span></span>
+<span id="cb4-10"><a href="examples.html#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @examples</span></span>
+<span id="cb4-11"><a href="examples.html#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; x &lt;- matrix(1:6, 3L)</span></span>
+<span id="cb4-12"><a href="examples.html#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39;</span></span>
+<span id="cb4-13"><a href="examples.html#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @name divide</span></span>
+<span id="cb4-14"><a href="examples.html#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39;</span></span>
+<span id="cb4-15"><a href="examples.html#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @md</span></span>
+<span id="cb4-16"><a href="examples.html#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="cn">NULL</span></span>
+<span id="cb4-17"><a href="examples.html#cb4-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-18"><a href="examples.html#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @rdname divide</span></span>
+<span id="cb4-19"><a href="examples.html#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39;</span></span>
+<span id="cb4-20"><a href="examples.html#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @details `divide_by()` performes generic division by `d`.</span></span>
+<span id="cb4-21"><a href="examples.html#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39;</span></span>
+<span id="cb4-22"><a href="examples.html#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @examples</span></span>
+<span id="cb4-23"><a href="examples.html#cb4-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; divide_by(x, 1.5)</span></span>
+<span id="cb4-24"><a href="examples.html#cb4-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39;</span></span>
+<span id="cb4-25"><a href="examples.html#cb4-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @export</span></span>
+<span id="cb4-26"><a href="examples.html#cb4-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39;</span></span>
+<span id="cb4-27"><a href="examples.html#cb4-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @md</span></span>
+<span id="cb4-28"><a href="examples.html#cb4-28" aria-hidden="true" tabindex="-1"></a>divide_by <span class="ot">&lt;-</span> <span class="cf">function</span>(x, d) {</span>
+<span id="cb4-29"><a href="examples.html#cb4-29" aria-hidden="true" tabindex="-1"></a>  x <span class="sc">/</span> d</span>
+<span id="cb4-30"><a href="examples.html#cb4-30" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb4-31"><a href="examples.html#cb4-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-32"><a href="examples.html#cb4-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @rdname divide</span></span>
+<span id="cb4-33"><a href="examples.html#cb4-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39;</span></span>
+<span id="cb4-34"><a href="examples.html#cb4-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @details `divide_by2()` performes division by two.</span></span>
+<span id="cb4-35"><a href="examples.html#cb4-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39;</span></span>
+<span id="cb4-36"><a href="examples.html#cb4-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @examples</span></span>
+<span id="cb4-37"><a href="examples.html#cb4-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; divide_by2(x)</span></span>
+<span id="cb4-38"><a href="examples.html#cb4-38" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39;</span></span>
+<span id="cb4-39"><a href="examples.html#cb4-39" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @export</span></span>
+<span id="cb4-40"><a href="examples.html#cb4-40" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39;</span></span>
+<span id="cb4-41"><a href="examples.html#cb4-41" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @md</span></span>
+<span id="cb4-42"><a href="examples.html#cb4-42" aria-hidden="true" tabindex="-1"></a>divide_by2 <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb4-43"><a href="examples.html#cb4-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">divide_by</span>(x, <span class="dv">2</span>)</span>
+<span id="cb4-44"><a href="examples.html#cb4-44" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb4-45"><a href="examples.html#cb4-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-46"><a href="examples.html#cb4-46" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @rdname divide</span></span>
+<span id="cb4-47"><a href="examples.html#cb4-47" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39;</span></span>
+<span id="cb4-48"><a href="examples.html#cb4-48" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @details `divide_by3()` performes division by three.</span></span>
+<span id="cb4-49"><a href="examples.html#cb4-49" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39;</span></span>
+<span id="cb4-50"><a href="examples.html#cb4-50" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @examples</span></span>
+<span id="cb4-51"><a href="examples.html#cb4-51" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; divide_by3(x)</span></span>
+<span id="cb4-52"><a href="examples.html#cb4-52" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39;</span></span>
+<span id="cb4-53"><a href="examples.html#cb4-53" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @export</span></span>
+<span id="cb4-54"><a href="examples.html#cb4-54" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39;</span></span>
+<span id="cb4-55"><a href="examples.html#cb4-55" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @md</span></span>
+<span id="cb4-56"><a href="examples.html#cb4-56" aria-hidden="true" tabindex="-1"></a>divide_by3 <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb4-57"><a href="examples.html#cb4-57" aria-hidden="true" tabindex="-1"></a>  <span class="fu">divide_by</span>(x, <span class="dv">3</span>)</span>
+<span id="cb4-58"><a href="examples.html#cb4-58" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb4-59"><a href="examples.html#cb4-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-60"><a href="examples.html#cb4-60" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @rdname divide</span></span>
+<span id="cb4-61"><a href="examples.html#cb4-61" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39;</span></span>
+<span id="cb4-62"><a href="examples.html#cb4-62" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @details `divide_by4()` performes division by four.</span></span>
+<span id="cb4-63"><a href="examples.html#cb4-63" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39;</span></span>
+<span id="cb4-64"><a href="examples.html#cb4-64" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @examples</span></span>
+<span id="cb4-65"><a href="examples.html#cb4-65" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; divide_by4(x)</span></span>
+<span id="cb4-66"><a href="examples.html#cb4-66" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39;</span></span>
+<span id="cb4-67"><a href="examples.html#cb4-67" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @export</span></span>
+<span id="cb4-68"><a href="examples.html#cb4-68" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39;</span></span>
+<span id="cb4-69"><a href="examples.html#cb4-69" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @md</span></span>
+<span id="cb4-70"><a href="examples.html#cb4-70" aria-hidden="true" tabindex="-1"></a>divide_by4 <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb4-71"><a href="examples.html#cb4-71" aria-hidden="true" tabindex="-1"></a>  <span class="fu">divide_by</span>(x, <span class="dv">4</span>)</span>
+<span id="cb4-72"><a href="examples.html#cb4-72" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+</div>
+<div id="describein" class="section level3 hasAnchor" number="1.4.4">
+<h3><span class="header-section-number">1.4.4</span> <code>@describeIn</code><a href="examples.html#describein" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>See the corresponding <code>?roxygenExPkg::times</code>.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="examples.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; Scalar Multiplication</span></span>
+<span id="cb5-2"><a href="examples.html#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39;</span></span>
+<span id="cb5-3"><a href="examples.html#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; Multiply an object by a scalar.</span></span>
+<span id="cb5-4"><a href="examples.html#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39;</span></span>
+<span id="cb5-5"><a href="examples.html#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @param x The object to be multiplied.</span></span>
+<span id="cb5-6"><a href="examples.html#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @param m Scalar to multiply `x` by.</span></span>
+<span id="cb5-7"><a href="examples.html#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39;</span></span>
+<span id="cb5-8"><a href="examples.html#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @return The result of the scalar multiplication of `x`.</span></span>
+<span id="cb5-9"><a href="examples.html#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39;</span></span>
+<span id="cb5-10"><a href="examples.html#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @describeIn times Generic multiplication by `m`.</span></span>
+<span id="cb5-11"><a href="examples.html#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39;</span></span>
+<span id="cb5-12"><a href="examples.html#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @examples</span></span>
+<span id="cb5-13"><a href="examples.html#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; x &lt;- matrix(1:6, 3L)</span></span>
+<span id="cb5-14"><a href="examples.html#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39;</span></span>
+<span id="cb5-15"><a href="examples.html#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; times(x, 1.5)</span></span>
+<span id="cb5-16"><a href="examples.html#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39;</span></span>
+<span id="cb5-17"><a href="examples.html#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @export</span></span>
+<span id="cb5-18"><a href="examples.html#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39;</span></span>
+<span id="cb5-19"><a href="examples.html#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @md</span></span>
+<span id="cb5-20"><a href="examples.html#cb5-20" aria-hidden="true" tabindex="-1"></a>times <span class="ot">&lt;-</span> <span class="cf">function</span>(x, m) {</span>
+<span id="cb5-21"><a href="examples.html#cb5-21" aria-hidden="true" tabindex="-1"></a>  x <span class="sc">*</span> m</span>
+<span id="cb5-22"><a href="examples.html#cb5-22" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-23"><a href="examples.html#cb5-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-24"><a href="examples.html#cb5-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @describeIn times Multiplication by 2.</span></span>
+<span id="cb5-25"><a href="examples.html#cb5-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39;</span></span>
+<span id="cb5-26"><a href="examples.html#cb5-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @examples</span></span>
+<span id="cb5-27"><a href="examples.html#cb5-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; times2(x)</span></span>
+<span id="cb5-28"><a href="examples.html#cb5-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39;</span></span>
+<span id="cb5-29"><a href="examples.html#cb5-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @export</span></span>
+<span id="cb5-30"><a href="examples.html#cb5-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39;</span></span>
+<span id="cb5-31"><a href="examples.html#cb5-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @md</span></span>
+<span id="cb5-32"><a href="examples.html#cb5-32" aria-hidden="true" tabindex="-1"></a>times2 <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb5-33"><a href="examples.html#cb5-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">times</span>(x, <span class="dv">2</span>)</span>
+<span id="cb5-34"><a href="examples.html#cb5-34" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-35"><a href="examples.html#cb5-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-36"><a href="examples.html#cb5-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @describeIn times Multiplication by 3.</span></span>
+<span id="cb5-37"><a href="examples.html#cb5-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39;</span></span>
+<span id="cb5-38"><a href="examples.html#cb5-38" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @examples</span></span>
+<span id="cb5-39"><a href="examples.html#cb5-39" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; times3(x)</span></span>
+<span id="cb5-40"><a href="examples.html#cb5-40" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39;</span></span>
+<span id="cb5-41"><a href="examples.html#cb5-41" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @export</span></span>
+<span id="cb5-42"><a href="examples.html#cb5-42" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39;</span></span>
+<span id="cb5-43"><a href="examples.html#cb5-43" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @md</span></span>
+<span id="cb5-44"><a href="examples.html#cb5-44" aria-hidden="true" tabindex="-1"></a>times3 <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb5-45"><a href="examples.html#cb5-45" aria-hidden="true" tabindex="-1"></a>  <span class="fu">times</span>(x, <span class="dv">3</span>)</span>
+<span id="cb5-46"><a href="examples.html#cb5-46" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-47"><a href="examples.html#cb5-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-48"><a href="examples.html#cb5-48" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @describeIn times Multiplication by 4.</span></span>
+<span id="cb5-49"><a href="examples.html#cb5-49" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39;</span></span>
+<span id="cb5-50"><a href="examples.html#cb5-50" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @examples</span></span>
+<span id="cb5-51"><a href="examples.html#cb5-51" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; times4(x)</span></span>
+<span id="cb5-52"><a href="examples.html#cb5-52" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39;</span></span>
+<span id="cb5-53"><a href="examples.html#cb5-53" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @export</span></span>
+<span id="cb5-54"><a href="examples.html#cb5-54" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39;</span></span>
+<span id="cb5-55"><a href="examples.html#cb5-55" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @md</span></span>
+<span id="cb5-56"><a href="examples.html#cb5-56" aria-hidden="true" tabindex="-1"></a>times4 <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb5-57"><a href="examples.html#cb5-57" aria-hidden="true" tabindex="-1"></a>  <span class="fu">times</span>(x, <span class="dv">4</span>)</span>
+<span id="cb5-58"><a href="examples.html#cb5-58" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+
+</div>
+</div>
+<!-- </div> -->
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="advanced-usage-and-consistent-documentation.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="version-stable-r-development-with-docker.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": true,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>
