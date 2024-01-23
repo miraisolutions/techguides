@@ -10,18 +10,18 @@ on:
   # Allow manual runs from the Actions tab
   workflow_dispatch:
 
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
 jobs:
-  CI-CD:
-    runs-on: ${{ matrix.config.os }}
 
-    name: ${{ matrix.config.os }} (${{ matrix.config.r }})
-
-    strategy:
-      # We keep a matrix for convenience, but we would always want to run on one
-      # single OS and R version
-      matrix:
-        config:
-          - {os: ubuntu-latest, r: 'release'}
+  # Build job
+  build:
+    name: CI
+    runs-on: ubuntu-latest
 
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
@@ -31,12 +31,15 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
 
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
       - uses: r-lib/actions/setup-pandoc@v2
 
       - name: Setup R
         uses: r-lib/actions/setup-r@v2
         with:
-          r-version: ${{ matrix.config.r }}
+          r-version: release
           use-public-rspm: true
 
       - name: Install and cache dependencies
@@ -48,9 +51,8 @@ jobs:
         shell: Rscript {0}
 
       - name: Upload built site artifact
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-pages-artifact@v3
         with:
-          name: site
           path: _book
 
       - name: Test website
@@ -58,17 +60,24 @@ jobs:
         with:
           args: _book
 
+  # Deployment job
+  deploy:
+    name: CD
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.ref == 'refs/heads/master'
+
+    # Allow one concurrent deployment
+    concurrency:
+      group: "pages" # fixed string ensures any execution of this job will share the same concurrency group
+      cancel-in-progress: false # don't cancel in-progress runs as we want to allow these production deployments to complete
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+
       - name: Deploy to GitHub Pages
-        if: github.ref == 'refs/heads/master'
-        # TODO: consider switching to JamesIves/github-pages-deploy-action
-        # uses: JamesIves/github-pages-deploy-action@4.1.4
-        # with:
-        #   branch: gh-pages
-        #   folder: _book
-        uses: crazy-max/ghaction-github-pages@v2.2.0
-        with:
-          target_branch: gh-pages
-          build_dir: _book
-          jekyll: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        id: deployment
+        uses: actions/deploy-pages@v4
