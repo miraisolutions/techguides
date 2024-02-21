@@ -34,28 +34,31 @@ renv::init(
 
 This ensures that the dependencies of the package, as listed in the `DESCRIPTION` file are used for initializing the virtual environment. 
 
-Note: `renv` tracks and installs only the packages explicitly mentioned in the `DESCRIPTION` file. This means that only the dependencies used by the package are installed. Packages needed for development, such as `devtools`, should be be installed for the specific project via `install.packages()` or `renv::install()`.
+Note: with `snapshot.type = "explicit"` `renv` tracks and installs only the packages *explicitly* mentioned in the `DESCRIPTION` file. This means that only the dependencies used by the package are installed. Packages needed for development, such as `devtools`, should be be installed for the specific project via `install.packages()` or `renv::install()`.   
+`snapshot.type = "explicit"`,  (the default), uses all packages captured by `renv::dependencies()`.
 
 The `renv` initialization causes:
 
-- the creation of a new `renv.lock` file where the R version and the list of used packages with their version are tracked;
+- the creation of a new `renv.lock` file where the R version and the list of used packages with their version are tracked (if `bare = FALSE`);
+- the set-up of project infrastructure including the project library;
+- the execution of the activation script on project launch via `.Rprofile` that ensures renv will be used in all future sessions;
 - the creation of a new `renv` folder containing:
-    - a setting file `settings.dcf`,
-    - a script `activate.R` to activate the project-specific virtual environment,
-    - the project-specific `library` of installed packages;
-- the execution of the activation script on project launch via `.Rprofile`;
+    - a setting file `settings.jsn`,
+    - a script `activate.R` to activate the project-specific virtual environment;
 - an update of the `.Rbuildignore` because the `renv`-specific files are not part of the R package infrastructure;
 - an update of the `.gitignore` to exclude the `renv` library from version control, as it can be simply restored via `renv::restore()`.
 
-Having all the `renv` infrastructure committed under version control ensures that the same `renv` setup is available to anyone working on the same project (via `renv::restore()`).
+Having all the `renv` infrastructure committed under version control ensures that the same `renv` set-up is available to anyone working on the same project (via `renv::restore()`).
+
+By default `renv` will use the repository from **Posit Public Package Manager** (*PPM*) CRAN mirror for package installation. 
 
 ### Control packages version
 
-As a note, if the `DESCRIPTION` file does not request a specific package version, the `renv` initialization will pick the version currently available in the user library when the snapshot of the packages was created. However, it is advisable to have a stricter control over the version of the packages used in a project. To do so, one can set the option to install dependencies from a specific MRAN repo, therefore fixing the version for all available packages.
+As a note, if the `DESCRIPTION` file does not request a specific package version, the `renv` initialization will pick the version currently available in the user library when the snapshot of the packages was created. However, it is advisable to have a stricter control over the version of the packages used in a project. To do so, one can set the option to install dependencies from a specific *PPM* repo, therefore fixing the version for all available packages.
 
 ```{r , echo = TRUE, eval = FALSE}
-# Install all dependencies from a specific MRAN date repo
-options(repos = "https://mran.microsoft.com/snapshot/2020-11-15")
+# Install all dependencies from a specific PPM date repo
+options(repos = "https://packagemanager.rstudio.com/cran/2023-01-02")
 ```
 
 One can then install the dependencies of a package via:
@@ -72,26 +75,50 @@ To create a snapshot of the package dependencies and update the `renv.lock` file
 # Create a snapshot to track dependencies in the lockfile
 renv::snapshot()
 ```
+To include development dependencies, i.e. listed in `Suggests` of the `DESCRIPTION` file:
+
+```{r , echo = TRUE, eval = FALSE}
+# Create a snapshot to track all dependencies, including Suggested, in the lockfile
+renv::snapshot(dev = TRUE)
+```
+
+Similarly to fixing the date of a snapshot repo, we can also **check out** and retrieve the latest-available packages from a snapshot.
+```{r , echo = TRUE, eval = FALSE}
+# check out packages from PPM using the date '2023-01-02'
+renv::checkout(date = "2023-01-02")
+# or
+renv::checkout(repos = "https://packagemanager.rstudio.com/cran/2023-01-02")
+# see "actions" argument for different snapshot behaviours.
+```
+
+The same can be done for a single package.
+```{r , echo = TRUE, eval = FALSE}
+# only check out a subset of packages (and their recursive dependencies)
+renv::checkout(packages = "dplyr", date = "2023-01-02")
+```
 
 ## Caching the packages' versions
 
-`renv` caches the packages' versions. If you have installed the same package version in a different project, you should have it already cached and available. By running:
+`renv` caches the packages' versions. If you have installed the same package version in a different project, you should have it already cached and available.   
+By running:
 
 ```{r, echo =  TRUE , eval = FALSE}
 renv::status()
 ```
 
-One can check if packages versions are out of sync and via 
+one can check if packages versions are out of sync, and follow the indications in the "Missing packages" of `?renv::status` if mismatches are found.
+
+Instead, via 
 
 ```{r, echo =  TRUE , eval = FALSE}
 renv::restore()
 ```
 
-It is possible to restore the versions as listed in the `renv.lock` file.
+it is possible to restore the versions as listed in the `renv.lock` file.
 
 ## Removing the `renv` setup from a project
 
-If you would like to remove the `renv` setup from a project:
+If you would like to remove the `renv` set-up from a project:
 
-- run `renv::deactivate()` to fall back on a `renv`-free setup;
+- run `renv::deactivate()` to fall back on a `renv`-free set-up;
 - delete `renv.lock` and the `renv` folder for clarity.
