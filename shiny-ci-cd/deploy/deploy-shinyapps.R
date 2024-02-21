@@ -5,4 +5,5 @@ rsconnect::setAccountInfo(
   Sys.getenv("SHINYAPPS_TOKEN"),
   Sys.getenv("SHINYAPPS_SECRET")
 )
-rsconnect::deployApp(appName = "ShinyCICD")
+rsconnect::deployApp(appName = "ShinyCICD",
+                     forceUpdate = TRUE)
