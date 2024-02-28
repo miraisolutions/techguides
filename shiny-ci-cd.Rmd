@@ -107,7 +107,7 @@ usethis::use_github_action(url = paste0(
   # "shiny-ci-cd/actions/ci.yml"
   # "shiny-ci-cd/actions/ci-renv.yml"
 ))
-usethis::use_github_actions_badge("CI-CD") # or "CI"
+usethis::use_github_actions_badge("ci-cd.yml") # or "ci.yml"/"ci(-cd)-renv.yml"
 ```
 
 #### Complete workflow files
