@@ -43,15 +43,15 @@ A workflow should have an identifying `name` and an `on` section that indicates 
 #### Setup
 
 - Checkout the source package from the repository, using `actions/checkout` provided by GitHub.
-- Setup R using the action [`r-lib/actions/setup-r`](https://github.com/r-lib/actions/tree/master/setup-r#readme).
-- Install package dependencies (including system requirements and caching) using [`r-lib/actions/setup-r-dependencies`](https://github.com/r-lib/actions/tree/master/setup-r-dependencies#readme).
+- Setup R using the action [`r-lib/actions/setup-r`](https://github.com/r-lib/actions/tree/v2/setup-r#readme).
+- Install package dependencies (including system requirements and caching) using [`r-lib/actions/setup-r-dependencies`](https://github.com/r-lib/actions/tree/v2/setup-r-dependencies#readme).
 
 ##### Using renv {-}
 
 If your project relies on package [renv](https://rstudio.github.io/renv/) for tracking dependencies via an `renv.lock` file, caching and installation of R package dependencies requires a different setup, as described in the [Using renv with Continuous Integration](https://rstudio.github.io/renv//articles/ci.html#github-actions) vignette. As shown in the complete workflow files [below](#complete-wfs-use-gh-action):
 
 - system requirements are installed explicitly (for the `ubuntu` runner defined for the workflow) based on `remotes::system_requirements()`
-- dependencies tracked by renv are installed (including caching) using [`r-lib/actions/setup-renv`](https://github.com/r-lib/actions/tree/master/setup-renv#readme)
+- dependencies tracked by renv are installed (including caching) using [`r-lib/actions/setup-renv`](https://github.com/r-lib/actions/tree/v2/setup-renv#readme).
 
 #### Package check
 
