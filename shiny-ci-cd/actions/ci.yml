@@ -1,8 +1,9 @@
 # Workflow derived from https://github.com/r-lib/actions/tree/v2/examples
 # Need help debugging build failures? Start at https://github.com/r-lib/actions#where-to-find-help
 
-# Name of the workflow => usethis::use_github_actions_badge("CI")
+# Name of the workflow
 name: CI
+# Create status badge with usethis::use_github_actions_badge("ci.yml")
 
 on:
   # Triggered on push and pull request events
@@ -29,6 +30,9 @@ jobs:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       # Preserve package sources for informative references in case of errors
       R_KEEP_PKG_SOURCE: yes
+      # rsconnect needs transitive LinkingTo-only dependencies to be installed
+      # (see https://github.com/r-lib/pak/issues/485)
+      PKG_INCLUDE_LINKINGTO: true
 
     steps:
 

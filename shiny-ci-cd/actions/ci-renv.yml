@@ -1,8 +1,9 @@
 # Workflow derived from https://github.com/r-lib/actions/tree/v2/examples
 # Need help debugging build failures? Start at https://github.com/r-lib/actions#where-to-find-help
 
-# Name of the workflow => usethis::use_github_actions_badge("CI-renv")
+# Name of the workflow
 name: CI-renv
+# Create status badge with usethis::use_github_actions_badge("ci-renv.yml")
 
 on:
   # Triggered on push and pull request events
