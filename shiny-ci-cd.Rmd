@@ -50,7 +50,7 @@ A workflow should have an identifying `name` and an `on` section that indicates 
 
 If your project relies on package [renv](https://rstudio.github.io/renv/) for tracking dependencies via an `renv.lock` file, caching and installation of R package dependencies requires a different setup, as described in the [Using renv with Continuous Integration](https://rstudio.github.io/renv//articles/ci.html#github-actions) vignette. As shown in the complete workflow files [below](#complete-wfs-use-gh-action):
 
-- system requirements are installed explicitly (for the `ubuntu` runner defined for the workflow) based on `remotes::system_requirements()`
+- system requirements are installed explicitly (for the `ubuntu` runner defined for the workflow), based on `pkgdepends`.
 - dependencies tracked by renv are installed (including caching) using [`r-lib/actions/setup-renv`](https://github.com/r-lib/actions/tree/v2/setup-renv#readme).
 
 #### Package check
