@@ -35,7 +35,7 @@ renv::init(
 This ensures that the dependencies of the package, as listed in the `DESCRIPTION` file are used for initializing the virtual environment. 
 
 Note: with `snapshot.type = "explicit"` `renv` tracks and installs only the packages *explicitly* mentioned in the `DESCRIPTION` file. This means that only the dependencies used by the package are installed. Packages needed for development, such as `devtools`, should be be installed for the specific project via `install.packages()` or `renv::install()`.   
-`snapshot.type = "explicit"`,  (the default), uses all packages captured by `renv::dependencies()`.
+`snapshot.type = "implicit"`, (the default), uses all packages captured by `renv::dependencies()`.
 
 The `renv` initialization causes:
 
