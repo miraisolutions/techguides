@@ -59,14 +59,20 @@ If your project relies on package [renv](https://rstudio.github.io/renv/) for tr
 
 #### Deployment
 
-- Continuous deployment to shinyapps.io is automated upon any push to the `main` (or `master`) branch.
-  - In order to provide credentials for the deployment, account name and corresponding [tokens](https://docs.posit.co/shinyapps.io/getting-started.html#deploying-applications) for shinyapps.io are defined as environment variables `SHINYAPPS_ACCOUNT`, `SHINYAPPS_TOKEN` and `SHINYAPPS_SECRET`, specified / accessible as GitHub [secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets).
-  - A convenience R script, e.g. `deploy/deploy-shinyapps.R` (build-ignored via `usethis::use_build_ignore("deploy")`), defines the deployment commands based on the environment variables.
-```{r read-deploy-script, eval = TRUE, echo = FALSE}
-knitr::read_chunk("shiny-ci-cd/deploy/deploy-shinyapps.R", labels = "deploy-shinyapps")
-```
-```{r deploy-shinyapps}
-```
+Continuous deployment to shinyapps.io is automated upon any push to the `main` (or `master`) branch.
+
+- In order to provide credentials for the deployment, account name and corresponding [tokens](https://docs.posit.co/shinyapps.io/getting-started.html#deploying-applications) for shinyapps.io are defined as environment variables `SHINYAPPS_ACCOUNT`, `SHINYAPPS_TOKEN` and `SHINYAPPS_SECRET`, specified / accessible as GitHub Actions [secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets).
+- Deployment to shinyapps.io is best configured and defined in an R script, e.g.  `deploy/deploy-shinyapps.R` (build-ignored via `usethis::use_build_ignore("deploy")`), which:
+  - sets up account credentials based on the environment variables for continuous deployment
+  - deploys the app via `rsconnect::deployApp()`, specifying as files for deployment only what is relevant at run-time: this does not only prevent unnecessary files from being deployed, but also makes sure only run-time dependencies are captured in the deployment
+
+  The script would also be used locally for manual deployments (to rely on the defined files), where credentials would be manually configured.
+
+  ```{r read-deploy-script, eval = TRUE, echo = FALSE}
+  knitr::read_chunk("shiny-ci-cd/deploy/deploy-shinyapps.R", labels = "deploy-shinyapps")
+  ```
+  ```{r deploy-shinyapps}
+  ```
 
 ### Workflow file
 
