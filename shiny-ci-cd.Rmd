@@ -55,7 +55,7 @@ If your project relies on package [renv](https://rstudio.github.io/renv/) for tr
 
 #### Package check
 
-- Check the package via `rcmdcheck::rcmdcheck()`.
+- Check the package using [`r-lib/actions/check-r-package`](https://github.com/r-lib/actions/tree/v2/check-r-package#readme).
 
 #### Deployment
 
