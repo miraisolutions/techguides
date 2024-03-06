@@ -53,6 +53,14 @@ If your project relies on package [renv](https://rstudio.github.io/renv/) for tr
 - system requirements are installed explicitly (for the `ubuntu` runner defined for the workflow), based on `pkgdepends`.
 - dependencies tracked by renv are installed (including caching) using [`r-lib/actions/setup-renv`](https://github.com/r-lib/actions/tree/v2/setup-renv#readme).
 
+Some remarks about using an `renv` setup for a packaged Shiny app and a corresponding CI/CD workflow (see also our chapter ['Control dependencies with `renv`'](control-dependencies-with-renv.html) for details):
+
+- `renv` should be configured using `"explicit"` snapshots, given that dependencies are stated in the `DESCRIPTION` file.
+- As the `DESCRIPTION` file defines the development dependencies used for CI/CD, make sure they are tracked by `renv` via `renv::snapshot(dev = TRUE)` so they are restored and available in the workflow.
+- Since the deployment to shinyapps.io is also based on `renv` and would rely on an existing `renv.lock`, we would end up with development dependencies included in the deployment.
+  - To prevent this, we can ignore `renv.lock` during development by creating an `.rscignore` text file containing `renv.lock` in the project root (build-ignored via `usethis::use_build_ignore(".rscignore")`).
+  - This will cause `rsconnect::deployApp()` to create a new `renv` snapshot with the run-time dependencies only, still relying on the versions restored from `renv.lock` in the workflow via `r-lib/actions/setup-renv`.
+
 #### Package check
 
 - Check the package using [`r-lib/actions/check-r-package`](https://github.com/r-lib/actions/tree/v2/check-r-package#readme).
