@@ -27,7 +27,7 @@ In order resolve and track dependencies of a project, `renv` needs to discover w
 To initialize `renv` for a project where dependencies are explicitly stated in the `DESCRIPTION` file, run:
 
 ```{r, echo = TRUE, eval = FALSE}
-renv::init(settings = list(snapshot.type = "implicit"))
+renv::init(settings = list(snapshot.type = "explicit"))
 ```
 
 This ensures that the dependencies of the projects, listed in the `DESCRIPTION` file, are considered for initializing the virtual environment.
