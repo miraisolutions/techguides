@@ -35,7 +35,7 @@ This ensures that the dependencies of the projects, listed in the `DESCRIPTION` 
 The `renv` initialization causes:
 
 - the creation of the lock-file `renv.lock`, which tracks the version of the resolved transitive package dependencies, along with the R version and package repositories information;
-- the set-up of `renv` infrastructure for the project including a specific library;
+- the set-up of `renv` infrastructure for the project including a specific library, where packages are installed at the versions tracked in `renv.lock`;
 - the creation of a new `renv` folder containing:
     - a settings file `settings.json`,
     - a script `activate.R` to activate the project-specific virtual environment;
