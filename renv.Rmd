@@ -3,95 +3,117 @@
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, eval = FALSE)
 ```
-For production readiness - and project safety - it is important to control the dependencies of a piece of development. This can be done at project level using the package [`renv`](https://rstudio.github.io/renv/).
 
-In a `renv`-project (and a new R session starts), `renv` detects the project dependencies and whether they are out of sync, ensuring the same virtual environment applies all the time the project is opened.
+For production readiness --- and project safety --- it is important to control the dependencies of a piece of development. This can be done at project level using the package [`renv`](https://rstudio.github.io/renv/).
 
-This approach ensures that the set of dependencies is collaboratively shared and maintained. Moreover, it can be used to align the development environment to the production stage. Managing the dependencies the way up to production improves reproducibility, a key requirement in enterprise.
+In an `renv` project, dependencies are resolved and tracked in a lock-file. As a new R session starts, `renv` detects whether installed dependencies are out of sync compared to the lock-file, ensuring the same virtual environment applies each time the project is opened.
 
-Finally, as the control is at project level, it is possible to have different virtual environments (for example different packages version) for different projects, while keeping the maintenance of the versioned package library efficient through caching.
+This approach ensures that the set of dependencies is collaboratively shared and maintained. Moreover, it can be used to align the development environment to the production stage. Managing and controlling dependencies all the way up from development to production improves reproducibility and empowers automated deployments, a key requirement in enterprise.
+
+Finally, as the control is at project level, it is possible to have different virtual environments (with different packages version) for different projects, while keeping the maintenance of the versioned package library efficient through caching.
 
 ## Install `renv`
 
 `renv` can be installed from CRAN as:
 
-```{r, echo =  TRUE , eval = FALSE}
+```{r, echo = TRUE, eval = FALSE}
 install.packages("renv")
 ```
 
-## Initialize an `renv` project
+## Set-up an `renv` project
 
-To initialize a package with `renv`, run:
+In order resolve and track dependencies of a project, `renv` needs to discover what the required packages are. Although `renv` supports discovering dependencies by scanning all files in the project (_implicit mode_), we strongly advise to define the required dependencies in a `DESCRIPTION` file, and rely on `renv`'s _explicit mode_ (see ['Snapshot types'](https://rstudio.github.io/renv/reference/snapshot.html#snapshot-types) in the documentation for details).
 
-```{r , echo = TRUE, eval = FALSE}
-renv::init(
-  # use the DESCRIPTION file to capture dependencies
-  settings = list(snapshot.type = "explicit"),
-  # do not install dependencies (done in a custom way)
-  bare = TRUE
-)
+To initialize `renv` for a project where dependencies are explicitly stated in the `DESCRIPTION` file, run:
+
+```{r, echo = TRUE, eval = FALSE}
+renv::init(settings = list(snapshot.type = "explicit"))
 ```
 
-This ensures that the dependencies of the package, as listed in the `DESCRIPTION` file are used for initializing the virtual environment. 
-
-Note: `renv` tracks and installs only the packages explicitly mentioned in the `DESCRIPTION` file. This means that only the dependencies used by the package are installed. Packages needed for development, such as `devtools`, should be be installed for the specific project via `install.packages()` or `renv::install()`.
+This ensures that the dependencies of the projects, listed in the `DESCRIPTION` file, are considered for initializing the virtual environment.
 
 The `renv` initialization causes:
 
-- the creation of a new `renv.lock` file where the R version and the list of used packages with their version are tracked;
+- the creation of the lock-file `renv.lock`, which tracks the version of the resolved transitive package dependencies, along with the R version and package repositories information;
+- the set-up of `renv` infrastructure for the project including a specific library, where packages are installed at the versions tracked in `renv.lock`;
 - the creation of a new `renv` folder containing:
-    - a setting file `settings.dcf`,
-    - a script `activate.R` to activate the project-specific virtual environment,
-    - the project-specific `library` of installed packages;
-- the execution of the activation script on project launch via `.Rprofile`;
+    - a settings file `settings.json`,
+    - a script `activate.R` to activate the project-specific virtual environment;
+- the inclusion of the activation script in `.Rprofile`, which ensures activation upon session start in the project;
 - an update of the `.Rbuildignore` because the `renv`-specific files are not part of the R package infrastructure;
-- an update of the `.gitignore` to exclude the `renv` library from version control, as it can be simply restored via `renv::restore()`.
 
-Having all the `renv` infrastructure committed under version control ensures that the same `renv` setup is available to anyone working on the same project (via `renv::restore()`).
+Note that, by default, `renv` will use the repository from **Posit Public Package Manager** (_PPM_) CRAN mirror for package installation. 
 
-### Control packages version
+Having all the `renv` infrastructure committed under version control ensures that the same `renv` set-up and environment is available to anyone working on the same project.
 
-As a note, if the `DESCRIPTION` file does not request a specific package version, the `renv` initialization will pick the version currently available in the user library when the snapshot of the packages was created. However, it is advisable to have a stricter control over the version of the packages used in a project. To do so, one can set the option to install dependencies from a specific MRAN repo, therefore fixing the version for all available packages.
-
-```{r , echo = TRUE, eval = FALSE}
-# Install all dependencies from a specific MRAN date repo
-options(repos = "https://mran.microsoft.com/snapshot/2020-11-15")
-```
-
-One can then install the dependencies of a package via:
-
-```{r , echo = TRUE, eval = FALSE}
-renv::install("remotes")
-(deps <- remotes::dev_package_deps(dependencies = TRUE))
-renv::install(with(deps, sprintf("%s@%s", package[diff!=0], available[diff!=0])))
-```
-
-To create a snapshot of the package dependencies and update the `renv.lock` file:
-
-```{r , echo = TRUE, eval = FALSE}
-# Create a snapshot to track dependencies in the lockfile
-renv::snapshot()
-```
-
-## Caching the packages' versions
-
-`renv` caches the packages' versions. If you have installed the same package version in a different project, you should have it already cached and available. By running:
+Upon session startup, `renv` would detect mismatches between the package versions recorded in `renv.lock` and those installed in the project library, hinting at actions to ensure consistency. In particular,
 
 ```{r, echo =  TRUE , eval = FALSE}
 renv::status()
 ```
 
-One can check if packages versions are out of sync and via 
+would check and provide information about packages whose version is out-of-sync, whereas
+
 
 ```{r, echo =  TRUE , eval = FALSE}
 renv::restore()
 ```
 
-It is possible to restore the versions as listed in the `renv.lock` file.
+would restore the versions as listed in `renv.lock`, and is the go-to command to ensure the local environment is always aligned with the locked dependencies.
+
+### Development dependencies
+
+By default, development dependencies (like those specified under `Suggests:` in the `DESCRIPTION` file), are not included in `renv.lock`. They can be however included via
+
+```{r, echo = TRUE, eval = FALSE}
+renv::snaphot(dev = TRUE)
+```
+
+Note that, given the default behavior with respect to development dependencies, `renv` might report out-of-sync dependencies upon session startup. Make sure to use
+
+```{r, echo = TRUE, eval = FALSE}
+renv::status(dev = TRUE)
+```
+
+if you are included development dependencies in `renv.lock`.
+
+Given that only packages _explicitly_ mentioned in the `DESCRIPTION` file are taken care of by `renv`, additional packages used for development, such as `devtools` or `usethis`, should be installed for the specific project via `install.packages()` or `renv::install()`, and are never included in the lock-file.
+
+### Control package versions
+
+If the `DESCRIPTION` file does not request a specific package version, `renv` will use the latest version in the repository, which is always the case for indirect/transitive dependencies. Although the locking mechanism allows to freeze such versions, it might be desirable to have a stricter control over the versions of packages used in a project. To do so, one can leverage the **date-based CRAN snapshots** provided by PPM, e.g.
+
+```{r , echo = TRUE, eval = FALSE}
+# Install all dependencies from a specific CRAN snapshot date on PPM
+options(repos = "https://packagemanager.posit.co/cran/2024-01-02")
+```
+
+Date-based CRAN snapshots have built-in support in `renv` with [`renv::checkout()`](https://rstudio.github.io/renv/reference/checkout.html), w/o the need for `(options(repos = ...))`:
+
+```{r , echo = TRUE, eval = FALSE}
+# check out packages from PPM using the date '2023-01-02'
+renv::checkout(date = "2024-01-02")
+# or provide the repos URL explicitly
+renv::checkout(repos = "https://packagemanager.posit.co/cran/2024-01-02")
+```
+
+By default, `renv::checkout()` would ensure packages in the project library are installed from the specific date, w/o updating `renv.lock`. This implies you will have to run `renv::snapshot()` to updated the lock-file. As an alternative, you could use the `actions` argument to control the behavior of `renv::checkout()`. In particular,
+
+```{r , echo = TRUE, eval = FALSE}
+renv::checkout(date = "2023-01-02", actions=c("snapshot", "restore"))
+```
+
+would install packages and lock the corresponding versions (as well as the used repository) at the same time.
+
+Note that `renv::checkout()` can also be use for a subset of packages (and their transitive  dependencies)
+
+```{r , echo = TRUE, eval = FALSE}
+renv::checkout(packages = "dplyr", date = "2024-01-02")
+```
 
 ## Removing the `renv` setup from a project
 
-If you would like to remove the `renv` setup from a project:
+If you would like to remove the `renv` set-up from a project:
 
-- run `renv::deactivate()` to fall back on a `renv`-free setup;
-- delete `renv.lock` and the `renv` folder for clarity.
+- run `renv::deactivate()` to fall back on an `renv`-free set-up;
+- delete `renv.lock` and the `renv` folder.

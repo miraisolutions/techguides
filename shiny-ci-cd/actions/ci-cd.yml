@@ -1,8 +1,9 @@
 # Workflow derived from https://github.com/r-lib/actions/tree/v2/examples
 # Need help debugging build failures? Start at https://github.com/r-lib/actions#where-to-find-help
 
-# Name of the workflow => usethis::use_github_actions_badge("CI-CD")
+# Name of the workflow
 name: CI-CD
+# Create status badge with usethis::use_github_actions_badge("ci-cd.yml")
 
 on:
   # Triggered on push and pull request events
@@ -29,11 +30,14 @@ jobs:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       # Preserve package sources for informative references in case of errors
       R_KEEP_PKG_SOURCE: yes
+      # rsconnect needs transitive LinkingTo-only dependencies to be installed
+      # (see https://github.com/r-lib/pak/issues/485)
+      PKG_INCLUDE_LINKINGTO: true
 
     steps:
 
       - name: Checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup R
         uses: r-lib/actions/setup-r@v2
