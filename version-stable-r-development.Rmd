@@ -29,7 +29,7 @@ provided as part of the [Rocker project](https://www.rocker-project.org/) and
 used as a basis for deploying productive applications.
 
 Each version-stable Rocker image has an associated _tag_ for all non-latest R
-versions (e.g. `rocker/r-ver:4.3.2`). Besides being specific to the
+versions (e.g. `rocker/r-ver:4.4.1`). Besides being specific to the
 corresponding version of R, each tag fixes the version of contributed packages
 (by using as package repository the CRAN snapshot of the last day CRAN
 distributed that R version as latest release). See
@@ -40,12 +40,12 @@ If that R version is the latest, the CRAN date will not be set and the latest pa
 The `Dockerfile` of a deployed application then defines a given version-stable
 image tag to start `FROM`, e.g.
 ```dockerfile
-FROM rocker/r-ver:4.3.2
+FROM rocker/r-ver:4.4.1
 ```
 See
-[SmaRP/Dockerfile](https://github.com/miraisolutions/SmaRP/blob/master/Dockerfile)
+[SmaRP/Dockerfile](https://github.com/miraisolutions/SmaRP/blob/feature/upgrade-latest-r/Dockerfile)
 for an example.
-<!-- NOTE: Not yet merged into master -->
+<!-- NOTE: Not yet merged into master, to be replaced with https://github.com/miraisolutions/SmaRP/blob/master/Dockerfile -->
 
 
 ## Align local development and deployment environments
@@ -60,7 +60,7 @@ The idea is then to rely on the same version-stable rocker containers used for
 the deployments, using a containerized versioned RStudio instance for the local
 development. This is available through Rocker's [versioned
 stack](https://www.rocker-project.org/images/#the-versioned-stack), so we could
-use e.g. `rocker/rstudio:4.3.2`.
+use e.g. `rocker/rstudio:4.4.1`.
 
 Note that the same version-stable instance of RStudio can be used across all
 different projects for which such version is relevant. For this reason, a
@@ -72,12 +72,12 @@ install. See the specific section below about 'TinyTeX considerations'.
 
 ### Running versioned RStudio instances
 
-Assume we want to run a containerized versioned instance of RStudio for R 4.3.2,
+Assume we want to run a containerized versioned instance of RStudio for R 4.4.1,
 possibly alongside instances for other versions of R.
 
 First of all, we need to get the image from docker-hub
 ```{bash pull}
-docker pull rocker/verse:4.3.2
+docker pull rocker/verse:4.4.1
 ```
 
 We then want to have a running instance on `localhost` (`127.0.0.1`), with the
@@ -86,7 +86,7 @@ following setup:
 - No authentication required (local setup).
 - Enable root by setting the environment variable `ROOT` to `TRUE`, so that e.g.
 `sudo apt-get` can be used in RStudio.
-- Use a version-specific port, e.g. `4000` for R 4.0.0, `4320` for R 4.3.2 and
+- Use a version-specific port, e.g. `4000` for R 4.0.0, `4410` for R 4.4.1 and
 so on, so that we can use `localhost` for concurrent R version instances.
 - The development code of all relevant projects should live outside the
 container and be shared with it (and possibly many of them), e.g. under
@@ -97,7 +97,7 @@ the container.
     the container user (`rstudio`) must match the UID of the host user (`$UID`).
 - In order for the RStudio setting to persist if the container is recreated
 (e.g. after pulling a new `rocker` image), we also use a shared volume (like
-`~/.rstudio-docker/4.2.3`) for the `home/rstudio/.rstudio` directory, which is
+`~/.rstudio-docker/4.4.1`) for the `home/rstudio/.rstudio` directory, which is
 version-specific in case of multiple R versions
 - If we want to use Meld via the [compareWith](https://github.com/miraisolutions/compareWith/) addins, we need to
     - map the `DISPLAY` environment variable and volume `/tmp/.X11-unix`
@@ -105,11 +105,11 @@ version-specific in case of multiple R versions
     - install Meld
     - install `dbus-x11`
 - Use a version-specific name for the container running the RStudio instance,
-e.g. `rstudio_4.2.3`.
+e.g. `rstudio_4.4.1`.
 
 
 ```{bash run}
-R_VER=4.3.2
+R_VER=4.4.1
 SHARED_DIR=RStudioProjects
 docker run -d --restart=always \
   -p 127.0.0.1:$(echo $R_VER | sed 's/[.]//g')0:8787 \
@@ -129,7 +129,7 @@ docker exec rstudio_$R_VER bash -c \
 docker exec rstudio_$R_VER bash -c \
   'apt-get update && apt-get install -y --no-install-recommends meld dbus-x11'
 ```
-The running RStudio can then be accessed by visiting `http://localhost:3610/`.
+If you are using R_VER=4.4.1, the running RStudio can then be accessed by visiting `http://localhost:4410/`.
 
 You may find convenient to define a shell function as follows
 
@@ -140,7 +140,7 @@ run_rstudio_ver() {
   local RVER_IMAGE=${3:-"verse"}
   local BASE_IMAGE=rocker/$RVER_IMAGE:$R_VER
   local PORT=$(echo $R_VER | sed 's/[.]//g')0
-  local CONTANER_NAME=rstudio_$R_VER
+  local CONTAINER_NAME=rstudio_$R_VER
   echo "Containerized version-stable RStudio for R "$R_VER\
        "based on image "$BASE_IMAGE\
        "with shared volume "$SHARED_DIR
@@ -154,34 +154,34 @@ run_rstudio_ver() {
     -v $HOME/.rstudio-docker/$R_VER:/home/rstudio/.rstudio \
     -e DISPLAY=$DISPLAY \
     -v /tmp/.X11-unix:/tmp/.X11-unix:ro \
-    --name $CONTANER_NAME \
+    --name $CONTAINER_NAME \
     $BASE_IMAGE &&
   # R and RStudio are not getting the DISPLAY environment variable
-  docker exec $CONTANER_NAME bash -c \
+  docker exec $CONTAINER_NAME bash -c \
     'echo "DISPLAY=${DISPLAY}" >> /usr/local/lib/R/etc/Renviron' &&
   # Install Meld
-  docker exec $CONTANER_NAME bash -c \
+  docker exec $CONTAINER_NAME bash -c \
     'apt-get update && apt-get install -y --no-install-recommends meld dbus-x11' &&
-  echo "RStudio running in container "$CONTANER_NAME" on port "$PORT &&
+  echo "RStudio running in container "$CONTAINER_NAME" on port "$PORT &&
   echo "visit http://localhost:"$PORT
 }
 ```
 
 which you can re-use as compact command for any R version as follows
 ```{bash run_rstudio_ver-use}
-run_rstudio_ver 4.3.2 RStudioProjects
+run_rstudio_ver 4.4.1 RStudioProjects
 ```
 
 Note that `--restart=always` specifies that the container should stay up and restart
 itself after stopping, e.g. upon machine reboot or docker upgrade, so that it is
 always available. Still, you can explicitly stop the running container with
 ```{bash stop}
-docker stop rstudio_4.3.2
+docker stop rstudio_4.4.1
 ```
 Alternatively, you can omit `--restart=always` and explicitly start the
 container whenever needed with
 ```{bash start}
-docker start rstudio_4.3.2
+docker start rstudio_4.4.1
 ```
 
 Note that `start`/`stop` operations do not affect the persistence of files
@@ -215,8 +215,8 @@ If you are using LaTeX and start seeing errors like
 ```
 Remote repository is newer than local (2018 < 2019)
 ```
-it means that you have to re-install TinyTeX. This happens e.g. with
-`rocker/verse:4.3.2`, since it was build at the end of 2018 but the current
+you have to re-install TinyTeX. This happens e.g. with
+`rocker/verse:4.3.2`, since it was built at the end of 2018 but the current
 Tex Live repo is 2019. You can fix this via a **user-specific** re-installation of
 TinyTeX for R. **NOTE** however that this will uninstall the system-level
 TinyTeX pre-installed in `rocker/verse`.
@@ -224,13 +224,13 @@ TinyTeX pre-installed in `rocker/verse`.
 First, make sure `/home/rstudio/bin` is part of the `PATH` environment variable.
 Check this by running
 ```{bash check-path}
-docker exec --user rstudio rstudio_4.3.2 R --slave -e 'Sys.getenv("PATH")'
+docker exec --user rstudio rstudio_4.4.1 R --slave -e 'Sys.getenv("PATH")'
 ```
 If you don't see `/home/rstudio/bin`, you can make sure it is part of the `PATH` for R via
 ```{bash set-path}
-docker exec --user rstudio rstudio_4.3.2 sh -c 'echo "PATH=$HOME/bin:\${PATH}" >> $HOME/.Renviron'
+docker exec --user rstudio rstudio_4.4.1 sh -c 'echo "PATH=$HOME/bin:\${PATH}" >> $HOME/.Renviron'
 # check again
-docker exec --user rstudio rstudio_4.3.2 R --slave -e 'Sys.getenv("PATH")'
+docker exec --user rstudio rstudio_4.4.1 R --slave -e 'Sys.getenv("PATH")'
 ```
 
 Then, from the running RStudio, run
@@ -242,7 +242,7 @@ tinytex::reinstall_tinytex()
 ### Cleanup
 
 ```{bash cleanup}
-docker rm $(docker stop rstudio_4.3.2)
+docker rm $(docker stop rstudio_4.4.1)
 ```
 
 
