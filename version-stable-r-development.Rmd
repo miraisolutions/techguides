@@ -184,11 +184,11 @@ container whenever needed with
 docker start rstudio_4.4.1
 ```
 
-Note that `start`/`stop` operations do not affect the persistence of files
-created outside the shared location, including global RStudio options such as
-dark theme, diagnostic, etc. (set via _Tools > Global Options..._). On the other
-hand, these files and settings do ~~not~~ (see above) persist removing the
-container (`docker rm`, see below) .
+Note that `start`/`stop` operations do not affect the persistence of any files
+created in rstudio while the container is running.
+However if the container is _removed_, files created outside of mounted volumes 
+do **not** persist (`docker rm`, see below).
+This is why we use a mounted volume for the `~/.rstudio` directory.
 
 
 ### TinyTeX considerations
