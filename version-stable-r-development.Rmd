@@ -218,7 +218,7 @@ If you are using LaTeX and start seeing errors like
 Remote repository is newer than local (2018 < 2019)
 ```
 you have to re-install TinyTeX. This happens e.g. with
-`rocker/verse:4.3.2`, since it was built at the end of 2018 but the current
+`rocker/verse:3.6.1`, since it was build at the end of 2018 but the current
 Tex Live repo is 2019. You can fix this via a **user-specific** re-installation of
 TinyTeX for R. **NOTE** however that this will uninstall the system-level
 TinyTeX pre-installed in `rocker/verse`.
@@ -226,13 +226,13 @@ TinyTeX pre-installed in `rocker/verse`.
 First, make sure `/home/rstudio/bin` is part of the `PATH` environment variable.
 Check this by running
 ```{bash check-path}
-docker exec --user rstudio rstudio_4.4.1 R --slave -e 'Sys.getenv("PATH")'
+docker exec --user rstudio rstudio_3.6.1 R --slave -e 'Sys.getenv("PATH")'
 ```
 If you don't see `/home/rstudio/bin`, you can make sure it is part of the `PATH` for R via
 ```{bash set-path}
-docker exec --user rstudio rstudio_4.4.1 sh -c 'echo "PATH=$HOME/bin:\${PATH}" >> $HOME/.Renviron'
+docker exec --user rstudio rstudio_3.6.1 sh -c 'echo "PATH=$HOME/bin:\${PATH}" >> $HOME/.Renviron'
 # check again
-docker exec --user rstudio rstudio_4.4.1 R --slave -e 'Sys.getenv("PATH")'
+docker exec --user rstudio rstudio_3.6.1 R --slave -e 'Sys.getenv("PATH")'
 ```
 
 Then, from the running RStudio, run
