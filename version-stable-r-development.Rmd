@@ -111,6 +111,7 @@ e.g. `rstudio_4.4.1`.
 ```{bash run}
 R_VER=4.4.1
 SHARED_DIR=RStudioProjects
+mkdir -p $HOME/.rstudio-docker/$R_VER
 docker run -d --restart=always \
   -p 127.0.0.1:$(echo $R_VER | sed 's/[.]//g')0:8787 \
   -e DISABLE_AUTH=true \
@@ -145,6 +146,7 @@ run_rstudio_ver() {
        "based on image "$BASE_IMAGE\
        "with shared volume "$SHARED_DIR
   docker pull $BASE_IMAGE &&
+  mkdir -p $HOME/.rstudio-docker/$R_VER &&
   docker run -d --restart=always \
     -p 127.0.0.1:$PORT:8787 \
     -e DISABLE_AUTH=true \
