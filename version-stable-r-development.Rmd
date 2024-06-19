@@ -6,7 +6,7 @@ knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, eval = FALSE)
 ```
 
 In the context of productive solutions, it is essential to have full control
-over the code-base and environment to ensure reproducibility and stability of
+over the codebase and environment to ensure reproducibility and stability of
 the setup. In the case of R-based projects, this implies fixing and aligning the
 version of R as well as package and system dependencies. In order to achieve
 well-managed release pipelines, a key aspect is to guarantee full equivalence of
@@ -53,7 +53,7 @@ for an example.
 When developing and testing an app locally, it is important to ensure the
 environment is aligned with the target deployment environment. This might imply
 using e.g. multiple R and package versions for the local development of
-different applications, which clash with the typical setup (especially on
+different applications. This is not possible with the typical setup (especially on
 Linux systems), where only one R version (the latest release) exists.
 
 The idea is then to rely on the same version-stable rocker containers used for
@@ -64,9 +64,9 @@ use e.g. `rocker/rstudio:4.4.1`.
 
 Note that the same version-stable instance of RStudio can be used across all
 different projects for which such version is relevant. For this reason, a
-sensible choice is to rely on `rocker/verse`, which adds tidyverse and
-devtools to the stack, as well as properly setting up R Markdown system
-dependencies TinyTeX and `pandoc`, sparing the effort of the tedious extra
+sensible choice is to rely on `rocker/verse` images, which add tidyverse and
+devtools to the stack. They also include R Markdown system
+dependencies TinyTeX and pandoc, sparing the effort of the tedious extra
 install. See the specific section below about 'TinyTeX considerations'.
 
 
@@ -89,7 +89,7 @@ following setup:
 - Use a version-specific port, e.g. `4000` for R 4.0.0, `4410` for R 4.4.1 and
 so on, so that we can use `localhost` for concurrent R version instances.
 - The development code of all relevant projects should live outside the
-container and be shared with it (and possibly many of them), e.g. under
+container and be shared with it (and possibly multiple other containers), e.g. under
 `~/RStudioProjects` on the host machine and `/home/rstudio/RStudioProjects` in
 the container.
     - For this to work w/o [permission
@@ -100,10 +100,10 @@ the container.
 `~/.rstudio-docker/4.4.1`) for the `home/rstudio/.rstudio` directory, which is
 version-specific in case of multiple R versions
 - If we want to use Meld via the [compareWith](https://github.com/miraisolutions/compareWith/) addins, we need to
-    - map the `DISPLAY` environment variable and volume `/tmp/.X11-unix`
-    - add `DISPLAY` to `Renviron`
-    - install Meld
-    - install `dbus-x11`
+    - map the `DISPLAY` environment variable and volume `/tmp/.X11-unix`,
+    - add `DISPLAY` to `Renviron`,
+    - install Meld,
+    - install `dbus-x11`.
 - Use a version-specific name for the container running the RStudio instance,
 e.g. `rstudio_4.4.1`.
 
@@ -132,7 +132,7 @@ docker exec rstudio_$R_VER bash -c \
 ```
 If you are using R_VER=4.4.1, the running RStudio can then be accessed by visiting `http://localhost:4410/`.
 
-You may find convenient to define a shell function as follows
+You may find convenient to define a shell function for these steps:
 
 ```{bash run_rstudio_ver-def}
 run_rstudio_ver() {
@@ -169,7 +169,7 @@ run_rstudio_ver() {
 }
 ```
 
-which you can re-use as compact command for any R version as follows
+which you can re-use as compact command for any R version:
 ```{bash run_rstudio_ver-use}
 run_rstudio_ver 4.4.1 RStudioProjects
 ```
@@ -200,7 +200,7 @@ This is why we use a mounted volume for the `~/.rstudio` directory.
 Older `rocker/verse` images might not include `pdfcrop`, which is required for
 the default and desirable cropping of PDF figures with R Markdown (see
 [rocker-org/rocker-versioned#146](https://github.com/rocker-org/rocker-versioned/issues/146)).
-Make sure `pdfcrop` is installed by running at R console
+Make sure `pdfcrop` is installed by running the following in the R console:
 ```{r pdfcrop}
 tinytex::tlmgr_install("pdfcrop")
 ```
