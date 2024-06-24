@@ -192,6 +192,13 @@ However if the container is _removed_, files created outside of mounted volumes
 do **not** persist (`docker rm`, see below).
 This is why we use a mounted volume for the `~/.rstudio` directory.
 
+### Supported R versions
+This tutorial uses images based on the [rocker-versioned2](https://github.com/rocker-org/rocker-versioned2) repository, 
+which provides images for R >= 4.0. We recommend using the latest patch version for each minor version - e.g. 4.0.5 for 4.0.x, 
+as these seem to be the most regularly updated images
+(see e.g. [rocker/verse on docker hub](https://hub.docker.com/r/rocker/verse/tags?page=&page_size=&ordering=&name=4.0.)).
+When using older images based on the [previous version](https://github.com/rocker-org/rocker-versioned) of the repository, 
+the settings are saved in _/home/rstudio/.rstudio_, so the settings mount is different: `-v $HOME/.rstudio-docker/$R_VER:/home/rstudio/.rstudio`
 
 ### TinyTeX considerations
 
