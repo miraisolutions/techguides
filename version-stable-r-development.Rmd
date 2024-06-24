@@ -95,7 +95,7 @@ the container.
     - For this to work w/o [permission
     issues](https://github.com/rocker-org/rocker/wiki/Sharing-files-with-host-machine#avoiding-permission-changes-when-sharing-volumes),
     the container user (`rstudio`) must match the UID of the host user (`$UID`).
-- In order for the RStudio setting to persist if the container is recreated
+- In order for the RStudio settings to persist if the container is recreated
 (e.g. after pulling a new `rocker` image), we also use a shared volume (like
 `~/.rstudio-docker/4.4.1`) for the `home/rstudio/.rstudio` directory, which is
 version-specific in case of multiple R versions
@@ -118,7 +118,7 @@ docker run -d --restart=always \
   -e ROOT=TRUE \
   -e USERID=$UID \
   -v $HOME/$SHARED_DIR:/home/rstudio/$SHARED_DIR \
-  -v $HOME/.rstudio-docker/$R_VER:/home/rstudio/.rstudio \
+  -v $HOME/.rstudio-docker/$R_VER:/home/rstudio/.config/rstudio \
   -e DISPLAY=$DISPLAY \
   -v /tmp/.X11-unix:/tmp/.X11-unix:ro \
   --name rstudio_$R_VER \
@@ -153,7 +153,7 @@ run_rstudio_ver() {
     -e ROOT=TRUE \
     -e USERID=$UID \
     -v $HOME/$SHARED_DIR:/home/rstudio/$SHARED_DIR \
-    -v $HOME/.rstudio-docker/$R_VER:/home/rstudio/.rstudio \
+    -v $HOME/.rstudio-docker/$R_VER:/home/rstudio/.config/rstudio \
     -e DISPLAY=$DISPLAY \
     -v /tmp/.X11-unix:/tmp/.X11-unix:ro \
     --name $CONTAINER_NAME \
