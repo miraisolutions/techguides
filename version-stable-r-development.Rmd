@@ -192,6 +192,18 @@ However if the container is _removed_, files created outside of mounted volumes
 do **not** persist (`docker rm`, see below).
 This is why we use a mounted volume for the `~/.rstudio` directory.
 
+### Using `podman` instead of `docker`
+
+`podman` can be used instead of `docker` to run the above commands. In that case, the active user will be _root_, 
+which is then mapped to the user id of the user running the container when writing files to the shared volume.
+Because of this, RStudio does not set the desired home directory as the initial working directory. To correct this, add
+```
+echo '{ "initial_working_directory": "/home/rstudio" }' > $HOME/.rstudio-docker/$R_VER/rstudio-prefs.json &&
+```
+After `mkdir -p $HOME/.rstudio-docker/$R_VER` in the `run_rstudio_ver` function.
+If you run into issues, this rocker [pull request](https://github.com/rocker-org/rocker-versioned2/pull/636) 
+about rootless container support may help.
+
 ### Supported R versions
 This tutorial uses images based on the [rocker-versioned2](https://github.com/rocker-org/rocker-versioned2) repository, 
 which provides images for R >= 4.0. We recommend using the latest patch version for each minor version - e.g. 4.0.5 for 4.0.x, 
