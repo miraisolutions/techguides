@@ -18,6 +18,11 @@ environment based on containerized solutions leveraging the
 of multiple dockerized development flavors, to match various target production
 environments or projects.
 
+> _The instructions in this chapter are for R >= 4.0.0.
+Images for R <= 3.6.3 are defined in 
+[rocker-org/rocker-versioned](https://github.com/rocker-org/rocker-versioned),
+but are no longer actively maintained._
+
 
 ## Version-stable deployments
 
@@ -67,7 +72,7 @@ different projects for which such version is relevant. For this reason, a
 sensible choice is to rely on `rocker/verse` images, which add tidyverse and
 devtools to the stack. They also include R Markdown system
 dependencies TinyTeX and pandoc, sparing the effort of the tedious extra
-install. See the specific section below about 'TinyTeX considerations'.
+install.
 
 
 ### Running versioned RStudio instances
@@ -75,7 +80,7 @@ install. See the specific section below about 'TinyTeX considerations'.
 Assume we want to run a containerized versioned instance of RStudio for R 4.4.1,
 possibly alongside instances for other versions of R.
 
-First of all, we need to get the image from docker-hub
+First of all, we need to get the image from docker-hub:
 ```{bash pull}
 docker pull rocker/verse:4.4.1
 ```
@@ -87,17 +92,20 @@ following setup:
 - Enable root by setting the environment variable `ROOT` to `TRUE`, so that e.g.
 `sudo apt-get` can be used in RStudio.
 - Use a version-specific port, e.g. `4000` for R 4.0.0, `4410` for R 4.4.1 and
-so on, so that we can use `localhost` for concurrent R version instances.
+so on, so that we can use `localhost` for concurrent R version instances. 
+We bind the port to localhost (`127.0.0.1:4410`), so it is only accessible locally 
+(see [the Rocker reference](https://rocker-project.org/images/versioned/rstudio.html#disable_auth)).
 - The development code of all relevant projects should live outside the
 container and be shared with it (and possibly multiple other containers), e.g. under
-`~/RStudioProjects` on the host machine and `/home/rstudio/RStudioProjects` in
+`~/workspace` on the host machine and `/home/rstudio/workspace` in
 the container.
     - For this to work w/o [permission
     issues](https://github.com/rocker-org/rocker/wiki/Sharing-files-with-host-machine#avoiding-permission-changes-when-sharing-volumes),
-    the container user (`rstudio`) must match the UID of the host user (`$UID`).
+    the container user (`rstudio`) must match the UID of the host user (`$UID`). 
+    This has the effect of setting the ownership of `~/workspace` on the host machine to `$UID` if it is not already owned by that user.
 - In order for the RStudio settings to persist if the container is recreated
 (e.g. after pulling a new `rocker` image), we also use a shared volume (like
-`~/.rstudio-docker/4.4.1`) for the `home/rstudio/.config/rstudio` directory, which is
+`~/.rstudio-config/4.4.1`) for the `/home/rstudio/.config/rstudio` directory, which is
 version-specific in case of multiple R versions.
 - If we want to use Meld via the [compareWith](https://github.com/miraisolutions/compareWith/) addins, we need to
     - map the `DISPLAY` environment variable and volume `/tmp/.X11-unix`,
@@ -110,15 +118,15 @@ e.g. `rstudio_4.4.1`.
 
 ```{bash run}
 R_VER=4.4.1
-SHARED_DIR=RStudioProjects
-mkdir -p $HOME/.rstudio-docker/$R_VER
+SHARED_DIR=workspace
+mkdir -p $HOME/.rstudio-config/$R_VER
 docker run -d --restart=always \
   -p 127.0.0.1:$(echo $R_VER | sed 's/[.]//g')0:8787 \
   -e DISABLE_AUTH=true \
   -e ROOT=TRUE \
   -e USERID=$UID \
   -v $HOME/$SHARED_DIR:/home/rstudio/$SHARED_DIR \
-  -v $HOME/.rstudio-docker/$R_VER:/home/rstudio/.config/rstudio \
+  -v $HOME/.rstudio-config/$R_VER:/home/rstudio/.config/rstudio \
   -e DISPLAY=$DISPLAY \
   -v /tmp/.X11-unix:/tmp/.X11-unix:ro \
   --name rstudio_$R_VER \
@@ -130,7 +138,7 @@ docker exec rstudio_$R_VER bash -c \
 docker exec rstudio_$R_VER bash -c \
   'apt-get update && apt-get install -y --no-install-recommends meld dbus-x11'
 ```
-If you are using R_VER=4.4.1, the running RStudio can then be accessed by visiting `http://localhost:4410/`.
+If you are using `R_VER=4.4.1`, the running RStudio can then be accessed by visiting `http://localhost:4410/`.
 
 You may find convenient to define a shell function for these steps:
 
@@ -146,14 +154,14 @@ run_rstudio_ver() {
        "based on image "$BASE_IMAGE\
        "with shared volume "$SHARED_DIR
   docker pull $BASE_IMAGE &&
-  mkdir -p $HOME/.rstudio-docker/$R_VER &&
+  mkdir -p $HOME/.rstudio-config/$R_VER &&
   docker run -d --restart=always \
     -p 127.0.0.1:$PORT:8787 \
     -e DISABLE_AUTH=true \
     -e ROOT=TRUE \
     -e USERID=$UID \
     -v $HOME/$SHARED_DIR:/home/rstudio/$SHARED_DIR \
-    -v $HOME/.rstudio-docker/$R_VER:/home/rstudio/.config/rstudio \
+    -v $HOME/.rstudio-config/$R_VER:/home/rstudio/.config/rstudio \
     -e DISPLAY=$DISPLAY \
     -v /tmp/.X11-unix:/tmp/.X11-unix:ro \
     --name $CONTAINER_NAME \
@@ -171,7 +179,7 @@ run_rstudio_ver() {
 
 which you can re-use as compact command for any R version:
 ```{bash run_rstudio_ver-use}
-run_rstudio_ver 4.4.1 RStudioProjects
+run_rstudio_ver 4.4.1 workspace
 ```
 
 Note that `--restart=always` specifies that the container should stay up and restart
@@ -198,66 +206,17 @@ This is why we use a mounted volume for the `~/.config/rstudio` directory.
 which is then mapped to the user that invoked the podman command when writing files to the shared volume.
 Because of this, RStudio does not set the desired home directory as the initial working directory. To correct this, add
 ```
-echo '{ "initial_working_directory": "/home/rstudio" }' > $HOME/.rstudio-docker/$R_VER/rstudio-prefs.json &&
+echo '{ "initial_working_directory": "/home/rstudio" }' > $HOME/.rstudio-config/$R_VER/rstudio-prefs.json &&
 ```
-After `mkdir -p $HOME/.rstudio-docker/$R_VER` in the `run_rstudio_ver` function.
+After `mkdir -p $HOME/.rstudio-config/$R_VER` in the `run_rstudio_ver` function.
 If you run into issues, the discussion in this rocker [pull request](https://github.com/rocker-org/rocker-versioned2/pull/636)
 about rootless container support may help.
 
-### Supported R versions
-This tutorial uses images based on the [rocker-versioned2](https://github.com/rocker-org/rocker-versioned2) repository, 
-which provides images for R >= 4.0. We recommend using the latest patch version for each minor version - e.g. 4.0.5 for 4.0.x, 
+### Best-supported R versions
+This tutorial uses images based on the [rocker-versioned2](https://github.com/rocker-org/rocker-versioned2) repository.
+We recommend using the latest patch version for each minor version - e.g. 4.0.5 for 4.0.x,
 as these seem to be the most regularly updated images
 (see e.g. [rocker/verse on docker hub](https://hub.docker.com/r/rocker/verse/tags?page=&page_size=&ordering=&name=4.0.)).
-When using older images based on the [previous version](https://github.com/rocker-org/rocker-versioned) of the repository, 
-the settings are saved in _/home/rstudio/.rstudio_, so the settings mount is different: `-v $HOME/.rstudio-docker/$R_VER:/home/rstudio/.rstudio`
-
-### TinyTeX considerations
-
-#### `pdfcrop`
-
-Older `rocker/verse` images might not include `pdfcrop`, which is required for
-the default and desirable cropping of PDF figures with R Markdown (see
-[rocker-org/rocker-versioned#146](https://github.com/rocker-org/rocker-versioned/issues/146)).
-Make sure `pdfcrop` is installed by running the following in the R console:
-```{r pdfcrop}
-tinytex::tlmgr_install("pdfcrop")
-```
-(see [R Markdown: The Definitive
-Guide](https://bookdown.org/yihui/rmarkdown/pdf-document.html#figure-options-1))
-
-#### Align TinyTeX to current remote repo
-
-**NOTE** - This should never be needed with recent `rocker/verse` images, where
-a version-stable Tex Live repository is used for the TinyTeX install (see
-[rocker-org/rocker-versioned#169](https://github.com/rocker-org/rocker-versioned/issues/169)).
-
-If you are using LaTeX and start seeing errors like
-```
-Remote repository is newer than local (2018 < 2019)
-```
-you have to re-install TinyTeX. This happens e.g. with
-`rocker/verse:3.6.1`, since it was build at the end of 2018 but the current
-Tex Live repo is 2019. You can fix this via a **user-specific** re-installation of
-TinyTeX for R. **NOTE** however that this will uninstall the system-level
-TinyTeX pre-installed in `rocker/verse`.
-
-First, make sure `/home/rstudio/bin` is part of the `PATH` environment variable.
-Check this by running
-```{bash check-path}
-docker exec --user rstudio rstudio_3.6.1 R --slave -e 'Sys.getenv("PATH")'
-```
-If you don't see `/home/rstudio/bin`, you can make sure it is part of the `PATH` for R via
-```{bash set-path}
-docker exec --user rstudio rstudio_3.6.1 sh -c 'echo "PATH=$HOME/bin:\${PATH}" >> $HOME/.Renviron'
-# check again
-docker exec --user rstudio rstudio_3.6.1 R --slave -e 'Sys.getenv("PATH")'
-```
-
-Then, from the running RStudio, run
-```{r reinstall-tinytex}
-tinytex::reinstall_tinytex()
-```
 
 
 ### Cleanup
@@ -273,3 +232,4 @@ docker rm $(docker stop rstudio_4.4.1)
 - [Shared Volumes](https://www.rocker-project.org/use/shared_volumes/)
 - [Rocker Wiki](https://github.com/rocker-org/rocker/wiki)
 - [Sharing files with host machine](https://github.com/rocker-org/rocker/wiki/Sharing-files-with-host-machine)
+- [Rocker reference for verse and other images](https://rocker-project.org/images/versioned/rstudio.html) (in particular [how to use](https://rocker-project.org/images/versioned/rstudio.html#how-to-use))
