@@ -97,7 +97,7 @@ the container.
     the container user (`rstudio`) must match the UID of the host user (`$UID`).
 - In order for the RStudio settings to persist if the container is recreated
 (e.g. after pulling a new `rocker` image), we also use a shared volume (like
-`~/.rstudio-docker/4.4.1`) for the `home/rstudio/.rstudio` directory, which is
+`~/.rstudio-docker/4.4.1`) for the `home/rstudio/.config/rstudio` directory, which is
 version-specific in case of multiple R versions
 - If we want to use Meld via the [compareWith](https://github.com/miraisolutions/compareWith/) addins, we need to
     - map the `DISPLAY` environment variable and volume `/tmp/.X11-unix`,
@@ -190,7 +190,7 @@ Note that `start`/`stop` operations do not affect the persistence of any files
 created in rstudio while the container is running.
 However if the container is _removed_, files created outside of mounted volumes 
 do **not** persist (`docker rm`, see below).
-This is why we use a mounted volume for the `~/.rstudio` directory.
+This is why we use a mounted volume for the `~/.config/rstudio` directory.
 
 ### Using `podman` instead of `docker`
 
