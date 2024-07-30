@@ -100,7 +100,7 @@ container and be shared with it (and possibly multiple other containers), e.g. u
 `~/workspace` on the host machine and `/home/rstudio/workspace` in
 the container.
     - For this to work w/o [permission
-    issues](https://github.com/rocker-org/rocker/wiki/Sharing-files-with-host-machine#avoiding-permission-changes-when-sharing-volumes),
+    issues](https://rocker-project.org/images/versioned/rstudio.html#userid-and-groupid),
     the container user (`rstudio`) must match the UID of the host user (`$UID`). 
     This has the effect of setting the ownership of `~/workspace` on the host machine to `$UID` if it is not already owned by that user.
 - In order for the RStudio settings to persist if the container is recreated
@@ -125,6 +125,7 @@ docker run -d --restart=always \
   -e DISABLE_AUTH=true \
   -e ROOT=true \
   -e USERID=$UID \
+  -e GROUPID=$GID \
   -v $HOME/$SHARED_DIR:/home/rstudio/$SHARED_DIR \
   -v $HOME/.rstudio-config/$R_VER:/home/rstudio/.config/rstudio \
   -e DISPLAY=$DISPLAY \
@@ -158,8 +159,9 @@ run_rstudio_ver() {
   docker run -d --restart=always \
     -p 127.0.0.1:$PORT:8787 \
     -e DISABLE_AUTH=true \
-    -e ROOT=TRUE \
+    -e ROOT=true \
     -e USERID=$UID \
+    -e GROUPID=$GID \
     -v $HOME/$SHARED_DIR:/home/rstudio/$SHARED_DIR \
     -v $HOME/.rstudio-config/$R_VER:/home/rstudio/.config/rstudio \
     -e DISPLAY=$DISPLAY \
