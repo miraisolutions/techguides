@@ -123,7 +123,7 @@ mkdir -p $HOME/.rstudio-config/$R_VER
 docker run -d --restart=always \
   -p 127.0.0.1:$(echo $R_VER | sed 's/[.]//g')0:8787 \
   -e DISABLE_AUTH=true \
-  -e ROOT=TRUE \
+  -e ROOT=true \
   -e USERID=$UID \
   -v $HOME/$SHARED_DIR:/home/rstudio/$SHARED_DIR \
   -v $HOME/.rstudio-config/$R_VER:/home/rstudio/.config/rstudio \
