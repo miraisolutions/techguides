@@ -2,19 +2,33 @@
 title: "Technical Guidelines"
 author: "Mirai Solutions"
 date: "`r Sys.time()`"
+description: "Best practices with R around select topics."
 github-repo: "miraisolutions/techguides"
 site: bookdown::bookdown_site
 output:
   bookdown::gitbook:
-    split_by: section
+    css: styles.css
+    includes:
+      in_header: target-blank.html
+    pandoc_args: ["--number-offset=0"]
     # disable alt text rendered as figure caption
+    split_by: section
     fig_caption: false
     config:
       sharing:
         github: yes
+      toc:
+        before: |
+          <li class="toc-logo"><a href="https://mirai-solutions.ch" target="_blank"><img src="mirai.png"></a></li>
+        after: |
+          <li><a href="https://github.com/rstudio/bookdown" target="_blank">Published with bookdown</a></li>
 ---
 
 # Introduction {-}
 
 [Mirai Solutions](https://mirai-solutions.ch) is happy to share technical
 guidelines, how-tos and best practices in different areas.
+
+## Python guides
+
+You can access our free Python training material [here](https://mirai-solutions.ch/python-training-material).

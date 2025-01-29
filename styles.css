@@ -1,0 +1,17 @@
+/*--- LOGO ---*/
+
+.toc-logo {
+  width: 200px !important;
+  object-fit: contain;
+  margin: 0 auto;
+}
+
+.toc-logo img {
+  max-width: 100%;
+  margin-bottom: 3px;
+  margin-top: 7px;
+}
+
+.summary > li:first-child {
+  height: auto !important;
+}
