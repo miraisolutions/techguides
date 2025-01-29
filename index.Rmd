@@ -19,7 +19,7 @@ output:
         github: yes
       toc:
         before: |
-          <li class="toc-logo"><a href="https://mirai-solutions.ch" target="_blank"><img src="mirai.png"></a></li>
+          <li class="toc-logo"><a href="https://mirai-solutions.ch" target="_blank"><img src="mirai.png" alt="Mirai"></a></li>
         after: |
           <li><a href="https://github.com/rstudio/bookdown" target="_blank">Published with bookdown</a></li>
 ---
