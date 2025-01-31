@@ -1,0 +1,3 @@
+```{bash mod-date, engine.opts='-l', echo=FALSE}
+printf "Last modified: %s" "$(git log -1 --format=%cd $(cat tg-temp.txt) | sed 's/^[^ ]* //;s/ [^ ]*$//')"
+```

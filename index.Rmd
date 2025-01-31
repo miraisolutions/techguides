@@ -26,6 +26,10 @@ output:
 
 # Introduction {-}
 
+```{bash mod-date, engine.opts='-l', echo=FALSE, comment=""}
+printf "Last modified: %s" "$(git log -1 --format=%cd index.Rmd | sed 's/^[^ ]* //;s/ [^ ]*$//')"
+```
+
 [Mirai Solutions](https://mirai-solutions.ch) is happy to share technical
 guidelines, how-tos and best practices in different areas.
 

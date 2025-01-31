@@ -15,3 +15,7 @@
 .summary > li:first-child {
   height: auto !important;
 }
+
+h1.hasAnchor {
+  margin-bottom: .2em !important;
+}

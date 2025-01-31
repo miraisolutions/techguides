@@ -7,6 +7,17 @@ knitr::opts_chunk$set(
 )
 ```
 
+```{r topic-envvar, include = FALSE, eval=TRUE}
+cat(knitr::current_input(), file="tg-temp.txt")
+```
+
+```{r mod-date, child=c('mod-date.Rmd'), comment="", eval=TRUE}
+```
+
+```{r envvar-unlink, include = FALSE, eval=TRUE}
+unlink("tg-temp.txt")
+```
+
 The scope of this document is to provide *opinionated yet motivated
 guidelines and best practices* for documenting R objects (especially functions)
 with **roxygen2**.

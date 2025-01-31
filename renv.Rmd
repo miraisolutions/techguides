@@ -4,6 +4,17 @@
 knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, eval = FALSE)
 ```
 
+```{r topic-envvar, include = FALSE, eval=TRUE}
+cat(knitr::current_input(), file="tg-temp.txt")
+```
+
+```{r mod-date, child=c('mod-date.Rmd'), comment="", eval=TRUE}
+```
+
+```{r envvar-unlink, include = FALSE, eval=TRUE}
+unlink("tg-temp.txt")
+```
+
 For production readiness --- and project safety --- it is important to control the dependencies of a piece of development. This can be done at project level using the package [`renv`](https://rstudio.github.io/renv/).
 
 In an `renv` project, dependencies are resolved and tracked in a lock-file. As a new R session starts, `renv` detects whether installed dependencies are out of sync compared to the lock-file, ensuring the same virtual environment applies each time the project is opened.
