@@ -19,3 +19,7 @@
 h1.hasAnchor {
   margin-bottom: .2em !important;
 }
+
+img[alt="R Logo"] {
+  width: 70%;
+}
