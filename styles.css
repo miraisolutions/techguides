@@ -21,5 +21,11 @@ h1.hasAnchor {
 }
 
 img[alt="R Logo"] {
-  width: 70%;
+  width: 60%;
+  margin-left: 30px;
+}
+
+img[alt="Python Logo"] {
+  width: 60%;
+  margin-left: 30px;
 }
