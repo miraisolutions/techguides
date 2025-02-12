@@ -10,3 +10,4 @@ rmd_files: [
   "shiny-ci-cd.Rmd",
   "xlconnect.Rmd"
   ]
+output_dir: "_book"

@@ -26,6 +26,14 @@ img[alt="R Logo"] {
 }
 
 img[alt="Python Logo"] {
-  width: 60%;
+  width: 30%;
   margin-left: 30px;
+}
+
+details {
+  margin-bottom: .5em !important;
+}
+
+details > summary {
+  background-color: #edd48e;
 }
