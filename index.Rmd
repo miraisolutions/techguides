@@ -53,4 +53,4 @@ In this e-book, we are happy to share technical guidelines, how-tos and best pra
 
 ![Python Logo](python-logo-only.png)
 
-If instead you are more interested in **Python**, you can access our free Python training material [**here**](https://mirai-solutions.ch/python-training-material).
+If instead you are more interested in **Python**, you can access our free Python training material [**here**](https://mirai-solutions.ch/py-techguides).
