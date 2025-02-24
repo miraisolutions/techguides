@@ -45,7 +45,7 @@ Our areas of expertise include Enterprise IT Architecture, Software Engineering 
 
 ![R Logo](Rlogo.png)
 
-In this e-book, we are happy to share technical guidelines, how-tos and best practices around **R programming and DevOps** in specific areas of interest.
+In this e-book, we share technical guidelines, how-tos and best practices around **R programming and DevOps** in specific areas of interest.
 
 ---
 
