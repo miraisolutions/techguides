@@ -4,6 +4,17 @@
 knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, eval = FALSE)
 ```
 
+```{r topic-envvar, include = FALSE, eval=TRUE}
+cat(knitr::current_input(), file="tg-temp.txt")
+```
+
+```{r mod-date, child=c('mod-date.Rmd'), comment="", eval=TRUE}
+```
+
+```{r envvar-unlink, include = FALSE, eval=TRUE}
+unlink("tg-temp.txt")
+```
+
 It is good practice to integrate and develop an R Shiny app as an R package, to take full advantage of all the integrated features established for R packages (e.g., documentation, package namespaces, automated testing, `R CMD check`, etc.). A typical development workflow to package a Shiny app is provided by the [`golem` package](https://cran.r-project.org/web/packages/golem/index.html). Later in this chapter we will also indicate how to package a shiny app without the infrastructure provided by `golem`.
 
 Furthermore, version control systems such as Git are a great asset for keeping track an manage changes, especially in a collaborative setup.
@@ -147,7 +158,7 @@ usethis::use_github_actions_badge("ci-cd.yml") # or "ci.yml"/"ci(-cd)-renv.yml"
 
 ## Travis CI
 
-Travis CI is a continuous integration service that can be used to build and test software projects hosted on GitHub. To set up Travis CI you need to login at [travis-ci.com](https://www.travis-ci.com) (using your GitHub account) and provide authorization via GitHub (see [Travis CI Tutorial](https://docs.travis-ci.com/user/tutorial)).
+Travis CI is a continuous integration service that can be used to build and test software projects hosted on GitHub. To set up Travis CI you need to log in at [travis-ci.com](https://www.travis-ci.com) (using your GitHub account) and provide authorization via GitHub (see [Travis CI Onboarding](https://docs.travis-ci.com/user/onboarding/)).
 
 Travis CI used to be a very established, mature and popular tool in the open-source source community, before a recent change of policy made it less focused on open-source, offering only limited free trial plans.
 

@@ -5,6 +5,17 @@
 knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, eval = FALSE)
 ```
 
+```{r topic-envvar, include = FALSE, eval=TRUE}
+cat(knitr::current_input(), file="tg-temp.txt")
+```
+
+```{r mod-date, child=c('mod-date.Rmd'), comment="", eval=TRUE}
+```
+
+```{r envvar-unlink, include = FALSE, eval=TRUE}
+unlink("tg-temp.txt")
+```
+
 In the context of productive solutions, it is essential to have full control
 over the codebase and environment to ensure reproducibility and stability of
 the setup. In the case of R-based projects, this implies fixing and aligning the

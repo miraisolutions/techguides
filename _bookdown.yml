@@ -1,7 +1,7 @@
 # https://bookdown.org/yihui/bookdown/usage.html#usage
 
 book_filename: techguides
-new_session: true
+new_session: yes
 rmd_files: [
   "index.Rmd",
   "roxygen-guidelines.Rmd",
@@ -10,3 +10,4 @@ rmd_files: [
   "shiny-ci-cd.Rmd",
   "xlconnect.Rmd"
   ]
+output_dir: "_book"
