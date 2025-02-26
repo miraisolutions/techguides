@@ -5,8 +5,6 @@ date: "`r Sys.time()`"
 description: "Best practices with R around select topics."
 github-repo: "miraisolutions/techguides"
 site: bookdown::bookdown_site
-# printf "Last modified:\n%s" "$(git log -3 --format=%cd index.Rmd | sed 's/^[^ ]* //;s/ [^ ]*$//')"
-# git log -3 --format='%cd: %s' index.Rmd | sed 's/^[^ ]* //;s/ +[^:]*//'
 output:
   bookdown::gitbook:
     css: styles.css
@@ -28,12 +26,9 @@ output:
 
 # Introduction {-}
 
-<details>
-  <summary><em>&nbsp;&nbsp;Last edits (click to expand)</em></summary>
 ```{bash mod-date, engine.opts='-l', echo=FALSE, comment=""}
-printf "%s" "$(git log -3 --format='%cd: %s' index.Rmd | sed 's/^[^ ]* //;s/ +[^:]*//')"
+printf "Last modified: %s" "$(git log -1 --format=%cd index.Rmd | sed 's/^[^ ]* //;s/ [^ ]*$//')"
 ```
-</details>
 
 [**Mirai Solutions**](https://mirai-solutions.ch/) is a Zurich-based software development and consultancy firm, delivering cutting-edge technology and best practices to the industry, helping companies elevate their data analytics and operations.
 
